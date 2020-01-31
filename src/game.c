@@ -20,7 +20,6 @@ int main(int argc, char * argv[])
     float mf = 0;
     Sprite *mouse;
     Entity *agumon;
-    Vector4D mouseColor = {255,100,255,200};
     Vector2D fire_flip = {0,0};
     Vector2D fire_pos;
     
@@ -179,7 +178,7 @@ int main(int argc, char * argv[])
                 NULL,
                 NULL,
                 NULL,
-                &mouseColor,
+                NULL,
                 (int)mf);
                 
                 
