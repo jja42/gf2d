@@ -100,7 +100,7 @@ int main(int argc, char * argv[])
 			recov = 1;
 		}
 	}
-		slog("%f",agumon->position.y);
+	
 		if ((keys[SDL_SCANCODE_LEFT]||keys[SDL_SCANCODE_RIGHT]) && !attacking){
 		if (keys[SDL_SCANCODE_RIGHT]){
 			agumon->flip.x = 0;
