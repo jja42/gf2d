@@ -3,6 +3,7 @@
 #include "gf2d_sprite.h"
 #include "simple_logger.h"
 #include "gf2d_entity.h"
+#include "player.h"
 
 int main(int argc, char * argv[])
 {
@@ -19,19 +20,16 @@ int main(int argc, char * argv[])
     float air = 0;
     float mf = 0;
     Sprite *mouse;
-    Entity *agumon;
-    Vector2D fire_flip = {0,0};
-    Vector2D fire_pos;
-    
+    Player *player = malloc(sizeof(Player));
     /*program initializtion*/
     init_logger("gf2d.log");
     slog("---==== BEGIN ====---");
     gf2d_graphics_initialize(
         "gf2d",
-        1200,
-        720,
-        1200,
-        720,
+        1600,
+        900,
+        1600,
+        900,
         vector4d(0,0,0,255),
         0);
     gf2d_graphics_set_frame_delay(16);
@@ -42,8 +40,8 @@ int main(int argc, char * argv[])
     gf2d_entity_manager_init(100);
     sprite = gf2d_sprite_load_image("images/backgrounds/back.png");
     mouse = gf2d_sprite_load_all("images/pointer.png",32,32,16);
-    agumon = gf2d_entity_new();
-    gf2d_entity_load(agumon,"images/aguman.png",48,48,11,vector2d(550,480),vector2d(3,3));
+    setup_player_ent(player);
+    load_agumon(player);
     /*main game loop*/
     while(!done)
     {
@@ -51,48 +49,62 @@ int main(int argc, char * argv[])
         keys = SDL_GetKeyboardState(NULL); // get the keyboard state for this frame
         /*update things here*/
         //===================GROUNDED START========================
+        if(keys[SDL_SCANCODE_1] && grounded && !attacking){
+        load_agumon(player);
+		}
+		if(keys[SDL_SCANCODE_2] && grounded && !attacking){
+        load_guilmon(player);
+		}
+		if(keys[SDL_SCANCODE_3] && grounded && !attacking){
+        load_gabumon(player);
+		}
+		if(keys[SDL_SCANCODE_4] && grounded && !attacking){
+        load_wargreymon(player);
+		}
+		if(keys[SDL_SCANCODE_5] && grounded && !attacking){
+        load_gallantmon(player);
+		}
+		if(keys[SDL_SCANCODE_6] && grounded && !attacking){
+        load_etemon(player);
+		}
         if (keys[SDL_SCANCODE_Z]&& !attacking){
 			grounded = 0;
 		}
 		if (keys[SDL_SCANCODE_X]&& !attacking){
 			attacking = 1;
-			if(agumon->flip.x == 0){
-			fire_flip.x = 0;}
-			else{
-				fire_flip.x = 1;}
 		}
 		if ((keys[SDL_SCANCODE_LEFT]||keys[SDL_SCANCODE_RIGHT]) && grounded && !attacking){
 		if (keys[SDL_SCANCODE_RIGHT]){
-			agumon->flip.x = 0;
-			agumon->frame+=0.1;
-			if(agumon->frame>=17)agumon->frame=1;
-			agumon->position.x+=2;
+			player->ent->flip.x = 0;
+			player->ent->frame+=0.1;
+			if(player->ent->frame>=player->move_end_frame)player->ent->frame=1;
+			player->ent->position.x+=3;
 			}
 		else{
         if (keys[SDL_SCANCODE_LEFT]){
-			agumon->flip.x = 1;
-			agumon->frame+=0.1;
-			if(agumon->frame>=17)agumon->frame=1;
-			agumon->position.x-=2;
+			player->ent->flip.x = 1;
+			player->ent->frame+=0.1;
+			if(player->ent->frame>=player->move_end_frame)player->ent->frame=1;
+			player->ent->position.x-=3;
 			}
 		}
 		}
 		else{
-		if(grounded && !attacking)agumon->frame = 0;}
+		if(grounded && !attacking)player->ent->frame = 0;}
 		//===================GROUNDED END========================
 		
 		
 		//===================JUMPING START========================
 		if(!grounded && !landing){
 		air+=.1;
-		if(agumon->frame<17)agumon->frame=17.1;
-		if(agumon->frame<=23)agumon->frame+=.1;
+		if(player->ent->frame<player->jump_start_frame)player->ent->frame=player->jump_start_frame;
+		if(player->ent->frame<=player->jump_end_frame)player->ent->frame+=.1;
 			if(air<6){
-			agumon->position.y-=4;
+			player->ent->position.y-=4;
 			}
 			else{
 			if(air<14.1){
-			agumon->position.y+=3;
+			player->ent->position.y+=3;
 		}
 		else{
 			air = 0;
@@ -101,28 +113,28 @@ int main(int argc, char * argv[])
 		}
 	}
 	
-		if ((keys[SDL_SCANCODE_LEFT]||keys[SDL_SCANCODE_RIGHT]) && !attacking){
+		if ((keys[SDL_SCANCODE_LEFT]||keys[SDL_SCANCODE_RIGHT])){
 		if (keys[SDL_SCANCODE_RIGHT]){
-			agumon->flip.x = 0;
-			agumon->position.x+=2;
+			player->ent->flip.x = 0;
+			player->ent->position.x+=2;
 			}
 		else{
         if (keys[SDL_SCANCODE_LEFT]){
-			agumon->flip.x = 1;
-			agumon->position.x-=2;
+			player->ent->flip.x = 1;
+			player->ent->position.x-=2;
 			}
 		}
 		}
 	}
 	
 	if(landing){
-			agumon->frame = 24;
+			player->ent->frame = player->landing_frame;
 			if(recov>0){
 				recov-=.1;}
 			else{
 				grounded = 1;
 				landing = 0;
-				agumon->frame = 0;}
+				player->ent->frame = 0;}
 			}
 			//===================JUMPING END========================
 			
@@ -130,28 +142,22 @@ int main(int argc, char * argv[])
 			//===================ATTACKING START=====================
 			
 			if(attacking&&grounded){
-			if(agumon->frame<25)agumon->frame=25;
-			if(agumon->frame<35)agumon->frame+=.15;
-			if(agumon->frame>=35){
-				agumon->frame = 0;
+			if(player->ent->frame<player->ground_attack_start_frame)player->ent->frame=player->ground_attack_start_frame;
+			if(player->ent->frame<player->ground_attack_end_frame)player->ent->frame+=.15;
+			if(player->ent->frame>=player->ground_attack_end_frame){
+				player->ent->frame = 0;
 				attacking = 0;
-				fire_pos.x = agumon->position.x;
-				fire_pos.y = agumon->position.y;
-				if(fire_flip.x == 0)gf2d_entity_spawn("images/fireball.png",24,24,3,vector2d(fire_pos.x+57.5,fire_pos.y+62.5),vector2d(2.5,2.5),vector2d(2.5,0),fire_flip);
-				if(fire_flip.x == 1)gf2d_entity_spawn("images/fireball.png",24,24,3,vector2d(fire_pos.x+20,fire_pos.y+62.5),vector2d(2.5,2.5),vector2d(-2.5,0),fire_flip);
+				player->attack(player);
 				}
 			}
 			
 			if(attacking&&!grounded){
-			if(agumon->frame<37)agumon->frame=37;
-			if(agumon->frame<46)agumon->frame+=.2;
-			if(agumon->frame>=46){
-				agumon->frame = 0;
+			if(player->ent->frame<player->air_attack_start_frame)player->ent->frame=player->air_attack_start_frame;
+			if(player->ent->frame<player->air_attack_end_frame)player->ent->frame+=.2;
+			if(player->ent->frame>=player->air_attack_end_frame){
+				player->ent->frame = 0;
 				attacking = 0;
-				fire_pos.x = agumon->position.x;
-				fire_pos.y = agumon->position.y;
-				if(fire_flip.x == 0)gf2d_entity_spawn("images/fireball.png",24,24,3,vector2d(fire_pos.x+57.5,fire_pos.y+62.5),vector2d(2.5,2.5),vector2d(2.5,0),fire_flip);
-				if(fire_flip.x == 1)gf2d_entity_spawn("images/fireball.png",24,24,3,vector2d(fire_pos.x+20,fire_pos.y+62.5),vector2d(2.5,2.5),vector2d(-2.5,0),fire_flip);
+				player->air_attack(player);
 				}
 			}
 						
