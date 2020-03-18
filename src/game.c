@@ -38,10 +38,14 @@ int main(int argc, char * argv[])
     
     /*setup*/
     gf2d_entity_manager_init(100);
+    Entity *collision_test = malloc(sizeof(Entity)); 
+    collision_test = gf2d_entity_new();
     sprite = gf2d_sprite_load_image("images/backgrounds/back.png");
     mouse = gf2d_sprite_load_all("images/pointer.png",32,32,16);
     setup_player_ent(player);
     load_agumon(player);
+    gf2d_entity_load(collision_test,"images/guilmon.png",40,50,9,vector2d(850,480),vector2d(3,3));
+    collision_test->box = gf2d_box(collision_test->position,50,50,vector2d(15,60),vector2d(2.3,2.2));
     /*main game loop*/
     while(!done)
     {
@@ -79,6 +83,7 @@ int main(int argc, char * argv[])
 			player->ent->frame+=0.1;
 			if(player->ent->frame>=player->move_end_frame)player->ent->frame=1;
 			player->ent->position.x+=3;
+			player->ent->box->pos.x+=3;
 			}
 		else{
         if (keys[SDL_SCANCODE_LEFT]){
@@ -86,6 +91,7 @@ int main(int argc, char * argv[])
 			player->ent->frame+=0.1;
 			if(player->ent->frame>=player->move_end_frame)player->ent->frame=1;
 			player->ent->position.x-=3;
+			player->ent->box->pos.x-=3;
 			}
 		}
 		}
@@ -101,10 +107,12 @@ int main(int argc, char * argv[])
 		if(player->ent->frame<=player->jump_end_frame)player->ent->frame+=.1;
 			if(air<6){
 			player->ent->position.y-=4;
+			player->ent->box->pos.y-=4;
 			}
 			else{
 			if(air<14.1){
 			player->ent->position.y+=3;
+			player->ent->box->pos.y+=3;
 		}
 		else{
 			air = 0;
@@ -117,11 +125,13 @@ int main(int argc, char * argv[])
 		if (keys[SDL_SCANCODE_RIGHT]){
 			player->ent->flip.x = 0;
 			player->ent->position.x+=2;
+			player->ent->box->pos.x+=2;
 			}
 		else{
         if (keys[SDL_SCANCODE_LEFT]){
 			player->ent->flip.x = 1;
 			player->ent->position.x-=2;
+			player->ent->box->pos.x-=2;
 			}
 		}
 		}

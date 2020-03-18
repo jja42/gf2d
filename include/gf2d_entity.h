@@ -3,6 +3,7 @@
 
 #include "gf2d_sprite.h"
 #include "simple_json.h"
+#include "gf2d_shape.h"
 
 typedef enum
 {
@@ -33,6 +34,7 @@ typedef struct Entity_S
     float           duration;
     char*           name;
     float			frame;
+    Box*			box;
     void *data;                     /**<additional entity specific data*/
     
 }Entity;
@@ -89,7 +91,7 @@ void gf2d_entity_load(Entity* ent, char* filename, int width, int height, int fr
  * @brief spawn a non-specific entity
  * @param the information for the entity
  */
-void gf2d_entity_spawn(char* filename, int width, int height, int frames_per_line, Vector2D pos,Vector2D scale,Vector2D velocity,Vector2D flip);
+void gf2d_entity_spawn(char* filename, int width, int height, int frames_per_line, Vector2D pos,Vector2D scale,Vector2D velocity,Vector2D flip, Vector2D boxscale,Vector2D boxoffset);
 
 /**
  * @brief takes information from json file and intitializes the entity with that information
@@ -107,4 +109,6 @@ void gf2d_entity_update_all();
  * @param the entity to update
  */
 void gf2d_entity_update(Entity *self);
+
+void gf2d_basic_collision();
 #endif
