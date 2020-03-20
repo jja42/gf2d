@@ -73,4 +73,6 @@ void gallantmon_attack(Player* self);
 void gallantmon_air_attack(Player* self);
 void etemon_attack(Player* self);
 void etemon_air_attack(Player* self);
+void player_touch(Entity* self, Entity* other);
+void player_pickup(int tag, Player* self);
 #endif

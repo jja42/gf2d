@@ -8,7 +8,7 @@
 typedef enum
 {
     ES_Idle = 0,
-    ES_Dying = 1,
+    ES_Damaged = 1,
     ES_Dead = 2
 }EntityState;
 
@@ -22,17 +22,14 @@ typedef struct Entity_S
     Vector2D        flip;   		/**<whether the entity is flipped on any axis*/
     Vector3D        rotation;       /**<rotation of the entity*/
     Vector2D        scale;          /**<*please default to 1,1*/
-    EntityState     state;          /**<current state of the entity*/
-    void (*think) (struct Entity_S* self);   /**<function called on entity think*/
-    void (*update)(struct Entity_S* self);   /**<function called on entity update*/
     void (*touch) (struct Entity_S* self,struct Entity_S* other);   /**<function called on entity think*/
     float           health;
     float           healthmax;
-    float           armor;
+    float           owner;
     float           experience;
-    float           level;
     float           duration;
-    char*           name;
+    int             tag;			/**1 - player, 2 - experience, 3 - pickup agu 4 - pickup gabu 5 - pickup guil*/
+    char*			name;
     float			frame;
     Box*			box;
     void *data;                     /**<additional entity specific data*/
@@ -91,7 +88,7 @@ void gf2d_entity_load(Entity* ent, char* filename, int width, int height, int fr
  * @brief spawn a non-specific entity
  * @param the information for the entity
  */
-void gf2d_entity_spawn(char* filename, int width, int height, int frames_per_line, Vector2D pos,Vector2D scale,Vector2D velocity,Vector2D flip, Vector2D boxscale,Vector2D boxoffset);
+void gf2d_entity_spawn(char* filename, int width, int height, int frames_per_line, Vector2D pos,Vector2D scale,Vector2D velocity,Vector2D flip,Vector2D boxoffset, float owner);
 
 /**
  * @brief takes information from json file and intitializes the entity with that information
@@ -111,4 +108,5 @@ void gf2d_entity_update_all();
 void gf2d_entity_update(Entity *self);
 
 void gf2d_basic_collision();
+void projectile_touch(Entity* self, Entity* other);
 #endif

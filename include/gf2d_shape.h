@@ -9,9 +9,7 @@ typedef struct
 {
     Vector2D pos;
     float width,height;
-    Sprite* sprite;
     Vector2D offset;
-    Vector2D scale;
 }Box;
 
 /**
@@ -23,7 +21,7 @@ typedef struct
  * @param Ent the entity to associate with this box
  * @return a GF2D Box pointer
  */
-Box *gf2d_box(Vector2D pos, float w, float h, Vector2D offset, Vector2D scale);
+Box *gf2d_box(Vector2D pos, float w, float h, Vector2D offset);
 
 /**
  * @brief check if two boxes are overlapping

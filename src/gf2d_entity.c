@@ -4,7 +4,7 @@
 #include "simple_logger.h"
 #include "simple_json.h"
 #include "gf2d_entity.h"
-
+#include "touch.h"
 typedef struct
 {
     Entity *entity_list;
@@ -63,17 +63,6 @@ void gf2d_entity_draw(Entity *self)
         &self->flip,
         NULL,
         self->frame);
-if(self->box != NULL){
-   gf2d_sprite_draw(
-		self->box->sprite,
-		self->box->pos,
-		&self->box->scale,
-		NULL,
-		NULL,
-		NULL,
-		NULL,
-		0);
-	}
 }
 
 void gf2d_entity_draw_all()
@@ -130,7 +119,7 @@ void gf2d_entity_load(Entity *ent, char* filename, int width, int height, int fr
     ent->duration = 99;
 }
 
-void gf2d_entity_spawn(char* filename, int width, int height, int frames_per_line, Vector2D pos, Vector2D scale, Vector2D velocity,Vector2D flip,Vector2D boxscale,Vector2D boxoffset){
+void gf2d_entity_spawn(char* filename, int width, int height, int frames_per_line, Vector2D pos, Vector2D scale, Vector2D velocity,Vector2D flip,Vector2D boxoffset, float owner){
 	Entity *ent = gf2d_entity_new();
 	ent->sprite = gf2d_sprite_load_all(filename,width,height,frames_per_line);
     ent->position = pos;
@@ -138,7 +127,9 @@ void gf2d_entity_spawn(char* filename, int width, int height, int frames_per_lin
     ent->duration = 30;
     ent->flip = flip;
     ent->velocity = velocity;
-    ent->box = gf2d_box(pos,5,5,boxoffset,boxscale);
+    ent->box = gf2d_box(pos,5,5,boxoffset);
+    ent->owner = owner;
+    ent->touch = projectile_touch;
 }
 
 void gf2d_entity_update_all(){
@@ -191,9 +182,13 @@ void gf2d_entity_free(Entity *self)
 void gf2d_basic_collision(){
 for(int j = 0; j < gf2d_entity_manager.entity_max; j++){
 	for(int k = j+1; k < gf2d_entity_manager.entity_max; k++){
-		if(gf2d_entity_manager.entity_list[j]._inuse == 0 || gf2d_entity_manager.entity_list[k]._inuse == 0)continue;
+		Entity* jent = &gf2d_entity_manager.entity_list[j];
+		Entity* kent = &gf2d_entity_manager.entity_list[k];
+		if(jent->_inuse == 0 || kent->_inuse == 0)continue;
 		if(gf2d_box_overlap(gf2d_entity_manager.entity_list[j].box,gf2d_entity_manager.entity_list[k].box)){
-		slog("touching tips");}
+		jent->touch(jent,kent);
+		kent->touch(kent,jent);
+	}
 	}
 }
 }

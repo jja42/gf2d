@@ -4,6 +4,7 @@
 #include "simple_logger.h"
 #include "gf2d_entity.h"
 #include "player.h"
+#include "touch.h"
 
 int main(int argc, char * argv[])
 {
@@ -26,10 +27,10 @@ int main(int argc, char * argv[])
     slog("---==== BEGIN ====---");
     gf2d_graphics_initialize(
         "gf2d",
-        1600,
-        900,
-        1600,
-        900,
+        1200,
+        700,
+        1200,
+        700,
         vector4d(0,0,0,255),
         0);
     gf2d_graphics_set_frame_delay(16);
@@ -38,14 +39,16 @@ int main(int argc, char * argv[])
     
     /*setup*/
     gf2d_entity_manager_init(100);
-    Entity *collision_test = malloc(sizeof(Entity)); 
-    collision_test = gf2d_entity_new();
+    Entity *pickup_test = malloc(sizeof(Entity)); 
+    pickup_test = gf2d_entity_new();
     sprite = gf2d_sprite_load_image("images/backgrounds/back.png");
     mouse = gf2d_sprite_load_all("images/pointer.png",32,32,16);
     setup_player_ent(player);
     load_agumon(player);
-    gf2d_entity_load(collision_test,"images/guilmon.png",40,50,9,vector2d(850,480),vector2d(3,3));
-    collision_test->box = gf2d_box(collision_test->position,50,50,vector2d(15,60),vector2d(2.3,2.2));
+    gf2d_entity_load(pickup_test,"images/aguman_extra_life.png",19,13,1,vector2d(850,560),vector2d(3,3));
+    pickup_test->box = gf2d_box(pickup_test->position, 35, 40, vector2d(35,60));
+    pickup_test->touch = pickup_touch;
+    pickup_test->tag = 5;
     /*main game loop*/
     while(!done)
     {
