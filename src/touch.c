@@ -45,34 +45,34 @@ void enemy_drop(Entity* self){
 int drop = rand() % 10;
 switch(drop){
 
-case 0: 
+case 0: gf2d_pickup_spawn("images/exp_orb.png", 15, 15, 1, vector2d(self->position.x,self->position.y+50), vector2d(2,2),vector2d(0,0),vector2d(0,0),vector2d(14,14),14,14,2,30); 
 break;
 
-case 1: gf2d_pickup_spawn("images/exp_orb.png", 15, 15, 1, self->position, vector2d(2,2),vector2d(0,0),vector2d(0,0),vector2d(14,14),14,14,2,30);
+case 1: gf2d_pickup_spawn("images/exp_orb.png", 15, 15, 1, vector2d(self->position.x,self->position.y+50), vector2d(2,2),vector2d(0,0),vector2d(0,0),vector2d(14,14),14,14,2,30);
 break;
 
-case 2: gf2d_pickup_spawn("images/exp_orb.png", 15, 15, 1, self->position, vector2d(2,2),vector2d(0,0),vector2d(0,0),vector2d(14,14),14,14,2,30);
+case 2: gf2d_pickup_spawn("images/exp_orb.png", 15, 15, 1, vector2d(self->position.x,self->position.y+50), vector2d(2,2),vector2d(0,0),vector2d(0,0),vector2d(14,14),14,14,2,30);
 break;
 
-case 3: gf2d_pickup_spawn("images/exp_orb.png", 15, 15, 1, self->position, vector2d(2,2),vector2d(0,0),vector2d(0,0),vector2d(14,14),14,14,2,30);
+case 3: gf2d_pickup_spawn("images/exp_orb.png", 15, 15, 1, vector2d(self->position.x,self->position.y+50), vector2d(2,2),vector2d(0,0),vector2d(0,0),vector2d(14,14),14,14,2,30);
 break;
 
-case 4: gf2d_pickup_spawn("images/exp_orb.png", 15, 15, 1, self->position, vector2d(2,2),vector2d(0,0),vector2d(0,0),vector2d(14,14),14,14,2,30);
+case 4: gf2d_pickup_spawn("images/exp_orb.png", 15, 15, 1, vector2d(self->position.x,self->position.y+50), vector2d(2,2),vector2d(0,0),vector2d(0,0),vector2d(14,14),14,14,2,30);
 break;
 
-case 5: gf2d_pickup_spawn("images/exp_orb.png", 15, 15, 1, self->position, vector2d(2,2),vector2d(0,0),vector2d(0,0),vector2d(14,14),14,14,2,30);
+case 5: gf2d_pickup_spawn("images/exp_orb.png", 15, 15, 1, vector2d(self->position.x,self->position.y+50), vector2d(2,2),vector2d(0,0),vector2d(0,0),vector2d(14,14),14,14,2,30);
 break;
 
-case 6: gf2d_pickup_spawn("images/exp_orb.png", 15, 15, 1, self->position, vector2d(2,2),vector2d(0,0),vector2d(0,0),vector2d(14,14),14,14,2,30);
+case 6: gf2d_pickup_spawn("images/exp_orb.png", 15, 15, 1, vector2d(self->position.x,self->position.y+50), vector2d(2,2),vector2d(0,0),vector2d(0,0),vector2d(14,14),14,14,2,30);
 break;
 
-case 7: gf2d_pickup_spawn("images/aguman_extra_life.png", 19, 13, 1, self->position, vector2d(3,3),vector2d(0,0),vector2d(0,0),vector2d(27,18),27,18,3,30);
+case 7: gf2d_pickup_spawn("images/aguman_extra_life.png", 19, 13, 1, vector2d(self->position.x,self->position.y+50), vector2d(3,3),vector2d(0,0),vector2d(0,0),vector2d(27,18),27,18,3,30);
 break;
 
-case 8: gf2d_pickup_spawn("images/gabumon_extra_life.png", 20, 16, 1, self->position, vector2d(3,3),vector2d(0,0),vector2d(0,0),vector2d(30,24),30,24,4,30);
+case 8: gf2d_pickup_spawn("images/gabumon_extra_life.png", 20, 16, 1, vector2d(self->position.x,self->position.y+50), vector2d(3,3),vector2d(0,0),vector2d(0,0),vector2d(30,24),30,24,4,30);
 break;
 
-case 9: gf2d_pickup_spawn("images/guilmon_extra_life.png", 20, 16, 1, self->position, vector2d(3,3),vector2d(0,0),vector2d(0,0),vector2d(30,24),30,24,5,30);
+case 9: gf2d_pickup_spawn("images/guilmon_extra_life.png", 20, 16, 1, vector2d(self->position.x,self->position.y+50), vector2d(3,3),vector2d(0,0),vector2d(0,0),vector2d(30,24),30,24,5,30);
 break;
 }
 }

@@ -51,8 +51,8 @@ int main(int argc, char * argv[])
     setup_player_ent(player);
     load_agumon(player);
     gf2d_entity_load(platform_test,"images/box.png",40,40,1,vector2d(550,560),vector2d(3,3));
-    gf2d_entity_load(platform_test2,"images/box.png",40,40,1,vector2d(750,350),vector2d(3,3));
-    gf2d_entity_load(enemy_test,"images/aguman.png",48,48,11,vector2d(750,00),vector2d(3,3));
+    gf2d_entity_load(platform_test2,"images/box.png",40,40,1,vector2d(750,400),vector2d(3,3));
+    gf2d_entity_load(enemy_test,"images/aguman.png",48,48,11,vector2d(750,100),vector2d(3,3));
     platform_test->box = gf2d_box(platform_test->position, 60, 60, vector2d(60,60));
     platform_test->touch = platform_touch;
     platform_test->tag = 6;
@@ -90,6 +90,10 @@ int main(int argc, char * argv[])
 		}
         if (keys[SDL_SCANCODE_Z]&& !attacking && player->ent->gravity!=1){
 			grounded = 0;
+		}
+		if (keys[SDL_SCANCODE_D]&& !attacking && grounded && player->ent->experience >= 100){
+			player->digivolve(player);
+			player->ent->experience -= 100;
 		}
 		if(keys[SDL_SCANCODE_Z] && double_jump!= 1 && player->ent->gravity == 1){
 			double_jump = 1;

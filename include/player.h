@@ -8,6 +8,7 @@ Entity *ent;
 void (*attack) (struct Player_S* self);   
 void (*air_attack) (struct Player_S* self);
 void (*special_attack) (struct Player_S* self);
+void (*digivolve) (struct Player_S* self);
 int move_end_frame;
 int jump_start_frame;
 int jump_end_frame;

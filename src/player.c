@@ -16,6 +16,7 @@ self->ent->gravity = 1;
 }
 void load_agumon(Player* self){
 	gf2d_entity_load(self->ent,"images/aguman.png",48,48,11,self->ent->position,vector2d(3,3));
+	self->ent->frame = 0;
 	self->move_end_frame = 17;
 	self->jump_start_frame = 18;
 	self->jump_end_frame = 23;
@@ -28,10 +29,12 @@ void load_agumon(Player* self){
 	self->attack = agumon_attack;
 	self->air_attack = agumon_attack;
 	self->ent->box = gf2d_box(self->ent->position, 30, 39, vector2d(72,105));
+	self->digivolve = load_wargreymon;
 }
 
 void load_guilmon(Player* self){
 	gf2d_entity_load(self->ent,"images/guilmon.png",40,50,9,self->ent->position,vector2d(3,3));
+	self->ent->frame = 0;
 	self->move_end_frame = 7;
 	self->jump_start_frame = 8;
 	self->jump_end_frame = 15;
@@ -44,10 +47,12 @@ void load_guilmon(Player* self){
 	self->attack = guilmon_attack;
 	self->air_attack = guilmon_air_attack;
 	self->ent->box = gf2d_box(self->ent->position,35,40,vector2d(35,60));
+	self->digivolve = load_gallantmon;
 }
 
 void load_gabumon(Player* self){
 	gf2d_entity_load(self->ent,"images/gabumon.png",82,48,7,self->ent->position,vector2d(3,3));
+	self->ent->frame = 0;
 	self->move_end_frame = 9;
 	self->jump_start_frame = 10;
 	self->jump_end_frame = 15;
@@ -59,10 +64,12 @@ void load_gabumon(Player* self){
 	self->damaged_frame = 40;
 	self->attack = gabumon_attack;
 	self->air_attack = gabumon_air_attack;
+	self->digivolve = load_etemon;
 }
 
 void load_wargreymon(Player* self){
 	gf2d_entity_load(self->ent,"images/greymon_beta.png",64,64,8,self->ent->position,vector2d(3,3));
+	self->ent->frame = 0;
 	self->move_end_frame = 8;
 	self->jump_start_frame = 9;
 	self->jump_end_frame = 15;
@@ -78,6 +85,7 @@ void load_wargreymon(Player* self){
 
 void load_gallantmon(Player* self){
 	gf2d_entity_load(self->ent,"images/gallantmon_beta.png",100,80,8,self->ent->position,vector2d(3,3));
+	self->ent->frame = 0;
 	self->move_end_frame = 8;
 	self->jump_start_frame = 9;
 	self->jump_end_frame = 17;
@@ -92,6 +100,7 @@ void load_gallantmon(Player* self){
 
 void load_etemon(Player* self){
 	gf2d_entity_load(self->ent,"images/etemon_beta.png",64,64,8,self->ent->position,vector2d(3,3));
+	self->ent->frame = 0;
 	self->move_end_frame = 8;
 	self->jump_start_frame = 10;
 	self->jump_end_frame = 20;
@@ -148,7 +157,7 @@ void etemon_air_attack(Player* self){
 void player_pickup(int tag, Player *self){
 switch(tag){
 
-case 2: self->ent->experience += 10;
+case 2: self->ent->experience += 100;
 slog("%f",self->ent->experience);
 break;
 
