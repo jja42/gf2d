@@ -13,6 +13,8 @@ self->ent->tag = 1;
 self->ent->experience = 0;
 self->ent->data = self;
 self->ent->gravity = 1;
+self->digi_timer = 0;
+self->digivolved = 0;
 }
 void load_agumon(Player* self){
 	gf2d_entity_load(self->ent,"images/aguman.png",48,48,11,self->ent->position,vector2d(3,3));
@@ -30,9 +32,11 @@ void load_agumon(Player* self){
 	self->air_attack = agumon_attack;
 	self->ent->box = gf2d_box(self->ent->position, 30, 39, vector2d(72,105));
 	self->digivolve = load_wargreymon;
+	self->digivolved = 0;
 }
 
 void load_guilmon(Player* self){
+	self->ent->position.y -= 10;
 	gf2d_entity_load(self->ent,"images/guilmon.png",40,50,9,self->ent->position,vector2d(3,3));
 	self->ent->frame = 0;
 	self->move_end_frame = 7;
@@ -46,8 +50,9 @@ void load_guilmon(Player* self){
 	self->damaged_frame = 41;
 	self->attack = guilmon_attack;
 	self->air_attack = guilmon_air_attack;
-	self->ent->box = gf2d_box(self->ent->position,35,40,vector2d(35,60));
+	self->ent->box = gf2d_box(self->ent->position,39,45,vector2d(63,105));
 	self->digivolve = load_gallantmon;
+	self->digivolved = 0;
 }
 
 void load_gabumon(Player* self){
@@ -64,10 +69,13 @@ void load_gabumon(Player* self){
 	self->damaged_frame = 40;
 	self->attack = gabumon_attack;
 	self->air_attack = gabumon_air_attack;
+	self->ent->box = gf2d_box(self->ent->position,36,42,vector2d(72,102));
 	self->digivolve = load_etemon;
+	self->digivolved = 0;
 }
 
 void load_wargreymon(Player* self){
+	self->ent->position.y -= 50;
 	gf2d_entity_load(self->ent,"images/greymon_beta.png",64,64,8,self->ent->position,vector2d(3,3));
 	self->ent->frame = 0;
 	self->move_end_frame = 8;
@@ -80,10 +88,15 @@ void load_wargreymon(Player* self){
 	self->air_attack_end_frame = 33;
 	self->attack = wargreymon_attack;
 	self->air_attack = wargreymon_air_attack;
-	self->ent->box = gf2d_box(self->ent->position,50,50,vector2d(15,30));
+	self->ent->box = gf2d_box(self->ent->position,54,66,vector2d(87,102));
+	self->digi_timer = SDL_GetTicks() + 30000;
+	self->digivolved = 1;
+	self->dedigivolve = load_agumon;
 }
 
 void load_gallantmon(Player* self){
+	self->ent->position.y -= 70;
+	self->ent->position.x -= 50;
 	gf2d_entity_load(self->ent,"images/gallantmon_beta.png",100,80,8,self->ent->position,vector2d(3,3));
 	self->ent->frame = 0;
 	self->move_end_frame = 8;
@@ -96,9 +109,15 @@ void load_gallantmon(Player* self){
 	self->air_attack_end_frame = 34;
 	self->attack = gallantmon_attack;
 	self->air_attack = gallantmon_air_attack;
+	self->ent->box = gf2d_box(self->ent->position,54,75,vector2d(144,141));
+	self->digi_timer = SDL_GetTicks() + 30000;
+	self->digivolved = 1;
+	self->dedigivolve = load_guilmon;
 }
 
 void load_etemon(Player* self){
+	self->ent->position.y -= 50;
+	self->ent->position.x -= 10;
 	gf2d_entity_load(self->ent,"images/etemon_beta.png",64,64,8,self->ent->position,vector2d(3,3));
 	self->ent->frame = 0;
 	self->move_end_frame = 8;
@@ -111,6 +130,10 @@ void load_etemon(Player* self){
 	self->air_attack_end_frame = 39;
 	self->attack = etemon_attack;
 	self->air_attack = etemon_air_attack;
+	self->ent->box = gf2d_box(self->ent->position,48,72,vector2d(99,99));
+	self->digi_timer = SDL_GetTicks() + 30000;
+	self->digivolved = 1;
+	self->dedigivolve = load_gabumon;
 }
 
 void agumon_attack(Player* self){

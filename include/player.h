@@ -19,6 +19,8 @@ int air_attack_start_frame;
 int air_attack_end_frame;
 int damaged_frame;
 int digivolved;
+float digi_timer;
+void (*dedigivolve) (struct Player_S* self);
 }Player;
 
 /**

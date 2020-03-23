@@ -5,6 +5,7 @@
 #include "gf2d_entity.h"
 #include "player.h"
 #include "touch.h"
+#include "menu.h"
 
 int main(int argc, char * argv[])
 {
@@ -16,11 +17,18 @@ int main(int argc, char * argv[])
     Uint8 attacking = 0;
     Uint8 double_jump = 0;
     Sprite *background;
+    Sprite *select_screen;
+    Sprite *title_screen;
+    Uint8 paused = 0;
     
     int mx,my;
     float recov = 0;
     float air = 0;
     float mf = 0;
+    float change_timer = 0;
+    float current_time = 0;
+    float pause_timer = 0;
+    float jump_timer = 0;
     Sprite *mouse;
     Player *player = malloc(sizeof(Player));
     /*program initializtion*/
@@ -28,10 +36,10 @@ int main(int argc, char * argv[])
     slog("---==== BEGIN ====---");
     gf2d_graphics_initialize(
         "gf2d",
-        1200,
-        700,
-        1200,
-        700,
+        1600,
+        900,
+        1600,
+        900,
         vector4d(0,0,0,255),
         0);
     gf2d_graphics_set_frame_delay(16);
@@ -40,6 +48,7 @@ int main(int argc, char * argv[])
     
     /*setup*/
     gf2d_entity_manager_init(100);
+    menu_manager_init(10);
     Entity *platform_test = malloc(sizeof(Entity)); 
     platform_test = gf2d_entity_new();
     Entity *platform_test2 = malloc(sizeof(Entity)); 
@@ -47,6 +56,8 @@ int main(int argc, char * argv[])
     Entity *enemy_test = malloc(sizeof(Entity)); 
     enemy_test = gf2d_entity_new();
     background = gf2d_sprite_load_image("images/backgrounds/sky_back.png");
+    select_screen = gf2d_sprite_load_image("images/backgrounds/selectmenu.png");
+    title_screen = gf2d_sprite_load_image("images/backgrounds/titlescreen.png");
     mouse = gf2d_sprite_load_all("images/pointer.png",32,32,16);
     setup_player_ent(player);
     load_agumon(player);
@@ -64,40 +75,54 @@ int main(int argc, char * argv[])
     enemy_test->health = 50;
     enemy_test->tag = 8;
     /*main game loop*/
-    while(!done)
+    while(!done|| get_menu_state() == MS_Exit)
     {
         SDL_PumpEvents();   // update SDL's internal event structures
         keys = SDL_GetKeyboardState(NULL); // get the keyboard state for this frame
         /*update things here*/
         //===================GROUNDED START========================
+        if(!paused && get_menu_state() == MS_None){
+		current_time = SDL_GetTicks();
+		if(player->digivolved == 1){
+			if (current_time > player->digi_timer){
+				player->dedigivolve(player);}}
         if(keys[SDL_SCANCODE_1] && grounded && !attacking){
-        load_agumon(player);
+        if(current_time > change_timer){load_agumon(player);
+        change_timer = SDL_GetTicks() + 500;}
 		}
 		if(keys[SDL_SCANCODE_2] && grounded && !attacking){
-        load_guilmon(player);
+        if(current_time > change_timer){load_guilmon(player);
+        change_timer = SDL_GetTicks() + 500;}
 		}
 		if(keys[SDL_SCANCODE_3] && grounded && !attacking){
-        load_gabumon(player);
+        if(current_time > change_timer){load_gabumon(player);
+        change_timer = SDL_GetTicks() + 500;}
 		}
 		if(keys[SDL_SCANCODE_4] && grounded && !attacking){
-        load_wargreymon(player);
+        if(current_time > change_timer){load_wargreymon(player);
+        change_timer = SDL_GetTicks() + 500;}
 		}
 		if(keys[SDL_SCANCODE_5] && grounded && !attacking){
-        load_gallantmon(player);
+        if(current_time > change_timer){load_gallantmon(player);
+        change_timer = SDL_GetTicks() + 500;}
 		}
 		if(keys[SDL_SCANCODE_6] && grounded && !attacking){
-        load_etemon(player);
+        if(current_time > change_timer){load_etemon(player);
+        change_timer = SDL_GetTicks() + 500;}
 		}
-        if (keys[SDL_SCANCODE_Z]&& !attacking && player->ent->gravity!=1){
+        if (keys[SDL_SCANCODE_Z]&& !attacking && grounded){
 			grounded = 0;
+			jump_timer = current_time + 200;
 		}
 		if (keys[SDL_SCANCODE_D]&& !attacking && grounded && player->ent->experience >= 100){
 			player->digivolve(player);
 			player->ent->experience -= 100;
 		}
-		if(keys[SDL_SCANCODE_Z] && double_jump!= 1 && player->ent->gravity == 1){
+		if(keys[SDL_SCANCODE_Z] && double_jump != 1 && current_time > jump_timer){
+			slog("stuff");
 			double_jump = 1;
-		}
+			air = 0;
+			}
 		if (keys[SDL_SCANCODE_X]&& !attacking){
 			attacking = 1;
 		}
@@ -188,9 +213,6 @@ int main(int argc, char * argv[])
 			//===================ATTACKING END========================
 			
 			
-        SDL_GetMouseState(&mx,&my);
-        mf+=0.1;
-        if (mf >= 16.0)mf = 0;
         
         gf2d_graphics_clear_screen();// clears drawing buffers
         // all drawing should happen betweem clear_screen and next_frame
@@ -200,8 +222,25 @@ int main(int argc, char * argv[])
             gf2d_entity_draw_all();
             gf2d_entity_update_all();
             
-            //UI elements last
-            /*gf2d_sprite_draw(
+                
+        gf2d_grahics_next_frame();// render current draw frame and skip to the next frame
+         // exit condition
+        //slog("Rendering at %f FPS",gf2d_graphics_get_frames_per_second());
+	}
+		if (keys[SDL_SCANCODE_P]){
+			current_time = SDL_GetTicks();
+			if(paused == 0 && current_time > pause_timer){ 
+				paused = 1;
+				pause_timer = SDL_GetTicks() + 500;}
+			if(paused == 1 && current_time > pause_timer){
+				 paused = 0;
+				 pause_timer = SDL_GetTicks() + 500;}
+		}
+	 if(get_menu_state() == MS_SelectScreen){gf2d_sprite_draw_image(select_screen,vector2d(0,0),vector2d(2.5,2.6));
+		 SDL_GetMouseState(&mx,&my);
+        mf+=0.1;
+        if (mf >= 16.0)mf = 0;
+		 gf2d_sprite_draw(
                 mouse,
                 vector2d(mx,my),
                 NULL,
@@ -209,14 +248,26 @@ int main(int argc, char * argv[])
                 NULL,
                 NULL,
                 NULL,
-                (int)mf);*/
-                
-                
-        gf2d_grahics_next_frame();// render current draw frame and skip to the next frame
-        
-        if (keys[SDL_SCANCODE_ESCAPE])done = 1; // exit condition
-        //slog("Rendering at %f FPS",gf2d_graphics_get_frames_per_second());
-    }
+                (int)mf);
+	 gf2d_grahics_next_frame();}
+	 if(get_menu_state() == MS_TitleScreen){
+		gf2d_sprite_draw_image(title_screen,vector2d(0,0),vector2d(1,1));
+		SDL_GetMouseState(&mx,&my);
+        mf+=0.1;
+        if (mf >= 16.0)mf = 0;
+		 gf2d_sprite_draw(
+                mouse,
+                vector2d(mx,my),
+                NULL,
+                NULL,
+                NULL,
+                NULL,
+                NULL,
+                (int)mf);
+                gf2d_grahics_next_frame();}
+	 if (keys[SDL_SCANCODE_ESCAPE])done = 1;
+}
+	
     slog("---==== END ====---");
     return 0;
 }

@@ -27,7 +27,7 @@ void player_touch(Entity* self, Entity* other){
 
 void platform_touch(Entity* self, Entity* other){
 	//check if low enough                                                             //check if high enough
-if((self->box->pos.y - self->box->height <= other->box->pos.y+other->box->height) && (other->box->pos.y+other->box->height <= self->box->pos.y - self->box->height + 1.0))other->gravity = 0;
+if((self->box->pos.y - self->box->height <= other->box->pos.y+other->box->height) && (other->box->pos.y+other->box->height <= self->box->pos.y - self->box->height + 3.0))other->gravity = 0;
 else {
 	if((self->box->pos.x - self->box->width <= other->box->pos.x + other->box->width) && (self->box->pos.x + self->box->width > other->box->pos.x + other->box->width)) solid_collision(other,0);
 	else{solid_collision(other,1);}
