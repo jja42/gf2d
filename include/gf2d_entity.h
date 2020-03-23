@@ -22,16 +22,18 @@ typedef struct Entity_S
     Vector2D        flip;   		/**<whether the entity is flipped on any axis*/
     Vector3D        rotation;       /**<rotation of the entity*/
     Vector2D        scale;          /**<*please default to 1,1*/
-    void (*touch) (struct Entity_S* self,struct Entity_S* other);   /**<function called on entity think*/
+    void (*touch) (struct Entity_S* self,struct Entity_S* other);
     float           health;
     float           healthmax;
     float           owner;
     float           experience;
     float           duration;
-    int             tag;			/**1 - player, 2 - experience, 3 - pickup agu 4 - pickup gabu 5 - pickup guil*/
+    int             tag;			/**1 - player, 2 - experience, 3 - pickup agu 4 - pickup gabu 5 - pickup guil 6 - platform 7 - projectile 8 - enemy*/
     char*			name;
     float			frame;
     Box*			box;
+    int				gravity;
+    int				colliding;
     void *data;                     /**<additional entity specific data*/
     
 }Entity;
@@ -85,10 +87,16 @@ Entity *gf2d_entity_get(int index);
 void gf2d_entity_load(Entity* ent, char* filename, int width, int height, int frames_per_line, Vector2D pos,Vector2D scale);
 
 /**
- * @brief spawn a non-specific entity
+ * @brief spawn a non-specific pickup entity
  * @param the information for the entity
  */
-void gf2d_entity_spawn(char* filename, int width, int height, int frames_per_line, Vector2D pos,Vector2D scale,Vector2D velocity,Vector2D flip,Vector2D boxoffset, float owner);
+void gf2d_pickup_spawn(char* filename, int width, int height, int frames_per_line, Vector2D pos,Vector2D scale,Vector2D velocity,Vector2D flip,Vector2D boxoffset, int boxw, int boxh, int tag, int duration);
+
+/**
+ * @brief spawn a non-specific projectile entity
+ * @param the information for the entity
+ */
+void gf2d_projectile_spawn(char* filename, int width, int height, int frames_per_line, Vector2D pos,Vector2D scale,Vector2D velocity,Vector2D flip,Vector2D boxoffset, int boxw, int boxh, float owner, int duration);
 
 /**
  * @brief takes information from json file and intitializes the entity with that information

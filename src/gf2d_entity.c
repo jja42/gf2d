@@ -119,17 +119,31 @@ void gf2d_entity_load(Entity *ent, char* filename, int width, int height, int fr
     ent->duration = 99;
 }
 
-void gf2d_entity_spawn(char* filename, int width, int height, int frames_per_line, Vector2D pos, Vector2D scale, Vector2D velocity,Vector2D flip,Vector2D boxoffset, float owner){
+void gf2d_pickup_spawn(char* filename, int width, int height, int frames_per_line, Vector2D pos, Vector2D scale, Vector2D velocity,Vector2D flip,Vector2D boxoffset, int boxw, int boxh, int tag, int duration){
+Entity *ent = gf2d_entity_new();
+	ent->sprite = gf2d_sprite_load_all(filename,width,height,frames_per_line);
+    ent->position = pos;
+    ent->scale = scale;
+    ent->duration = duration;
+    ent->flip = flip;
+    ent->velocity = velocity;
+    ent->box = gf2d_box(pos,boxw,boxh,boxoffset);
+    ent->touch = pickup_touch;
+    ent->tag = tag;
+}
+
+void gf2d_projectile_spawn(char* filename, int width, int height, int frames_per_line, Vector2D pos, Vector2D scale, Vector2D velocity,Vector2D flip,Vector2D boxoffset, int boxw, int boxh, float owner, int duration){
 	Entity *ent = gf2d_entity_new();
 	ent->sprite = gf2d_sprite_load_all(filename,width,height,frames_per_line);
     ent->position = pos;
     ent->scale = scale;
-    ent->duration = 30;
+    ent->duration = duration;
     ent->flip = flip;
     ent->velocity = velocity;
-    ent->box = gf2d_box(pos,5,5,boxoffset);
+    ent->box = gf2d_box(pos,boxw,boxh,boxoffset);
     ent->owner = owner;
     ent->touch = projectile_touch;
+    ent->tag = 7;
 }
 
 void gf2d_entity_update_all(){
@@ -143,12 +157,20 @@ void gf2d_entity_update_all(){
 }
 
 void gf2d_entity_update(Entity *self){
+	if(self->colliding == 1){self->velocity = vector2d(-.1,0);}
+	if(self->colliding == 2){self->velocity = vector2d(.1,0);}
+	if(self->gravity == 1)self->velocity.y += 3;
 	vector2d_set(self->position,self->position.x+ self->velocity.x,self->position.y + self->velocity.y);
 	gf2d_box_update(self->box,self->position);
+	if(self->tag != 7)self->velocity = vector2d(0,0);
 	if(self->duration<99){self->duration-=.1;
 		self->frame+=.1;
 		if(self->frame>=3)self->frame =0;}
 	if(self->duration<0)gf2d_entity_free(self);
+	if(self->tag == 1 || self->tag == 8){
+		self->gravity = 1;
+		self->colliding = 0;
+	}
 }
 int gf2d_entity_max(){
     if (gf2d_entity_manager.entity_max){

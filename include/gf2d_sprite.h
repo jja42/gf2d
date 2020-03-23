@@ -32,8 +32,9 @@ Sprite *gf2d_sprite_load_image(char *filename);
  * @brief draw a simple image to screen at the position provided
  * @param image the sprite image to draw
  * @param position the x and y position to draw the image at (top left corner)
+ * @param scale the scale for the image
  */
-void gf2d_sprite_draw_image(Sprite *image,Vector2D position);
+void gf2d_sprite_draw_image(Sprite *image,Vector2D position, Vector2D scale);
 
 /**
  * @brief loads a sprite from file using the sprite system

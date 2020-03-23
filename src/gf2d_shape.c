@@ -20,8 +20,8 @@ void gf2d_box_update(Box *r,Vector2D pos){
 
 Uint8 gf2d_box_overlap(Box *a,Box *b)
 {
-    if ((a->pos.x +a->width >= b->pos.x-b->width)&&(a->pos.x -a->width <= b->pos.x+b->width)&&
-        (a->pos.y +a->height >= b->pos.y-b->height)&&(a->pos.y -a->height <= b->pos.y+b->height))
+    if ((a->pos.x +a->width >= b->pos.x - b->width)&&(a->pos.x -a->width <= b->pos.x + b->width)&&
+        (a->pos.y + a->height >= b->pos.y - b->height)&&(a->pos.y -a->height <= b->pos.y +b->height))
     {
         return 1;
     }

@@ -186,12 +186,12 @@ Sprite *gf2d_sprite_load_all(
     return sprite;
 }
 
-void gf2d_sprite_draw_image(Sprite *image,Vector2D position)
+void gf2d_sprite_draw_image(Sprite *image,Vector2D position,Vector2D scale)
 {
     gf2d_sprite_draw(
         image,
         position,
-        NULL,
+        &scale,
         NULL,
         NULL,
         NULL,

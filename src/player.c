@@ -1,9 +1,10 @@
 #include "player.h"
 #include "touch.h"
+#include "simple_logger.h"
 
 void setup_player_ent(Player* self){
 self->ent = gf2d_entity_new();
-self->ent->position = vector2d(550,480);
+self->ent->position = vector2d(550,200);
 self->ent->touch = player_touch;
 self->ent->healthmax = 100;
 self->ent->health = 100;
@@ -11,6 +12,7 @@ self->ent->owner = 1;
 self->ent->tag = 1;
 self->ent->experience = 0;
 self->ent->data = self;
+self->ent->gravity = 1;
 }
 void load_agumon(Player* self){
 	gf2d_entity_load(self->ent,"images/aguman.png",48,48,11,self->ent->position,vector2d(3,3));
@@ -25,7 +27,7 @@ void load_agumon(Player* self){
 	self->damaged_frame = 46;
 	self->attack = agumon_attack;
 	self->air_attack = agumon_attack;
-	self->ent->box = gf2d_box(self->ent->position, 35, 40, vector2d(35,60));
+	self->ent->box = gf2d_box(self->ent->position, 30, 39, vector2d(72,105));
 }
 
 void load_guilmon(Player* self){
@@ -103,8 +105,8 @@ void load_etemon(Player* self){
 }
 
 void agumon_attack(Player* self){
-if(self->ent->flip.x == 0)gf2d_entity_spawn("images/fireball.png",24,24,3,vector2d(self->ent->position.x+57.5,self->ent->position.y+62.5),vector2d(2.5,2.5),vector2d(2.5,0),self->ent->flip,vector2d(17,10),1);
-if(self->ent->flip.x == 1)gf2d_entity_spawn("images/fireball.png",24,24,3,vector2d(self->ent->position.x+20,self->ent->position.y+62.5),vector2d(2.5,2.5),vector2d(-2.5,0),self->ent->flip,vector2d(0,10),1);
+if(self->ent->flip.x == 0)gf2d_projectile_spawn("images/fireball.png",24,24,3,vector2d(self->ent->position.x+57.5,self->ent->position.y+62.5),vector2d(2.5,2.5),vector2d(2.5,0),self->ent->flip,vector2d(40,32.5),20,20,1,30);
+if(self->ent->flip.x == 1)gf2d_projectile_spawn("images/fireball.png",24,24,3,vector2d(self->ent->position.x+20,self->ent->position.y+62.5),vector2d(2.5,2.5),vector2d(-2.5,0),self->ent->flip,vector2d(40,32.5),20,20,1,30);
 }
 
 void gabumon_attack(Player* self){
@@ -113,31 +115,31 @@ void gabumon_air_attack(Player* self){
 }
 
 void guilmon_attack(Player* self){
-	if(self->ent->flip.x == 0)gf2d_entity_spawn("images/guilmon_ranged_attack.png",16,16,3,vector2d(self->ent->position.x+57.5,self->ent->position.y+70),vector2d(3.5,3.5),vector2d(4,0),self->ent->flip,vector2d(2,5),1);
-	if(self->ent->flip.x == 1)gf2d_entity_spawn("images/guilmon_ranged_attack.png",16,16,3,vector2d(self->ent->position.x+20,self->ent->position.y+70),vector2d(3.5,3.5),vector2d(-4,0),self->ent->flip,vector2d(0,5),1);
+	//if(self->ent->flip.x == 0)gf2d_entity_spawn("images/guilmon_ranged_attack.png",16,16,3,vector2d(self->ent->position.x+57.5,self->ent->position.y+70),vector2d(3.5,3.5),vector2d(4,0),self->ent->flip,vector2d(2,5),1);
+	//if(self->ent->flip.x == 1)gf2d_entity_spawn("images/guilmon_ranged_attack.png",16,16,3,vector2d(self->ent->position.x+20,self->ent->position.y+70),vector2d(3.5,3.5),vector2d(-4,0),self->ent->flip,vector2d(0,5),1);
 }
 void guilmon_air_attack(Player* self){
 }
 
 void wargreymon_attack(Player* self){
-	if(self->ent->flip.x == 0)gf2d_entity_spawn("images/greymon_ranged_attack.png",24,28,3,vector2d(self->ent->position.x+65,self->ent->position.y+30),vector2d(4,4),vector2d(3,0),self->ent->flip,vector2d(1,1),1);
-	if(self->ent->flip.x == 1)gf2d_entity_spawn("images/greymon_ranged_attack.png",24,28,3,vector2d(self->ent->position.x+20,self->ent->position.y+30),vector2d(4,4),vector2d(-3,0),self->ent->flip,vector2d(1,1),1);
+	//if(self->ent->flip.x == 0)gf2d_entity_spawn("images/greymon_ranged_attack.png",24,28,3,vector2d(self->ent->position.x+65,self->ent->position.y+30),vector2d(4,4),vector2d(3,0),self->ent->flip,vector2d(1,1),1);
+	//if(self->ent->flip.x == 1)gf2d_entity_spawn("images/greymon_ranged_attack.png",24,28,3,vector2d(self->ent->position.x+20,self->ent->position.y+30),vector2d(4,4),vector2d(-3,0),self->ent->flip,vector2d(1,1),1);
 }
 
 void wargreymon_air_attack(Player* self){
 }
 
 void gallantmon_attack(Player* self){
-	if(self->ent->flip.x == 0)gf2d_entity_spawn("images/gallantmon_ranged_attack.png",24,24,3,vector2d(self->ent->position.x+220,self->ent->position.y+100),vector2d(3,3),vector2d(3,0),self->ent->flip,vector2d(1,1),1);
-	if(self->ent->flip.x == 1)gf2d_entity_spawn("images/gallantmon_ranged_attack.png",24,24,3,vector2d(self->ent->position.x,self->ent->position.y+100),vector2d(3,3),vector2d(-3,0),self->ent->flip,vector2d(1,1),1);
+	//if(self->ent->flip.x == 0)gf2d_entity_spawn("images/gallantmon_ranged_attack.png",24,24,3,vector2d(self->ent->position.x+220,self->ent->position.y+100),vector2d(3,3),vector2d(3,0),self->ent->flip,vector2d(1,1),1);
+	//if(self->ent->flip.x == 1)gf2d_entity_spawn("images/gallantmon_ranged_attack.png",24,24,3,vector2d(self->ent->position.x,self->ent->position.y+100),vector2d(3,3),vector2d(-3,0),self->ent->flip,vector2d(1,1),1);
 }
 
 void gallantmon_air_attack(Player* self){
 }
 
 void etemon_attack(Player* self){
-	if(self->ent->flip.x == 0)gf2d_entity_spawn("images/etemon_ranged_attack.png",24,24,3,vector2d(self->ent->position.x+100,self->ent->position.y+30),vector2d(3,3),vector2d(3,0),self->ent->flip,vector2d(1,1),1);
-	if(self->ent->flip.x == 1)gf2d_entity_spawn("images/etemon_ranged_attack.png",24,24,3,vector2d(self->ent->position.x,self->ent->position.y+30),vector2d(3,3),vector2d(-3,0),self->ent->flip,vector2d(1,1),1);
+	//if(self->ent->flip.x == 0)gf2d_entity_spawn("images/etemon_ranged_attack.png",24,24,3,vector2d(self->ent->position.x+100,self->ent->position.y+30),vector2d(3,3),vector2d(3,0),self->ent->flip,vector2d(1,1),1);
+	//if(self->ent->flip.x == 1)gf2d_entity_spawn("images/etemon_ranged_attack.png",24,24,3,vector2d(self->ent->position.x,self->ent->position.y+30),vector2d(3,3),vector2d(-3,0),self->ent->flip,vector2d(1,1),1);
 }
 
 void etemon_air_attack(Player* self){
@@ -146,7 +148,8 @@ void etemon_air_attack(Player* self){
 void player_pickup(int tag, Player *self){
 switch(tag){
 
-case 2: 
+case 2: self->ent->experience += 10;
+slog("%f",self->ent->experience);
 break;
 
 case 3: load_agumon(self);

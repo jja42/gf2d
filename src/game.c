@@ -14,7 +14,8 @@ int main(int argc, char * argv[])
     Uint8 grounded = 1;
     Uint8 landing = 0;
     Uint8 attacking = 0;
-    Sprite *sprite;
+    Uint8 double_jump = 0;
+    Sprite *background;
     
     int mx,my;
     float recov = 0;
@@ -39,16 +40,29 @@ int main(int argc, char * argv[])
     
     /*setup*/
     gf2d_entity_manager_init(100);
-    Entity *pickup_test = malloc(sizeof(Entity)); 
-    pickup_test = gf2d_entity_new();
-    sprite = gf2d_sprite_load_image("images/backgrounds/back.png");
+    Entity *platform_test = malloc(sizeof(Entity)); 
+    platform_test = gf2d_entity_new();
+    Entity *platform_test2 = malloc(sizeof(Entity)); 
+    platform_test2 = gf2d_entity_new();
+    Entity *enemy_test = malloc(sizeof(Entity)); 
+    enemy_test = gf2d_entity_new();
+    background = gf2d_sprite_load_image("images/backgrounds/sky_back.png");
     mouse = gf2d_sprite_load_all("images/pointer.png",32,32,16);
     setup_player_ent(player);
     load_agumon(player);
-    gf2d_entity_load(pickup_test,"images/aguman_extra_life.png",19,13,1,vector2d(850,560),vector2d(3,3));
-    pickup_test->box = gf2d_box(pickup_test->position, 35, 40, vector2d(35,60));
-    pickup_test->touch = pickup_touch;
-    pickup_test->tag = 5;
+    gf2d_entity_load(platform_test,"images/box.png",40,40,1,vector2d(550,560),vector2d(3,3));
+    gf2d_entity_load(platform_test2,"images/box.png",40,40,1,vector2d(750,350),vector2d(3,3));
+    gf2d_entity_load(enemy_test,"images/aguman.png",48,48,11,vector2d(750,00),vector2d(3,3));
+    platform_test->box = gf2d_box(platform_test->position, 60, 60, vector2d(60,60));
+    platform_test->touch = platform_touch;
+    platform_test->tag = 6;
+    platform_test2->box = gf2d_box(platform_test2->position, 60, 60, vector2d(60,60));
+    platform_test2->touch = platform_touch;
+    platform_test2->tag = 6;
+    enemy_test->touch = player_touch;
+    enemy_test->box = gf2d_box(enemy_test->position, 30, 39, vector2d(72,105));
+    enemy_test->health = 50;
+    enemy_test->tag = 8;
     /*main game loop*/
     while(!done)
     {
@@ -74,8 +88,11 @@ int main(int argc, char * argv[])
 		if(keys[SDL_SCANCODE_6] && grounded && !attacking){
         load_etemon(player);
 		}
-        if (keys[SDL_SCANCODE_Z]&& !attacking){
+        if (keys[SDL_SCANCODE_Z]&& !attacking && player->ent->gravity!=1){
 			grounded = 0;
+		}
+		if(keys[SDL_SCANCODE_Z] && double_jump!= 1 && player->ent->gravity == 1){
+			double_jump = 1;
 		}
 		if (keys[SDL_SCANCODE_X]&& !attacking){
 			attacking = 1;
@@ -85,16 +102,14 @@ int main(int argc, char * argv[])
 			player->ent->flip.x = 0;
 			player->ent->frame+=0.1;
 			if(player->ent->frame>=player->move_end_frame)player->ent->frame=1;
-			player->ent->position.x+=3;
-			player->ent->box->pos.x+=3;
+			player->ent->velocity.x=3;
 			}
 		else{
         if (keys[SDL_SCANCODE_LEFT]){
 			player->ent->flip.x = 1;
 			player->ent->frame+=0.1;
 			if(player->ent->frame>=player->move_end_frame)player->ent->frame=1;
-			player->ent->position.x-=3;
-			player->ent->box->pos.x-=3;
+			player->ent->velocity.x=-3;
 			}
 		}
 		}
@@ -109,32 +124,23 @@ int main(int argc, char * argv[])
 		if(player->ent->frame<player->jump_start_frame)player->ent->frame=player->jump_start_frame;
 		if(player->ent->frame<=player->jump_end_frame)player->ent->frame+=.1;
 			if(air<6){
-			player->ent->position.y-=4;
-			player->ent->box->pos.y-=4;
+			player->ent->velocity.y=-7;
 			}
-			else{
-			if(air<14.1){
-			player->ent->position.y+=3;
-			player->ent->box->pos.y+=3;
-		}
-		else{
+		else{if(player->ent->gravity == 0){
 			air = 0;
 			landing = 1;
 			recov = 1;
-		}
-	}
+		}}
 	
 		if ((keys[SDL_SCANCODE_LEFT]||keys[SDL_SCANCODE_RIGHT])){
 		if (keys[SDL_SCANCODE_RIGHT]){
 			player->ent->flip.x = 0;
-			player->ent->position.x+=2;
-			player->ent->box->pos.x+=2;
+			player->ent->velocity.x=2;
 			}
 		else{
         if (keys[SDL_SCANCODE_LEFT]){
 			player->ent->flip.x = 1;
-			player->ent->position.x-=2;
-			player->ent->box->pos.x-=2;
+			player->ent->velocity.x=-2;
 			}
 		}
 		}
@@ -147,6 +153,7 @@ int main(int argc, char * argv[])
 			else{
 				grounded = 1;
 				landing = 0;
+				double_jump = 0;
 				player->ent->frame = 0;}
 			}
 			//===================JUMPING END========================
@@ -184,13 +191,13 @@ int main(int argc, char * argv[])
         gf2d_graphics_clear_screen();// clears drawing buffers
         // all drawing should happen betweem clear_screen and next_frame
             //backgrounds drawn first
-            gf2d_sprite_draw_image(sprite,vector2d(0,0));
+            gf2d_sprite_draw_image(background,vector2d(0,0),vector2d(10,10));
             
             gf2d_entity_draw_all();
             gf2d_entity_update_all();
             
             //UI elements last
-            gf2d_sprite_draw(
+            /*gf2d_sprite_draw(
                 mouse,
                 vector2d(mx,my),
                 NULL,
@@ -198,7 +205,7 @@ int main(int argc, char * argv[])
                 NULL,
                 NULL,
                 NULL,
-                (int)mf);
+                (int)mf);*/
                 
                 
         gf2d_grahics_next_frame();// render current draw frame and skip to the next frame
