@@ -181,7 +181,7 @@ int gf2d_entity_max(){
 }
 
 Entity *gf2d_entity_get(int i){
-    if (gf2d_entity_manager.entity_list[i]._set == 1){
+    if (gf2d_entity_manager.entity_list[i]._inuse == 1){
         return &gf2d_entity_manager.entity_list[i];
     }
     return NULL;

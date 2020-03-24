@@ -4,17 +4,84 @@
 
 void setup_player_ent(Player* self){
 self->ent = gf2d_entity_new();
-self->ent->position = vector2d(550,200);
+load_player_data(self);
 self->ent->touch = player_touch;
 self->ent->healthmax = 100;
-self->ent->health = 100;
 self->ent->owner = 1;
 self->ent->tag = 1;
-self->ent->experience = 0;
 self->ent->data = self;
 self->ent->gravity = 1;
-self->digi_timer = 0;
-self->digivolved = 0;
+switch (self->digimon){
+case 1: load_agumon(self);
+break;
+case 2: load_guilmon(self);
+break;
+case 3: load_gabumon(self);
+break;
+case 4: load_wargreymon(self);
+break;
+case 5: load_gallantmon(self);
+break;
+case 6: load_etemon(self);
+break;
+}
+
+}
+
+void load_player_data(Player *self){
+SJson *player_data = sj_load("sav/player.save");
+
+if (player_data){
+			SJson *player_pos;
+            SJson *player_health;
+            SJson *player_experience;
+            SJson *player_agumon_lives;
+            SJson *player_gabumon_lives;
+            SJson *player_guilmon_lives;
+            SJson *player_level;
+            SJson *player_digitimer;
+            SJson *player_digimon;
+            SJson *player_digivolved;
+            
+            player_pos = sj_object_get_value(player_data, "Position");
+            player_health = sj_object_get_value(player_data, "Health");
+            player_experience = sj_object_get_value(player_data, "Experience");
+            player_agumon_lives = sj_object_get_value(player_data, "AgumonLives");
+            player_gabumon_lives = sj_object_get_value(player_data, "GabumonLives");
+            player_guilmon_lives = sj_object_get_value(player_data, "GuilmonLives");
+            player_level = sj_object_get_value(player_data, "Level");
+            player_digitimer = sj_object_get_value(player_data, "Digitimer");
+            player_digimon = sj_object_get_value(player_data, "Digimon");
+            player_digivolved = sj_object_get_value(player_data,"Digivolved");
+            
+            SJson *posX;
+            SJson *posY;
+            posX = sj_array_get_nth(player_pos, 0);
+            posY = sj_array_get_nth(player_pos, 1);
+            
+            sj_get_float_value(posX, &self->ent->position.x);
+            sj_get_float_value(posY, &self->ent->position.y);
+            sj_get_integer_value(player_health,&self->ent->health);
+            sj_get_integer_value(player_experience,&self->ent->experience);
+            sj_get_integer_value(player_agumon_lives,&self->agumon_lives);
+            sj_get_integer_value(player_gabumon_lives,&self->gabumon_lives);
+            sj_get_integer_value(player_guilmon_lives,&self->guilmon_lives);
+            sj_get_integer_value(player_level,&self->level);
+            sj_get_float_value(player_digitimer,&self->digi_timer);
+            sj_get_integer_value(player_digimon,&self->digimon);
+            sj_get_integer_value(player_digivolved,&self->digivolved);
+
+	}
+else{
+self->ent->position = vector2d(550,200);
+self->ent->health = 100;
+self->ent->experience = 0;
+self->agumon_lives = 1;
+self->gabumon_lives = 1;
+self->guilmon_lives = 1;
+self->level = 0;
+self->digimon = 1;
+	return;}
 }
 void load_agumon(Player* self){
 	gf2d_entity_load(self->ent,"images/aguman.png",48,48,11,self->ent->position,vector2d(3,3));
@@ -33,45 +100,49 @@ void load_agumon(Player* self){
 	self->ent->box = gf2d_box(self->ent->position, 30, 39, vector2d(72,105));
 	self->digivolve = load_wargreymon;
 	self->digivolved = 0;
+	self->digimon = 1;
 }
 
 void load_guilmon(Player* self){
 	self->ent->position.y -= 10;
-	gf2d_entity_load(self->ent,"images/guilmon.png",40,50,9,self->ent->position,vector2d(3,3));
+	gf2d_entity_load(self->ent,"images/guilmon_2.png",40,50,9,self->ent->position,vector2d(3,3));
 	self->ent->frame = 0;
-	self->move_end_frame = 7;
-	self->jump_start_frame = 8;
+	self->move_end_frame = 8;
+	self->jump_start_frame = 9;
 	self->jump_end_frame = 15;
 	self->landing_frame = 16;
 	self->ground_attack_start_frame = 17;
 	self->ground_attack_end_frame = 34;
 	self->air_attack_start_frame = 35;
-	self->air_attack_end_frame = 40;
-	self->damaged_frame = 41;
+	self->air_attack_end_frame = 43;
+	self->damaged_frame = 44;
 	self->attack = guilmon_attack;
 	self->air_attack = guilmon_air_attack;
 	self->ent->box = gf2d_box(self->ent->position,39,45,vector2d(63,105));
 	self->digivolve = load_gallantmon;
 	self->digivolved = 0;
+	self->digimon = 2;
 }
 
 void load_gabumon(Player* self){
-	gf2d_entity_load(self->ent,"images/gabumon.png",82,48,7,self->ent->position,vector2d(3,3));
+	self->ent->position.y -= 10;
+	gf2d_entity_load(self->ent,"images/gabumon.png",48,48,9,self->ent->position,vector2d(3,3));
 	self->ent->frame = 0;
 	self->move_end_frame = 9;
 	self->jump_start_frame = 10;
 	self->jump_end_frame = 15;
-	self->landing_frame = 16;
-	self->ground_attack_start_frame = 17;
-	self->ground_attack_end_frame = 30;
-	self->air_attack_start_frame = 31;
-	self->air_attack_end_frame = 39;
-	self->damaged_frame = 40;
+	self->landing_frame = 10;
+	self->ground_attack_start_frame = 16;
+	self->ground_attack_end_frame = 31;
+	self->air_attack_start_frame = 32;
+	self->air_attack_end_frame = 41;
+	self->damaged_frame = 42;
 	self->attack = gabumon_attack;
 	self->air_attack = gabumon_air_attack;
 	self->ent->box = gf2d_box(self->ent->position,36,42,vector2d(72,102));
 	self->digivolve = load_etemon;
 	self->digivolved = 0;
+	self->digimon = 3;
 }
 
 void load_wargreymon(Player* self){
@@ -89,9 +160,10 @@ void load_wargreymon(Player* self){
 	self->attack = wargreymon_attack;
 	self->air_attack = wargreymon_air_attack;
 	self->ent->box = gf2d_box(self->ent->position,54,66,vector2d(87,102));
-	self->digi_timer = SDL_GetTicks() + 30000;
+	self->digi_timer = 3000;
 	self->digivolved = 1;
 	self->dedigivolve = load_agumon;
+	self->digimon = 4;
 }
 
 void load_gallantmon(Player* self){
@@ -110,9 +182,10 @@ void load_gallantmon(Player* self){
 	self->attack = gallantmon_attack;
 	self->air_attack = gallantmon_air_attack;
 	self->ent->box = gf2d_box(self->ent->position,54,75,vector2d(144,141));
-	self->digi_timer = SDL_GetTicks() + 30000;
+	self->digi_timer = 3000;
 	self->digivolved = 1;
 	self->dedigivolve = load_guilmon;
+	self->digimon = 5;
 }
 
 void load_etemon(Player* self){
@@ -131,9 +204,10 @@ void load_etemon(Player* self){
 	self->attack = etemon_attack;
 	self->air_attack = etemon_air_attack;
 	self->ent->box = gf2d_box(self->ent->position,48,72,vector2d(99,99));
-	self->digi_timer = SDL_GetTicks() + 30000;
+	self->digi_timer = 3000;
 	self->digivolved = 1;
 	self->dedigivolve = load_gabumon;
+	self->digimon = 6;
 }
 
 void agumon_attack(Player* self){
@@ -180,17 +254,20 @@ void etemon_air_attack(Player* self){
 void player_pickup(int tag, Player *self){
 switch(tag){
 
-case 2: self->ent->experience += 100;
+case 2: self->ent->experience += 10;
 slog("%f",self->ent->experience);
 break;
 
-case 3: load_agumon(self);
+case 3: self->agumon_lives++;
+load_agumon(self);
 break;
 
-case 4: load_gabumon(self);
+case 4: self->gabumon_lives++;
+load_gabumon(self);
 break;
 
-case 5: load_guilmon(self);
+case 5: self->guilmon_lives++;
+load_guilmon(self);
 break;
 }
 }

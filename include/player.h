@@ -21,6 +21,11 @@ int damaged_frame;
 int digivolved;
 float digi_timer;
 void (*dedigivolve) (struct Player_S* self);
+int agumon_lives;
+int gabumon_lives;
+int guilmon_lives;
+int level;
+int digimon;
 }Player;
 
 /**
@@ -78,4 +83,5 @@ void etemon_attack(Player* self);
 void etemon_air_attack(Player* self);
 void player_touch(Entity* self, Entity* other);
 void player_pickup(int tag, Player* self);
+void load_player_data(Player* self);
 #endif

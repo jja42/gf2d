@@ -23,10 +23,10 @@ typedef struct Entity_S
     Vector3D        rotation;       /**<rotation of the entity*/
     Vector2D        scale;          /**<*please default to 1,1*/
     void (*touch) (struct Entity_S* self,struct Entity_S* other);
-    float           health;
+    int           health;
     float           healthmax;
     float           owner;
-    float           experience;
+    int           experience;
     float           duration;
     int             tag;			/**1 - player, 2 - experience, 3 - pickup agu 4 - pickup gabu 5 - pickup guil 6 - platform 7 - projectile 8 - enemy*/
     char*			name;

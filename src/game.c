@@ -1,4 +1,5 @@
 #include <SDL.h>
+#include <SDL_ttf.h>
 #include "gf2d_graphics.h"
 #include "gf2d_sprite.h"
 #include "simple_logger.h"
@@ -19,7 +20,7 @@ int main(int argc, char * argv[])
     Sprite *background;
     Sprite *select_screen;
     Sprite *title_screen;
-    Uint8 paused = 0;
+    Sprite *pause_screen;
     
     int mx,my;
     float recov = 0;
@@ -48,19 +49,41 @@ int main(int argc, char * argv[])
     
     /*setup*/
     gf2d_entity_manager_init(100);
+    setup_player_ent(player);
     menu_manager_init(10);
+    
+    button_generate(button_start_think,gf2d_box(vector2d(800,495),128,38,vector2d(0,0)));
+    button_generate(button_exit_think,gf2d_box(vector2d(800,610),128,38,vector2d(0,0)));
+    button_generate(button_level_think,gf2d_box(vector2d(262,546),110,93,vector2d(0,0)));
+    button_generate(button_pause_exit_think,gf2d_box(vector2d(1090,574),56,23,vector2d(0,0)));
+    button_generate(button_save_think,gf2d_box(vector2d(506,574),68,20,vector2d(0,0)));
+    
+    TTF_Init();
+    TTF_Font* Sans = TTF_OpenFont("fonts/megaman_2.ttf", 60);
+    SDL_Rect xp_counter = { 475, 730, 50, 45};
+    SDL_Rect agumon_lives_counter = { 1000, 155, 100, 45};
+    SDL_Rect gabumon_lives_counter = { 1000, 280, 100, 45};
+    SDL_Rect guilmon_lives_counter = { 1000, 425, 100, 45};
+    SDL_Rect life_counter = {1030,730,100,45};
+    text_generate(agumon_lives_counter,agumon_lives_text_think,Sans);
+    text_generate(gabumon_lives_counter,gabumon_lives_text_think,Sans);
+    text_generate(guilmon_lives_counter,guilmon_lives_text_think,Sans);
+    text_generate(xp_counter,xp_text_think,Sans);
+    text_generate(life_counter,life_text_think,Sans);
+    
     Entity *platform_test = malloc(sizeof(Entity)); 
     platform_test = gf2d_entity_new();
     Entity *platform_test2 = malloc(sizeof(Entity)); 
     platform_test2 = gf2d_entity_new();
     Entity *enemy_test = malloc(sizeof(Entity)); 
     enemy_test = gf2d_entity_new();
+    
     background = gf2d_sprite_load_image("images/backgrounds/sky_back.png");
-    select_screen = gf2d_sprite_load_image("images/backgrounds/selectmenu.png");
+    select_screen = gf2d_sprite_load_image("images/backgrounds/selectscreen.png");
     title_screen = gf2d_sprite_load_image("images/backgrounds/titlescreen.png");
+    pause_screen = gf2d_sprite_load_image("images/backgrounds/pausescreen.png");
     mouse = gf2d_sprite_load_all("images/pointer.png",32,32,16);
-    setup_player_ent(player);
-    load_agumon(player);
+    
     gf2d_entity_load(platform_test,"images/box.png",40,40,1,vector2d(550,560),vector2d(3,3));
     gf2d_entity_load(platform_test2,"images/box.png",40,40,1,vector2d(750,400),vector2d(3,3));
     gf2d_entity_load(enemy_test,"images/aguman.png",48,48,11,vector2d(750,100),vector2d(3,3));
@@ -74,28 +97,30 @@ int main(int argc, char * argv[])
     enemy_test->box = gf2d_box(enemy_test->position, 30, 39, vector2d(72,105));
     enemy_test->health = 50;
     enemy_test->tag = 8;
+    
     /*main game loop*/
-    while(!done|| get_menu_state() == MS_Exit)
+    while(!done && get_menu_state() != MS_Exit)
     {
         SDL_PumpEvents();   // update SDL's internal event structures
         keys = SDL_GetKeyboardState(NULL); // get the keyboard state for this frame
         /*update things here*/
         //===================GROUNDED START========================
-        if(!paused && get_menu_state() == MS_None){
-		current_time = SDL_GetTicks();
+        if(get_menu_state() == MS_None){
+			current_time = SDL_GetTicks();
 		if(player->digivolved == 1){
-			if (current_time > player->digi_timer){
+			player->digi_timer -=1;
+			if (player->digi_timer == 0){
 				player->dedigivolve(player);}}
         if(keys[SDL_SCANCODE_1] && grounded && !attacking){
-        if(current_time > change_timer){load_agumon(player);
+        if(current_time > change_timer && player->agumon_lives > 0){load_agumon(player);
         change_timer = SDL_GetTicks() + 500;}
 		}
 		if(keys[SDL_SCANCODE_2] && grounded && !attacking){
-        if(current_time > change_timer){load_guilmon(player);
+        if(current_time > change_timer && player->guilmon_lives > 0){load_guilmon(player);
         change_timer = SDL_GetTicks() + 500;}
 		}
 		if(keys[SDL_SCANCODE_3] && grounded && !attacking){
-        if(current_time > change_timer){load_gabumon(player);
+        if(current_time > change_timer && player->gabumon_lives > 0){load_gabumon(player);
         change_timer = SDL_GetTicks() + 500;}
 		}
 		if(keys[SDL_SCANCODE_4] && grounded && !attacking){
@@ -110,7 +135,7 @@ int main(int argc, char * argv[])
         if(current_time > change_timer){load_etemon(player);
         change_timer = SDL_GetTicks() + 500;}
 		}
-        if (keys[SDL_SCANCODE_Z]&& !attacking && grounded){
+        if (keys[SDL_SCANCODE_Z]&& !attacking && player->ent->gravity == 0){
 			grounded = 0;
 			jump_timer = current_time + 200;
 		}
@@ -119,7 +144,6 @@ int main(int argc, char * argv[])
 			player->ent->experience -= 100;
 		}
 		if(keys[SDL_SCANCODE_Z] && double_jump != 1 && current_time > jump_timer){
-			slog("stuff");
 			double_jump = 1;
 			air = 0;
 			}
@@ -227,17 +251,35 @@ int main(int argc, char * argv[])
          // exit condition
         //slog("Rendering at %f FPS",gf2d_graphics_get_frames_per_second());
 	}
-		if (keys[SDL_SCANCODE_P]){
+		if (keys[SDL_SCANCODE_P] && (get_menu_state() == MS_None || get_menu_state() == MS_Pause)){
 			current_time = SDL_GetTicks();
-			if(paused == 0 && current_time > pause_timer){ 
-				paused = 1;
-				pause_timer = SDL_GetTicks() + 500;}
-			if(paused == 1 && current_time > pause_timer){
-				 paused = 0;
-				 pause_timer = SDL_GetTicks() + 500;}
+			if(get_menu_state() == MS_None && current_time > pause_timer){ 
+				set_menu_state(MS_Pause);
+				pause_timer = SDL_GetTicks() + 200;}
+			if(get_menu_state() == MS_Pause && current_time > pause_timer){
+				set_menu_state(MS_None);
+				 pause_timer = SDL_GetTicks() + 200;}
 		}
-	 if(get_menu_state() == MS_SelectScreen){gf2d_sprite_draw_image(select_screen,vector2d(0,0),vector2d(2.5,2.6));
+	 if(get_menu_state() == MS_Pause){gf2d_sprite_draw_image(pause_screen,vector2d(0,0),vector2d(1,1));
+		  SDL_GetMouseState(&mx,&my);
+       menu_update_all();
+       menu_draw_all();
+        mf+=0.1;
+        if (mf >= 16.0)mf = 0;
+		 gf2d_sprite_draw(
+                mouse,
+                vector2d(mx,my),
+                NULL,
+                NULL,
+                NULL,
+                NULL,
+                NULL,
+                (int)mf);
+	 gf2d_grahics_next_frame();
+	 }
+	 if(get_menu_state() == MS_SelectScreen){gf2d_sprite_draw_image(select_screen,vector2d(0,0),vector2d(1,1));
 		 SDL_GetMouseState(&mx,&my);
+       menu_update_all();
         mf+=0.1;
         if (mf >= 16.0)mf = 0;
 		 gf2d_sprite_draw(
@@ -253,6 +295,7 @@ int main(int argc, char * argv[])
 	 if(get_menu_state() == MS_TitleScreen){
 		gf2d_sprite_draw_image(title_screen,vector2d(0,0),vector2d(1,1));
 		SDL_GetMouseState(&mx,&my);
+        menu_update_all();
         mf+=0.1;
         if (mf >= 16.0)mf = 0;
 		 gf2d_sprite_draw(
