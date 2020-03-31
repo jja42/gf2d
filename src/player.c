@@ -84,6 +84,7 @@ self->digimon = 1;
 	return;}
 }
 void load_agumon(Player* self){
+	self->ent->position.y -= 10;
 	gf2d_entity_load(self->ent,"images/aguman.png",48,48,11,self->ent->position,vector2d(3,3));
 	self->ent->frame = 0;
 	self->move_end_frame = 17;
@@ -92,8 +93,10 @@ void load_agumon(Player* self){
 	self->landing_frame = 24;
 	self->ground_attack_start_frame = 25;
 	self->ground_attack_end_frame = 35;
+	self->ground_attack_damage_frame = 34;
 	self->air_attack_start_frame = 37;
 	self->air_attack_end_frame = 46;
+	self->air_attack_damage_frame = 45;
 	self->damaged_frame = 46;
 	self->attack = agumon_attack;
 	self->air_attack = agumon_attack;
@@ -122,6 +125,8 @@ void load_guilmon(Player* self){
 	self->digivolve = load_gallantmon;
 	self->digivolved = 0;
 	self->digimon = 2;
+	self->air_attack_damage_frame = 46;
+	self->ground_attack_damage_frame = 35;
 }
 
 void load_gabumon(Player* self){
@@ -143,6 +148,8 @@ void load_gabumon(Player* self){
 	self->digivolve = load_etemon;
 	self->digivolved = 0;
 	self->digimon = 3;
+	self->air_attack_damage_frame = 46;
+	self->ground_attack_damage_frame = 35;
 }
 
 void load_wargreymon(Player* self){
@@ -164,6 +171,8 @@ void load_wargreymon(Player* self){
 	self->digivolved = 1;
 	self->dedigivolve = load_agumon;
 	self->digimon = 4;
+	self->air_attack_damage_frame = 46;
+	self->ground_attack_damage_frame = 35;
 }
 
 void load_gallantmon(Player* self){
@@ -186,6 +195,8 @@ void load_gallantmon(Player* self){
 	self->digivolved = 1;
 	self->dedigivolve = load_guilmon;
 	self->digimon = 5;
+	self->air_attack_damage_frame = 46;
+	self->ground_attack_damage_frame = 35;
 }
 
 void load_etemon(Player* self){
@@ -208,6 +219,8 @@ void load_etemon(Player* self){
 	self->digivolved = 1;
 	self->dedigivolve = load_gabumon;
 	self->digimon = 6;
+	self->air_attack_damage_frame = 51;
+	self->ground_attack_damage_frame = 35;
 }
 
 void agumon_attack(Player* self){
@@ -216,7 +229,10 @@ if(self->ent->flip.x == 1)gf2d_projectile_spawn("images/fireball.png",24,24,3,ve
 }
 
 void gabumon_attack(Player* self){
+if(self->ent->flip.x == 0)gf2d_projectile_spawn("images/fireball.png",24,24,3,vector2d(self->ent->position.x+57.5,self->ent->position.y+62.5),vector2d(2.5,2.5),vector2d(0,0),self->ent->flip,vector2d(40,32.5),20,20,1,10);
+if(self->ent->flip.x == 1)gf2d_projectile_spawn("images/fireball.png",24,24,3,vector2d(self->ent->position.x+20,self->ent->position.y+62.5),vector2d(2.5,2.5),vector2d(0,0),self->ent->flip,vector2d(40,32.5),20,20,1,10);
 }
+
 void gabumon_air_attack(Player* self){
 }
 
@@ -255,7 +271,6 @@ void player_pickup(int tag, Player *self){
 switch(tag){
 
 case 2: self->ent->experience += 10;
-slog("%f",self->ent->experience);
 break;
 
 case 3: self->agumon_lives++;

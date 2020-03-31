@@ -75,13 +75,23 @@ Menu *button_generate(
     Box			*hitbox
 );
 
+Menu *text_generate(
+    SDL_Rect    box,
+    void        (*think)(struct Menu_S *self),
+    TTF_Font* Sans
+);
+
 void button_exit_think (Menu *self);
 
 void button_pause_exit_think (Menu *self);
 
 void button_save_think (Menu *self);
 
-void button_level_think (Menu *self);
+void button_zubat_level_think (Menu *self);
+
+void button_articuno_level_think (Menu *self);
+
+void button_pikachu_level_think (Menu *self);
 
 int collide_menu(Menu *self,Vector2D mouse);
 

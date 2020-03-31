@@ -14,4 +14,6 @@ void platform_touch(Entity* self, Entity* other);
 void solid_collision(Entity* self, int dir);
 
 void enemy_drop(Entity* self);
+
+void enemy_touch(Entity* self, Entity* other);
 #endif

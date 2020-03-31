@@ -23,8 +23,9 @@ typedef struct Entity_S
     Vector3D        rotation;       /**<rotation of the entity*/
     Vector2D        scale;          /**<*please default to 1,1*/
     void (*touch) (struct Entity_S* self,struct Entity_S* other);
-    int           health;
-    float           healthmax;
+    void (*think) (struct Entity_S* self);
+    int           	health;
+    int           healthmax;
     float           owner;
     int           experience;
     float           duration;
@@ -34,6 +35,8 @@ typedef struct Entity_S
     Box*			box;
     int				gravity;
     int				colliding;
+    int				timer;
+    int				invincibility;
     void *data;                     /**<additional entity specific data*/
     
 }Entity;

@@ -5,6 +5,8 @@
 #include "simple_json.h"
 #include "gf2d_entity.h"
 #include "touch.h"
+#include "camera.h"
+#include "enemy.h"
 typedef struct
 {
     Entity *entity_list;
@@ -75,41 +77,6 @@ void gf2d_entity_draw_all()
     }
 }
 
-Entity *gf2d_entity_load_from_file(char *filename)
-{
-    TextLine assetname;
-    snprintf(assetname,GFCLINELEN,"entities/%s.json",filename);
-    Entity *ent = NULL;
-    ent = gf2d_entity_new();
-    if (!ent)
-    {
-        return NULL;
-    }
-    SJson *json,*ent_info;
-    if (!filename)return NULL;
-    json = sj_load(assetname);
-    if (!json)
-    {
-        slog("failed to entity file %s",filename);
-        return NULL;
-    }
-    ent_info = sj_object_get_value(json,"ent_info");
-    if (!ent_info)
-    {
-        slog("missing entity info in entity file %s",filename);
-        sj_free(json);
-        gf2d_entity_free(ent);
-        return NULL;
-    }
-    strncpy(ent->name,sj_get_string_value(sj_object_get_value(ent_info,"name")),GFCLINELEN);
-    
-    sj_get_float_value((ent_info,"position.x"),&ent->position.x);
-    sj_get_float_value((ent_info,"position.y"),&ent->position.y);
-    sj_free(json);
-    slog("loaded ent info for %s",filename);
-    return ent;
-}
-
 
 void gf2d_entity_load(Entity *ent, char* filename, int width, int height, int frames_per_line, Vector2D pos, Vector2D scale)
 {   
@@ -157,11 +124,19 @@ void gf2d_entity_update_all(){
 }
 
 void gf2d_entity_update(Entity *self){
+	if(self->tag != 1 && self->tag !=7) {
+		self->velocity.x -= get_camera_velocity().x;
+		self->velocity.y -= get_camera_velocity().y;}
+	if(self->tag == 7){
+		self->velocity.y = -get_camera_velocity().y;}
 	if(self->colliding == 1){self->velocity = vector2d(-.1,0);}
 	if(self->colliding == 2){self->velocity = vector2d(.1,0);}
+	if(self->tag == 8)self->think(self);
 	if(self->gravity == 1)self->velocity.y += 3;
 	vector2d_set(self->position,self->position.x+ self->velocity.x,self->position.y + self->velocity.y);
 	gf2d_box_update(self->box,self->position);
+	if(self->tag == 1){camera_update();
+		if(self->invincibility > 0)self->invincibility-=1;}
 	if(self->tag != 7)self->velocity = vector2d(0,0);
 	if(self->duration<99){self->duration-=.1;
 		self->frame+=.1;

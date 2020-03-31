@@ -7,6 +7,7 @@
 #include "player.h"
 #include "touch.h"
 #include "menu.h"
+#include "camera.h"
 
 int main(int argc, char * argv[])
 {
@@ -51,10 +52,11 @@ int main(int argc, char * argv[])
     gf2d_entity_manager_init(100);
     setup_player_ent(player);
     menu_manager_init(10);
+    camera_init();
     
     button_generate(button_start_think,gf2d_box(vector2d(800,495),128,38,vector2d(0,0)));
     button_generate(button_exit_think,gf2d_box(vector2d(800,610),128,38,vector2d(0,0)));
-    button_generate(button_level_think,gf2d_box(vector2d(262,546),110,93,vector2d(0,0)));
+    button_generate(button_zubat_level_think,gf2d_box(vector2d(262,546),110,93,vector2d(0,0)));
     button_generate(button_pause_exit_think,gf2d_box(vector2d(1090,574),56,23,vector2d(0,0)));
     button_generate(button_save_think,gf2d_box(vector2d(506,574),68,20,vector2d(0,0)));
     
@@ -71,32 +73,11 @@ int main(int argc, char * argv[])
     text_generate(xp_counter,xp_text_think,Sans);
     text_generate(life_counter,life_text_think,Sans);
     
-    Entity *platform_test = malloc(sizeof(Entity)); 
-    platform_test = gf2d_entity_new();
-    Entity *platform_test2 = malloc(sizeof(Entity)); 
-    platform_test2 = gf2d_entity_new();
-    Entity *enemy_test = malloc(sizeof(Entity)); 
-    enemy_test = gf2d_entity_new();
-    
     background = gf2d_sprite_load_image("images/backgrounds/sky_back.png");
     select_screen = gf2d_sprite_load_image("images/backgrounds/selectscreen.png");
     title_screen = gf2d_sprite_load_image("images/backgrounds/titlescreen.png");
     pause_screen = gf2d_sprite_load_image("images/backgrounds/pausescreen.png");
     mouse = gf2d_sprite_load_all("images/pointer.png",32,32,16);
-    
-    gf2d_entity_load(platform_test,"images/box.png",40,40,1,vector2d(550,560),vector2d(3,3));
-    gf2d_entity_load(platform_test2,"images/box.png",40,40,1,vector2d(750,400),vector2d(3,3));
-    gf2d_entity_load(enemy_test,"images/aguman.png",48,48,11,vector2d(750,100),vector2d(3,3));
-    platform_test->box = gf2d_box(platform_test->position, 60, 60, vector2d(60,60));
-    platform_test->touch = platform_touch;
-    platform_test->tag = 6;
-    platform_test2->box = gf2d_box(platform_test2->position, 60, 60, vector2d(60,60));
-    platform_test2->touch = platform_touch;
-    platform_test2->tag = 6;
-    enemy_test->touch = player_touch;
-    enemy_test->box = gf2d_box(enemy_test->position, 30, 39, vector2d(72,105));
-    enemy_test->health = 50;
-    enemy_test->tag = 8;
     
     /*main game loop*/
     while(!done && get_menu_state() != MS_Exit)
@@ -217,27 +198,28 @@ int main(int argc, char * argv[])
 			if(attacking&&grounded){
 			if(player->ent->frame<player->ground_attack_start_frame)player->ent->frame=player->ground_attack_start_frame;
 			if(player->ent->frame<player->ground_attack_end_frame)player->ent->frame+=.15;
+			if(player->ent->frame>=player->ground_attack_damage_frame){
+			player->attack(player);
+			}
 			if(player->ent->frame>=player->ground_attack_end_frame){
 				player->ent->frame = 0;
 				attacking = 0;
-				player->attack(player);
 				}
 			}
 			
 			if(attacking&&!grounded){
 			if(player->ent->frame<player->air_attack_start_frame)player->ent->frame=player->air_attack_start_frame;
 			if(player->ent->frame<player->air_attack_end_frame)player->ent->frame+=.2;
+			if(player->ent->frame>=player->air_attack_damage_frame){
+				player->air_attack(player);
+				}
 			if(player->ent->frame>=player->air_attack_end_frame){
 				player->ent->frame = 0;
 				attacking = 0;
-				player->air_attack(player);
 				}
 			}
 						
 			//===================ATTACKING END========================
-			
-			
-        
         gf2d_graphics_clear_screen();// clears drawing buffers
         // all drawing should happen betweem clear_screen and next_frame
             //backgrounds drawn first

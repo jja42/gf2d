@@ -4,6 +4,7 @@
 #include "simple_json.h"
 #include "simple_json_value.h"
 #include "gf2d_entity.h"
+#include "level.h"
 #include "player.h"
 
 typedef struct 
@@ -43,7 +44,7 @@ void menu_manager_init(Uint32 maxMenus){
         slog("failed to allocate %i menus for the menu manager",maxMenus);
     }
     menu_manager.maxMenus = maxMenus;
-    menu_manager.menu_state = MS_TitleScreen;
+    menu_manager.menu_state = MS_SelectScreen;
     menu_manager.last_save = 0;
     memset(menu_manager.menuList,0,sizeof(Menu)*maxMenus);
     menu_manager.player = (Player*)gf2d_entity_get(0)->data;
@@ -209,10 +210,6 @@ void button_save_think (Menu *self){
 }
 }
 
-/*void button_zubat_level_think (Menu *self){
-    
-}*/
-
 /*void button_pikachu_level_think (Menu *self){
     
 }*/
@@ -233,13 +230,14 @@ void button_start_think(Menu *self){
 }
 }
 
-void button_level_think(Menu *self){
+void button_zubat_level_think(Menu *self){
 	if(get_menu_state() == MS_SelectScreen){
 	int mx,my;
     SDL_GetMouseState(&mx,&my);
     if (collide_menu(self, vector2d(mx,my))){
         if (SDL_GetMouseState(NULL, NULL) && SDL_BUTTON(SDL_BUTTON_LEFT)) {
 			menu_manager.menu_state = MS_None;
+			load_level_zubat();
         }
     }
 	}

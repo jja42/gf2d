@@ -26,6 +26,8 @@ int gabumon_lives;
 int guilmon_lives;
 int level;
 int digimon;
+int ground_attack_damage_frame;
+int air_attack_damage_frame;
 }Player;
 
 /**
