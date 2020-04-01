@@ -127,7 +127,7 @@ void gf2d_entity_update(Entity *self){
 	if(self->tag != 1 && self->tag !=7) {
 		self->velocity.x -= get_camera_velocity().x;
 		self->velocity.y -= get_camera_velocity().y;}
-	if(self->tag == 7){
+	if(self->tag == 7 && self->owner != 5 && self->owner != 4){
 		self->velocity.y = -get_camera_velocity().y;}
 	if(self->colliding == 1){self->velocity = vector2d(-.1,0);}
 	if(self->colliding == 2){self->velocity = vector2d(.1,0);}

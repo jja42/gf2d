@@ -15,6 +15,7 @@ int patrol_bound_left;
 int patrol_bound_right;
 int attack_timer;
 int enemy_type;
+int timer;
 }Enemy;
 
 void load_enemy_data(Enemy* self);

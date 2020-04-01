@@ -7,7 +7,7 @@ void load_level_zubat(){
     Entity *platform_test2 = malloc(sizeof(Entity)); 
     platform_test2 = gf2d_entity_new();
     Enemy *enemy_test = malloc(sizeof(Enemy)); 
-    load_zubat(enemy_test);
+    load_pikachu(enemy_test);
     
     gf2d_entity_load(platform_test,"images/box.png",40,40,1,vector2d(550,560),vector2d(3,3));
     gf2d_entity_load(platform_test2,"images/box.png",40,40,1,vector2d(750,400),vector2d(3,3));

@@ -6,6 +6,12 @@
 void projectile_touch(Entity* self, Entity* other){
 if (other->owner != self->owner && other->invincibility == 0){
 	other->health -= 10;
+	// if(self->owner == 3) //zubat
+	// if(self->owner == 4) //pikachu
+	// if(self->owner == 5) //articuno
+	// if(self->tag == 3) //zubat
+	// if(self->tag == 3) //pikachu
+	// if(self->tag == 3) //articuno
 	if(other->tag == 1)other->invincibility = 100;
 	slog("%i", other->health);
 	if(other->health == 0 && (other->tag == 8 || other->tag == 1)){
