@@ -26,11 +26,11 @@ void load_penguinmon(Enemy* self,Vector2D position, int patrol_bound_left, int p
 
 void load_wormmon(Enemy* self,Vector2D position, Vector2D flip);
 
-void load_zubat(Enemy* self);
+void load_zubat(Enemy* self,Vector2D position, int patrol_bound_left, int patrol_bound_right);
 
-void load_pikachu(Enemy* self);
+void load_pikachu(Enemy* self,Vector2D position, int patrol_bound_left, int patrol_bound_right);
 
-void load_articuno(Enemy* self);
+void load_articuno(Enemy* self,Vector2D position, int patrol_bound_left, int patrol_bound_right);
 
 void betamon_think(Entity* self);
 

@@ -29,7 +29,7 @@ typedef struct Entity_S
     float           owner;
     int           experience;
     float           duration;
-    int             tag;			/**1 - player, 2 - experience, 3 - pickup agu 4 - pickup gabu 5 - pickup guil 6 - platform 7 - projectile 8 - enemy*/
+    int             tag;			/**1 - player, 2 - experience, 3 - pickup agu 4 - pickup gabu 5 - pickup guil 6 - platform 7 - projectile 8 - enemy 9 - hp */
     char*			name;
     float			frame;
     Box*			box;
@@ -137,4 +137,6 @@ void projectile_touch(Entity* self, Entity* other);
 void gf2d_apply_offset();
 
 void gf2d_door_spawn(int level, Vector2D position);
+
+void gf2d_level_clear();
 #endif

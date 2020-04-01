@@ -16,4 +16,8 @@ void solid_collision(Entity* self, int dir);
 void enemy_drop(Entity* self);
 
 void enemy_touch(Entity* self, Entity* other);
+
+void door_touch(Entity* self, Entity* other);
+
+void hp_drop(Entity* self);
 #endif

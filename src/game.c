@@ -147,6 +147,17 @@ int main(int argc, char * argv[])
 			player->air_attack = pikachu_weapon_attack;
         change_timer = SDL_GetTicks() + 500;}
 		}
+		if(keys[SDL_SCANCODE_0] && grounded && !attacking){
+        if(current_time > change_timer){player->pikachu_weapon = 1;
+			player->articuno_weapon = 1;
+			player->zubat_weapon = 1;
+        change_timer = SDL_GetTicks() + 500;}
+		}
+		if(keys[SDL_SCANCODE_E] && grounded && !attacking){
+        if(current_time > change_timer){
+			player->ent->experience += 50;
+        change_timer = SDL_GetTicks() + 500;}
+		}
         if (keys[SDL_SCANCODE_Z]&& !attacking && player->ent->gravity == 0){
 			grounded = 0;
 			jump_timer = current_time + 200;

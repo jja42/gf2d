@@ -14,18 +14,18 @@ case 2: load_penguinmon(self,position,patrol_bound_left,patrol_bound_right);
 break;
 case 3: load_wormmon(self,position,vector2d(flip,0));
 break;
-case 4: load_zubat(self);
+case 4: load_zubat(self,position,patrol_bound_left,patrol_bound_right);
 break;
-case 5: load_pikachu(self);
+case 5: load_pikachu(self,position,patrol_bound_left,patrol_bound_right);
 break;
-case 6: load_articuno(self);
+case 6: load_articuno(self,position,patrol_bound_left,patrol_bound_right);
 break;
 }
 }
 void load_betamon(Enemy* self,Vector2D position, int patrol_bound_left, int patrol_bound_right){
 	self->ent = gf2d_entity_new();
 	self->ent->touch = enemy_touch;
-	self->ent->health = 50;
+	self->ent->health = 10;
 	self->ent->healthmax = 100;
 	self->ent->owner = 2;
 	self->ent->tag = 8;
@@ -48,13 +48,13 @@ void load_betamon(Enemy* self,Vector2D position, int patrol_bound_left, int patr
 void load_penguinmon(Enemy* self,Vector2D position, int patrol_bound_left, int patrol_bound_right){
 	self->ent = gf2d_entity_new();
 	self->ent->touch = enemy_touch;
-	self->ent->health = 50;
+	self->ent->health = 20;
 	self->ent->healthmax = 100;
 	self->ent->owner = 2;
 	self->ent->tag = 8;
 	self->ent->data = self;
 	self->ent->gravity = 1;
-	gf2d_entity_load(self->ent,"images/penguinmon.png",25,24,5,position,vector2d(3,3));
+	gf2d_entity_load(self->ent,"images/penguinmon.png",24,24,6,position,vector2d(3,3));
 	self->ent->frame = 0;
 	self->move_end_frame = 5;
 	self->attack_start_frame = 6;
@@ -70,7 +70,7 @@ void load_penguinmon(Enemy* self,Vector2D position, int patrol_bound_left, int p
 void load_wormmon(Enemy* self,Vector2D position, Vector2D flip){
 	self->ent = gf2d_entity_new();
 	self->ent->touch = enemy_touch;
-	self->ent->health = 50;
+	self->ent->health = 10;
 	self->ent->healthmax = 100;
 	self->ent->owner = 2;
 	self->ent->tag = 8;
@@ -87,18 +87,18 @@ void load_wormmon(Enemy* self,Vector2D position, Vector2D flip){
 	self->ent->think = wormmon_think;
 	self->enemy_type = 3;
 }
-void load_zubat(Enemy* self){
+void load_zubat(Enemy* self,Vector2D position, int patrol_bound_left, int patrol_bound_right){
 	self->ent = gf2d_entity_new();
 	self->ent->touch = enemy_touch;
-	self->ent->health = 10;
-	self->ent->healthmax = 100;
+	self->ent->health = 30;
+	self->ent->healthmax = 50;
 	self->ent->owner = 3;
 	self->ent->tag = 8;
 	self->ent->data = self;
 	self->ent->gravity = 1;
-    self->ent->position = vector2d(750,100);
-    self->patrol_bound_left = 500;
-    self->patrol_bound_right = 900;
+    self->ent->position = position;
+	self->patrol_bound_left = patrol_bound_left;
+	self->patrol_bound_right = patrol_bound_right;
 	gf2d_entity_load(self->ent,"images/zubat.png",32,34,3,self->ent->position,vector2d(3,3));
 	self->ent->frame = 0;
 	self->move_end_frame = 2;
@@ -108,17 +108,17 @@ void load_zubat(Enemy* self){
 	self->enemy_type = 4;
 	self->ent->think = zubat_think;
 }
-void load_pikachu(Enemy* self){
+void load_pikachu(Enemy* self,Vector2D position, int patrol_bound_left, int patrol_bound_right){
 	self->ent = gf2d_entity_new();
 	self->ent->touch = enemy_touch;
-	self->ent->health = 10;
+	self->ent->health = 30;
 	self->ent->owner = 4;
 	self->ent->tag = 8;
 	self->ent->data = self;
+	self->ent->position = position;
+	self->patrol_bound_left = patrol_bound_left;
+	self->patrol_bound_right = patrol_bound_right;
 	self->ent->gravity = 1;
-	self->patrol_bound_left = 500;
-    self->patrol_bound_right = 900;
-    self->ent->position = vector2d(750,300);
 	gf2d_entity_load(self->ent,"images/pikachu.png",37,50,4,self->ent->position,vector2d(2,2));
 	self->ent->frame = 0;
 	self->move_end_frame = 4;
@@ -128,17 +128,17 @@ void load_pikachu(Enemy* self){
 	self->enemy_type = 5;
 	self->ent->think = pikachu_think;
 }
-void load_articuno(Enemy* self){
+void load_articuno(Enemy* self,Vector2D position, int patrol_bound_left, int patrol_bound_right){
 	self->ent = gf2d_entity_new();
 	self->ent->touch = player_touch;
-	self->ent->health = 10;
-	self->patrol_bound_left = 500;
-    self->patrol_bound_right = 900;
+	self->ent->health = 30;
+	self->ent->position = position;
+	self->patrol_bound_left = patrol_bound_left;
+	self->patrol_bound_right = patrol_bound_right;
 	self->ent->owner = 5;
 	self->ent->tag = 8;
 	self->ent->data = self;
 	self->ent->gravity = 1;
-    self->ent->position = vector2d(750,100);
 	gf2d_entity_load(self->ent,"images/articuno.png",71,55,3,self->ent->position,vector2d(3,3));
 	self->ent->frame = 0;
 	self->move_end_frame = 2;
@@ -153,6 +153,9 @@ void penguinmon_think(Entity* self){
 	Enemy* e = (Enemy*)self->data;
 	e->patrol_bound_left -= get_camera_velocity().x;
 	e->patrol_bound_right -= get_camera_velocity().x;
+	if(self->frame < e->move_end_frame && self->timer > 50)
+	{self->frame +=.05;}
+	else{self->frame = 0;}
 	if(self->flip.x == 1){
 		if(self->position.x > e->patrol_bound_left){
 		self->velocity.x += -1;
@@ -165,20 +168,23 @@ void penguinmon_think(Entity* self){
 		}
 		else{self->flip.x = 1;}
 	}
+	if(self->timer <= 50 && self->timer > 0){
+	self->frame = e->attack_start_frame;
+}
 	if(self->timer == 0){
 	if(self->flip.x == 0)gf2d_projectile_spawn("images/enemy_attack.png",8,6,3,vector2d(self->position.x+50,self->position.y+20),vector2d(3,3),vector2d(2.5,0),self->flip,vector2d(12,6),12,6,2,30);
 	if(self->flip.x == 1)gf2d_projectile_spawn("images/enemy_attack.png",8,6,3,vector2d(self->position.x,self->position.y+20),vector2d(3,3),vector2d(-2.5,0),self->flip,vector2d(12,6),12,6,2,30);
-	self->timer = 200;}
+	self->timer = 200;
+	self->frame = 0;}
 	self->timer--;
 }
 
 void wormmon_think(Entity* self){
-	self->flip.x = 1;
 	self->gravity = 0;
 	if(self->timer == 0){
 	if(self->flip.x == 0)gf2d_projectile_spawn("images/enemy_attack.png",8,6,3,vector2d(self->position.x+25,self->position.y+30),vector2d(3,3),vector2d(2.5,0),self->flip,vector2d(12,6),12,6,2,30);
 	if(self->flip.x == 1)gf2d_projectile_spawn("images/enemy_attack.png",8,6,3,vector2d(self->position.x,self->position.y+30),vector2d(3,3),vector2d(-2.5,0),self->flip,vector2d(12,6),12,6,2,30);
-	self->timer = 150;}
+	self->timer = 250;}
 	self->timer--;
 }
 
@@ -256,8 +262,8 @@ void articuno_think(Entity *self){
 	}
 	if(self->timer == 0){
 	int rando =	rand() % 2;
-	if(rando == 0)gf2d_projectile_spawn("images/articuno_attack.png",10,20,3,vector2d(self->position.x+130,self->position.y+150),vector2d(2,2),vector2d(.5,2),self->flip,vector2d(10,24),8,16,5,30);
-	if(rando == 1)gf2d_projectile_spawn("images/articuno_attack.png",10,20,3,vector2d(self->position.x+50,self->position.y+150),vector2d(2,2),vector2d(-.5,2),self->flip,vector2d(10,24),8,16,5,30);
+	if(rando == 0)gf2d_projectile_spawn("images/articuno_attack.png",10,20,3,vector2d(self->position.x+130,self->position.y+150),vector2d(2,2),vector2d(0,2),self->flip,vector2d(10,24),8,16,5,30);
+	if(rando == 1)gf2d_projectile_spawn("images/articuno_attack.png",10,20,3,vector2d(self->position.x+50,self->position.y+150),vector2d(2,2),vector2d(0,2),self->flip,vector2d(10,24),8,16,5,30);
 	self->timer = 150;}
 	self->timer--;
 	
@@ -270,7 +276,6 @@ void articuno_think(Entity *self){
 }
 
 void pikachu_think(Entity *self){
-	self->gravity = 0;
 	Enemy* e = (Enemy*)self->data;
 	e->patrol_bound_left -= get_camera_velocity().x;
 	e->patrol_bound_right -= get_camera_velocity().x;

@@ -43,7 +43,7 @@
 		"Scale":["3.000000","3.000000"]
 		},
 		{
-		"Position":["0.000000","-950.000000"],
+		"Position":["-100.000000","-950.000000"],
 		"Scale":["3.000000","3.000000"]
 		},
 		{
@@ -56,13 +56,85 @@
 		}
 	],
 	"Enemies":[
+{
+		"Position":["850.000000","300.000000"],
+		"EnemyType":"3",
+		"LeftBound":"740",
+		"RightBound":"850",
+		"Flip":"1"
+		},
+		{	
+		"Position":["450.000000","150.000000"],
+		"EnemyType":"3",
+		"LeftBound":"340",
+		"RightBound":"450",
+		"Flip":"0"
+		},
 		{
-		"Position":["750.000000","250.000000"],
-		"EnemyType":"6",
+		"Position":["750.000000","0.000000"],
+		"EnemyType":"1",
+		"LeftBound":"740",
+		"RightBound":"850",
+		"Flip":"1"
+		},
+{
+		"Position":["450.000000","-150.000000"],
+		"EnemyType":"1",
+		"LeftBound":"440",
+		"RightBound":"550",
+		"Flip":"1"
+		},
+{
+		"Position":["750.000000","-300.000000"],
+		"EnemyType":"2",
+		"LeftBound":"740",
+		"RightBound":"950",
+		"Flip":"1"
+		},
+{
+		"Position":["1000.000000","-400.000000"],
+		"EnemyType":"1",
+		"LeftBound":"990",
+		"RightBound":"1100",
+		"Flip":"1"
+		},
+{		
+		"Position":["650.000000","-600.000000"],
+		"EnemyType":"3",
 		"LeftBound":"740",
 		"RightBound":"800",
+		"Flip":"0"
+		},
+{
+		"Position":["400.000000","-750.000000"],
+		"EnemyType":"2",
+		"LeftBound":"380",
+		"RightBound":"590",
+		"Flip":"1"
+},
+{
+		"Position":["200.000000","-850.000000"],
+		"EnemyType":"1",
+		"LeftBound":"190",
+		"RightBound":"300",
+		"Flip":"1"
+},
+{
+		"Position":["-150.000000","-1050.000000"],
+		"EnemyType":"3",
+		"LeftBound":"380",
+		"RightBound":"590",
+		"Flip":"0"
+},
+{
+		"Position":["200.000000","-1200.000000"],
+		"EnemyType":"2",
+		"LeftBound":"180",
+		"RightBound":"290",
 		"Flip":"1"
 		}
+		
+
 	]
 
 }

@@ -4,7 +4,6 @@
 #include <stdlib.h>
 
 void projectile_touch(Entity* self, Entity* other){
-	if(self->special == 1 && other->owner == self->owner)other->health += 10;
 if (other->owner != self->owner && other->invincibility == 0){
 	if(other->tag != 6)other->health -= 10;
 	if((self->owner == 5 || self->special == 2) && other->tag != 6) {
@@ -15,7 +14,8 @@ if (other->owner != self->owner && other->invincibility == 0){
 	if(other->tag != 6)other->invincibility = 100;
 	slog("%i", other->health);
 	if(other->health <= 0 && (other->tag == 8 || other->tag == 1)){
-		enemy_drop(other);
+		if(self->special == 1)hp_drop(other);
+		else{enemy_drop(other);}
 		gf2d_entity_free(other);}
 	gf2d_entity_free(self);
 }
@@ -31,7 +31,9 @@ gf2d_entity_free(self);
 
 void door_touch(Entity* self, Entity* other){
 if(other->tag == 1){
-load_num_level(self->special);
+Player* p = (Player*)other->data;
+p->level = 0;
+load_boss_level(self->special);
 }
 }
 
@@ -41,14 +43,16 @@ void player_touch(Entity* self, Entity* other){
 void enemy_touch(Entity* self, Entity* other){
 if(other->tag == 1 && other->invincibility == 0){
 other->health -= 10;
-if(self->owner == 3)self->health+=10;
+if(self->owner == 3 && self->health < self->healthmax){
+	slog("stealing health. current health: %i",self->health);
+	self->health+=10;}
 other->invincibility = 100;
 slog("taking damage");
 }
 }
 
 void platform_touch(Entity* self, Entity* other){
-	if(other->owner == 4 || other->special == 3)return;
+	if((other->owner == 4 && other->tag == 7) || other->special == 3)return;
 	//check if low enough                                                             //check if high enough
 if((self->box->pos.y - self->box->height <= other->box->pos.y+other->box->height) && (other->box->pos.y+other->box->height <= self->box->pos.y - self->box->height + 10.0))other->gravity = 0;
 else {
@@ -118,4 +122,8 @@ if (self->owner == 4){
 	p->level = 0;
 	p->menu_timer = 200;
 }
+}
+
+void hp_drop(Entity *self){
+	gf2d_pickup_spawn("images/hp.png", 16, 16, 1, vector2d(self->position.x,self->position.y+50), vector2d(2,2),vector2d(0,0),vector2d(0,0),vector2d(16,16),16,16,9,30); 
 }

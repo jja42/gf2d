@@ -138,9 +138,9 @@ void gf2d_entity_update_all(){
 }
 
 void gf2d_entity_update(Entity *self){
-		
-	if(self->tag == 7 && self->owner != 5 && self->owner != 4 && self->special != 3){
-		self->velocity.y = -get_camera_velocity().y;}
+	Vector2D veloc;
+	if(self->tag == 7){
+	 veloc = self->velocity;}
 		
 	if(self->colliding == 1){self->velocity = vector2d(-.1,0);}
 	if(self->colliding == 2){self->velocity = vector2d(.1,0);}
@@ -148,17 +148,18 @@ void gf2d_entity_update(Entity *self){
 	if(self->tag == 8)self->think(self);
 	
 	if(self->gravity == 1)self->velocity.y += 3;
+	if(self->frozen > 0)self->velocity = vector2d(0,0);
 	if(self->tag == 1){camera_update();}
-	if(self->tag !=7) {
-		self->velocity.x -= get_camera_velocity().x;
-		self->velocity.y -= get_camera_velocity().y;}
+	self->velocity.x -= get_camera_velocity().x;
+	self->velocity.y -= get_camera_velocity().y;
 	
-	if(self->frozen == 0)vector2d_set(self->position,self->position.x+ self->velocity.x,self->position.y + self->velocity.y);
-	else{self->velocity = vector2d(0,0);}
+	
+	if(self->tag!=1)vector2d_set(self->position,self->position.x+ self->velocity.x,self->position.y + self->velocity.y);
 	
 	gf2d_box_update(self->box,self->position);
 	if(self->invincibility > 0)self->invincibility-=1;
 	if(self->tag != 7)self->velocity = vector2d(0,0);
+	if(self->tag == 7)self->velocity = veloc;
 	if(self->duration<99){self->duration-=.1;
 		self->frame+=.1;
 		if(self->frame>=3)self->frame =0;}
@@ -223,13 +224,15 @@ void gf2d_platform_spawn(Vector2D position, Vector2D scale){
 }
 
 void gf2d_enemy_spawn(Vector2D position, int enemy_type, int patrol_bound_left, int patrol_bound_right, int flip){
+	patrol_bound_left -= get_camera_offset().x;
+	patrol_bound_right -= get_camera_offset().x;
 	load_enemy(position,flip,enemy_type,patrol_bound_left,patrol_bound_right);
 }
 
 void gf2d_door_spawn(int level, Vector2D position){
 	Entity* self = gf2d_entity_new();
-	gf2d_entity_load(self,"images/platform.png",40,70,1,position,vector2d(3,3));
-	self->box = gf2d_box(self->position,60,105,vector2d(60,105));
+	gf2d_entity_load(self,"images/door.png",40,70,1,position,vector2d(2,2));
+	self->box = gf2d_box(self->position,40,70,vector2d(40,70));
 	self->touch = door_touch;
 	self->special = level;
 	self->tag = 6;
@@ -242,8 +245,15 @@ int i;
         if (gf2d_entity_manager.entity_list[i]._inuse == 0)continue;
         vector2d_set(gf2d_entity_manager.entity_list[i].position,gf2d_entity_manager.entity_list[i].position.x - get_camera_offset().x,gf2d_entity_manager.entity_list[i].position.y - get_camera_offset().y);
     }
-    //gf2d_basic_collision();
 }
 
+void gf2d_level_clear(){
+int i;
+    for (i = 1; i < gf2d_entity_manager.entity_max;i++)
+    {
+        if (gf2d_entity_manager.entity_list[i]._inuse == 0)continue;
+        gf2d_entity_free(&gf2d_entity_manager.entity_list[i]);
+    }
+}
 
 /*eol@eof*/

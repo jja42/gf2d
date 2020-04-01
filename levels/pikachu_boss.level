@@ -1,6 +1,6 @@
 {
 	"PlayerPos":["550.000000","400.000000"],
-	"PlayerLevel":"3",	
+	"PlayerLevel":"6",	
 	"Platforms":[
 		{
 		"Position":["0.000000","600.000000"],
@@ -9,7 +9,7 @@
 	],
 	"Enemies":[
 		{
-		"Position":["750.000000","450.000000"],
+		"Position":["750.000000","250.000000"],
 		"EnemyType":"5",
 		"LeftBound":"0",
 		"RightBound":"1200",

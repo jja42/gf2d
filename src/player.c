@@ -299,7 +299,7 @@ void pikachu_weapon_attack(Player* self){
 void player_pickup(int tag, Player *self){
 switch(tag){
 
-case 2: self->ent->experience += 10;
+case 2: self->ent->experience += 35;
 break;
 
 case 3: self->agumon_lives++;
@@ -312,6 +312,9 @@ break;
 
 case 5: self->guilmon_lives++;
 load_guilmon(self);
+break;
+
+case 9: if(self->ent->health < self->ent->healthmax)self->ent->health+=10;
 break;
 }
 }
