@@ -55,8 +55,11 @@ int main(int argc, char * argv[])
     camera_init();
     
     button_generate(button_start_think,gf2d_box(vector2d(800,495),128,38,vector2d(0,0)));
-    button_generate(button_exit_think,gf2d_box(vector2d(800,610),128,38,vector2d(0,0)));
+    button_generate(button_continue_think,gf2d_box(vector2d(790,609),198,38,vector2d(0,0)));
+    button_generate(button_exit_think,gf2d_box(vector2d(788,722),100,38,vector2d(0,0)));
     button_generate(button_zubat_level_think,gf2d_box(vector2d(262,546),110,93,vector2d(0,0)));
+    button_generate(button_pikachu_level_think,gf2d_box(vector2d(1341,546),110,93,vector2d(0,0)));
+    button_generate(button_articuno_level_think,gf2d_box(vector2d(802,180),110,93,vector2d(0,0)));
     button_generate(button_pause_exit_think,gf2d_box(vector2d(1090,574),56,23,vector2d(0,0)));
     button_generate(button_save_think,gf2d_box(vector2d(506,574),68,20,vector2d(0,0)));
     
@@ -98,6 +101,13 @@ int main(int argc, char * argv[])
 			player->digi_timer -=1;
 			if (player->digi_timer == 0){
 				player->dedigivolve(player);}}
+		if(player->menu_timer > 0){
+			player->menu_timer--;
+		}
+		if(player->menu_timer == 1){
+			player->menu_timer = 0;
+			set_menu_state(MS_SelectScreen);
+		}
         if(keys[SDL_SCANCODE_1] && grounded && !attacking){
         if(current_time > change_timer && player->agumon_lives > 0){load_agumon(player);
         change_timer = SDL_GetTicks() + 500;}
@@ -179,7 +189,7 @@ int main(int argc, char * argv[])
 		if(player->ent->frame<player->jump_start_frame)player->ent->frame=player->jump_start_frame;
 		if(player->ent->frame<=player->jump_end_frame)player->ent->frame+=.1;
 			if(air<6){
-			player->ent->velocity.y=-7;
+			player->ent->velocity.y=-6;
 			}
 		else{if(player->ent->gravity == 0){
 			air = 0;

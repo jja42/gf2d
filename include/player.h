@@ -31,6 +31,7 @@ int air_attack_damage_frame;
 int zubat_weapon;
 int articuno_weapon;
 int pikachu_weapon;
+int menu_timer;
 }Player;
 
 /**

@@ -5,7 +5,22 @@
 #include <stdlib.h>
 
 
-void load_enemy_data(Enemy* self){
+void load_enemy(Vector2D position,int flip,int enemy_type,int patrol_bound_left,int patrol_bound_right){
+Enemy *self = malloc(sizeof(Enemy));
+switch(enemy_type){
+case 1: load_betamon(self,position,patrol_bound_left,patrol_bound_right);
+break;
+case 2: load_penguinmon(self,position,patrol_bound_left,patrol_bound_right);
+break;
+case 3: load_wormmon(self,position,vector2d(flip,0));
+break;
+case 4: load_zubat(self);
+break;
+case 5: load_pikachu(self);
+break;
+case 6: load_articuno(self);
+break;
+}
 }
 void load_betamon(Enemy* self,Vector2D position, int patrol_bound_left, int patrol_bound_right){
 	self->ent = gf2d_entity_new();
@@ -140,13 +155,13 @@ void penguinmon_think(Entity* self){
 	e->patrol_bound_right -= get_camera_velocity().x;
 	if(self->flip.x == 1){
 		if(self->position.x > e->patrol_bound_left){
-		self->velocity.x = -1;
+		self->velocity.x += -1;
 		}
 		else{self->flip.x = 0;}
 	}
 	else{
 		if(self->position.x < e->patrol_bound_right){
-			self->velocity.x = 1;
+			self->velocity.x += 1;
 		}
 		else{self->flip.x = 1;}
 	}
@@ -173,18 +188,18 @@ void betamon_think(Entity* self){
 	e->patrol_bound_right -= get_camera_velocity().x;
 	if(self->flip.x == 0){
 		if(self->position.x > e->patrol_bound_left){
-		self->velocity.x = -1;
+		self->velocity.x += -1;
 		}
 		else{self->flip.x = 1;}
 	}
 	else{
 		if(self->position.x < e->patrol_bound_right){
-			self->velocity.x = 1;
+			self->velocity.x += 1;
 		}
 		else{self->flip.x = 0;}
 	}
 	if(self->timer < 50){
-		self->velocity.y = -5;}
+		self->velocity.y += -5;}
 	if(self->timer > 200)self->timer = 0;
 		self->timer++;
 }
@@ -199,19 +214,19 @@ void zubat_think(Entity *self){
 	else{self->frame = 0;}
 	if(self->flip.x == 1){
 		if(self->position.x > e->patrol_bound_left){
-		self->velocity.x = -1;
+		self->velocity.x += -1;
 		}
 		else{self->flip.x = 0;}
 	}
 	else{
 		if(self->position.x < e->patrol_bound_right){
-			self->velocity.x = 1;
+			self->velocity.x += 1;
 		}
 		else{self->flip.x = 1;}
 	}
 	
 	if(e->timer < 100){
-		self->velocity.y = +2;}
+		self->velocity.y += 2;}
 	if(e->timer > 100 && e->timer < 200){
 		self->velocity.y -= 2;}
 	if(e->timer > 400)e->timer = 0;
@@ -229,13 +244,13 @@ void articuno_think(Entity *self){
 	else{self->frame = 0;}
 	if(self->flip.x == 1){
 		if(self->position.x > e->patrol_bound_left){
-		self->velocity.x = -1;
+		self->velocity.x += -1;
 		}
 		else{self->flip.x = 0;}
 	}
 	else{
 		if(self->position.x < e->patrol_bound_right){
-			self->velocity.x = 1;
+			self->velocity.x += 1;
 		}
 		else{self->flip.x = 1;}
 	}
@@ -247,7 +262,7 @@ void articuno_think(Entity *self){
 	self->timer--;
 	
 	if(e->timer < 100){
-		self->velocity.y = +2;}
+		self->velocity.y += 2;}
 	if(e->timer > 100 && e->timer < 200){
 		self->velocity.y -= 2;}
 	if(e->timer > 400)e->timer = 0;
@@ -265,13 +280,13 @@ void pikachu_think(Entity *self){
 	else{self->frame = 1;}
 	if(self->flip.x == 0){
 		if(self->position.x > e->patrol_bound_left){
-		self->velocity.x = -1;
+		self->velocity.x += -1;
 		}
 		else{self->flip.x = 1;}
 	}
 	else{
 		if(self->position.x < e->patrol_bound_right){
-			self->velocity.x = 1;
+			self->velocity.x += 1;
 		}
 		else{self->flip.x = 0;}
 	}

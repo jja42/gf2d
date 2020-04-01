@@ -16,10 +16,9 @@ int patrol_bound_right;
 int attack_timer;
 int enemy_type;
 int timer;
-int confused;
 }Enemy;
 
-void load_enemy_data(Enemy* self);
+void load_enemy(Vector2D position,int flip,int enemy_type,int patrol_bound_left,int patrol_bound_right);
 
 void load_betamon(Enemy* self,Vector2D position, int patrol_bound_left, int patrol_bound_right);
 

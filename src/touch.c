@@ -29,6 +29,12 @@ gf2d_entity_free(self);
 }
 }
 
+void door_touch(Entity* self, Entity* other){
+if(other->tag == 1){
+load_num_level(self->special);
+}
+}
+
 void player_touch(Entity* self, Entity* other){
 }
 
@@ -99,11 +105,17 @@ break;
 Player* p = (Player*)gf2d_entity_get(0)->data;
 if (self->owner == 3){
 	p->zubat_weapon = 1;
+	p->level = 0;
+	p->menu_timer = 200;
 }
 if (self->owner == 5){
 	p->articuno_weapon = 1;
+	p->level = 0;
+	p->menu_timer = 200;
 }
 if (self->owner == 4){
 	p->pikachu_weapon = 1;
+	p->level = 0;
+	p->menu_timer = 200;
 }
 }

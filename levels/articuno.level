@@ -58,10 +58,17 @@
 	"Enemies":[
 		{
 		"Position":["750.000000","250.000000"],
-		"EnemyType":"6",
+		"EnemyType":"1",
 		"LeftBound":"740",
 		"RightBound":"800",
 		"Flip":"1"
+		},
+		{
+		"Position":["750.000000","200.000000"],
+		"EnemyType":"3",
+		"LeftBound":"740",
+		"RightBound":"800",
+		"Flip":"0"
 		}
 	]
 

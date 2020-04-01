@@ -9,4 +9,6 @@ void load_level_articuno();
 void load_level_zubat_boss();
 void load_level_pikachu_boss();
 void load_level_articuno_boss();
+void load_level(char* level_name);
+void load_num_level(int num);
 #endif

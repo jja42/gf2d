@@ -126,6 +126,15 @@ void gf2d_entity_update_all();
  */
 void gf2d_entity_update(Entity *self);
 
+void gf2d_platform_spawn(Vector2D position, Vector2D scale);
+
+void gf2d_enemy_spawn(Vector2D position, int enemy_type, int patrol_bound_left, int patrol_bound_right, int flip);
+
 void gf2d_basic_collision();
+
 void projectile_touch(Entity* self, Entity* other);
+
+void gf2d_apply_offset();
+
+void gf2d_door_spawn(int level, Vector2D position);
 #endif

@@ -6,6 +6,7 @@
 #include "gf2d_entity.h"
 #include "level.h"
 #include "player.h"
+#include "camera.h"
 
 typedef struct 
 {
@@ -167,7 +168,7 @@ void button_save_think (Menu *self){
 			Player* player = menu_manager.player;
 			
             SJson *player_data;
-            SJson *player_pos;
+            SJson *camera_offset;
             SJson *player_health;
             SJson *player_experience;
             SJson *player_agumon_lives;
@@ -177,9 +178,12 @@ void button_save_think (Menu *self){
             SJson *player_digitimer;
             SJson *player_digimon;
             SJson *player_digivolved;
+            SJson *player_zubat_weapon;
+            SJson *player_pikachu_weapon;
+            SJson *player_articuno_weapon;
 
             player_data = sj_object_new();
-            player_pos = sj_array_new();
+            camera_offset = sj_array_new();
             player_health = sj_new_int(player->ent->health);
             player_experience = sj_new_int(player->ent->experience);
             player_agumon_lives = sj_new_int(player->agumon_lives);
@@ -189,10 +193,13 @@ void button_save_think (Menu *self){
             player_digitimer = sj_new_float(player->digi_timer);
             player_digimon = sj_new_int(player->digimon);
             player_digivolved = sj_new_int(player->digivolved);
+            player_zubat_weapon = sj_new_int(player->zubat_weapon);
+            player_pikachu_weapon = sj_new_int(player->pikachu_weapon);
+            player_articuno_weapon = sj_new_int(player->articuno_weapon);
             
-            sj_array_append(player_pos,sj_new_float(player->ent->position.x));
-            sj_array_append(player_pos,sj_new_float(player->ent->position.y));
-            sj_object_insert(player_data, "Position", player_pos);
+            sj_array_append(camera_offset,sj_new_float(get_camera_offset().x));
+            sj_array_append(camera_offset,sj_new_float(get_camera_offset().y));
+            sj_object_insert(player_data, "Offset", camera_offset);
             sj_object_insert(player_data, "Health", player_health);
             sj_object_insert(player_data, "Experience", player_experience);
             sj_object_insert(player_data, "AgumonLives", player_agumon_lives);
@@ -202,6 +209,9 @@ void button_save_think (Menu *self){
             sj_object_insert(player_data, "DigiTimer", player_digitimer);
             sj_object_insert(player_data, "Digimon", player_digimon);
             sj_object_insert(player_data, "Digivolved", player_digivolved);
+            sj_object_insert(player_data, "ZubatWeapon", player_zubat_weapon);
+            sj_object_insert(player_data, "PikachuWeapon", player_pikachu_weapon);
+            sj_object_insert(player_data, "ArticunoWeapon", player_articuno_weapon);
             sj_echo(player_data);
             sj_save(player_data, "sav/player.save");
             sj_free(player_data);
@@ -210,13 +220,31 @@ void button_save_think (Menu *self){
 }
 }
 
-/*void button_pikachu_level_think (Menu *self){
-    
-}*/
+void button_pikachu_level_think (Menu *self){
+    if(get_menu_state() == MS_SelectScreen){
+	int mx,my;
+    SDL_GetMouseState(&mx,&my);
+    if (collide_menu(self, vector2d(mx,my))){
+        if (SDL_GetMouseState(NULL, NULL) && SDL_BUTTON(SDL_BUTTON_LEFT)) {
+			menu_manager.menu_state = MS_None;
+			load_level_pikachu();
+        }
+    }
+	}
+}
 
-/*void button_articuno_level_think (Menu *self){
-    
-}*/
+void button_articuno_level_think (Menu *self){
+    if(get_menu_state() == MS_SelectScreen){
+	int mx,my;
+    SDL_GetMouseState(&mx,&my);
+    if (collide_menu(self, vector2d(mx,my))){
+        if (SDL_GetMouseState(NULL, NULL) && SDL_BUTTON(SDL_BUTTON_LEFT)) {
+			menu_manager.menu_state = MS_None;
+			load_level_articuno();
+        }
+    }
+	}
+}
 
 void button_start_think(Menu *self){
 	if(get_menu_state() == MS_TitleScreen){
@@ -225,6 +253,21 @@ void button_start_think(Menu *self){
     if (collide_menu(self, vector2d(mx,my))){
         if (SDL_GetMouseState(NULL, NULL) && SDL_BUTTON(SDL_BUTTON_LEFT)) {
 			menu_manager.menu_state = MS_SelectScreen;
+        }
+    }
+}
+}
+
+void button_continue_think(Menu *self){
+	if(get_menu_state() == MS_TitleScreen){
+	int mx,my;
+    SDL_GetMouseState(&mx,&my);
+    if (collide_menu(self, vector2d(mx,my))){
+        if (SDL_GetMouseState(NULL, NULL) && SDL_BUTTON(SDL_BUTTON_LEFT)) {
+			load_player_data(menu_manager.player);
+			if(menu_manager.player->level != 0){
+			load_num_level(menu_manager.player->level);}
+			menu_manager.menu_state = MS_None;
         }
     }
 }
@@ -325,6 +368,17 @@ if(get_menu_state() == MS_Pause && menu_manager.player->pikachu_weapon){
 
     self->Message = Message;
 }
+else{
+	char life[16];
+	snprintf(life,16, " ");
+	SDL_Color White = {255, 255, 255};  
+
+    SDL_Surface* surfaceMessage = TTF_RenderText_Solid(self->Sans, &life, White); 
+
+    SDL_Texture* Message = SDL_CreateTextureFromSurface(gf2d_graphics_get_renderer(), surfaceMessage); 
+
+    self->Message = Message;
+}
 }
 
 void zubat_weapon_text_think(Menu *self){
@@ -339,12 +393,34 @@ if(get_menu_state() == MS_Pause && menu_manager.player->zubat_weapon){
 
     self->Message = Message;
 }
+else{
+	char life[16];
+	snprintf(life,16, " ");
+	SDL_Color White = {255, 255, 255};  
+
+    SDL_Surface* surfaceMessage = TTF_RenderText_Solid(self->Sans, &life, White); 
+
+    SDL_Texture* Message = SDL_CreateTextureFromSurface(gf2d_graphics_get_renderer(), surfaceMessage); 
+
+    self->Message = Message;
+}
 }
 
 void articuno_weapon_text_think(Menu *self){
 if(get_menu_state() == MS_Pause && menu_manager.player->articuno_weapon){
 	char life[16];
 	snprintf(life,16, "Ice Beam");
+	SDL_Color White = {255, 255, 255};  
+
+    SDL_Surface* surfaceMessage = TTF_RenderText_Solid(self->Sans, &life, White); 
+
+    SDL_Texture* Message = SDL_CreateTextureFromSurface(gf2d_graphics_get_renderer(), surfaceMessage); 
+
+    self->Message = Message;
+}
+else{
+	char life[16];
+	snprintf(life,16, " ");
 	SDL_Color White = {255, 255, 255};  
 
     SDL_Surface* surfaceMessage = TTF_RenderText_Solid(self->Sans, &life, White); 

@@ -97,6 +97,8 @@ int collide_menu(Menu *self,Vector2D mouse);
 
 void button_start_think(Menu *self);
 
+void button_continue_think(Menu *self);
+
 MenuState get_menu_state();
 
 void set_menu_state(MenuState state);

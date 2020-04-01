@@ -4,35 +4,26 @@
 
 void setup_player_ent(Player* self){
 self->ent = gf2d_entity_new();
-load_player_data(self);
 self->ent->touch = player_touch;
 self->ent->healthmax = 100;
 self->ent->owner = 1;
 self->ent->tag = 1;
 self->ent->data = self;
 self->ent->gravity = 1;
-switch (self->digimon){
-case 1: load_agumon(self);
-break;
-case 2: load_guilmon(self);
-break;
-case 3: load_gabumon(self);
-break;
-case 4: load_wargreymon(self);
-break;
-case 5: load_gallantmon(self);
-break;
-case 6: load_etemon(self);
-break;
-}
-
+self->ent->health = 100;
+self->ent->experience = 0;
+self->agumon_lives = 1;
+self->gabumon_lives = 1;
+self->guilmon_lives = 1;
+self->level = 0;
+load_agumon(self);
 }
 
 void load_player_data(Player *self){
 SJson *player_data = sj_load("sav/player.save");
 
 if (player_data){
-			SJson *player_pos;
+			SJson *camera_offset;
             SJson *player_health;
             SJson *player_experience;
             SJson *player_agumon_lives;
@@ -42,8 +33,11 @@ if (player_data){
             SJson *player_digitimer;
             SJson *player_digimon;
             SJson *player_digivolved;
+            SJson *player_articuno_weapon;
+            SJson *player_pikachu_weapon;
+            SJson *player_zubat_weapon;
             
-            player_pos = sj_object_get_value(player_data, "Position");
+            camera_offset = sj_object_get_value(player_data, "Offset");
             player_health = sj_object_get_value(player_data, "Health");
             player_experience = sj_object_get_value(player_data, "Experience");
             player_agumon_lives = sj_object_get_value(player_data, "AgumonLives");
@@ -53,14 +47,19 @@ if (player_data){
             player_digitimer = sj_object_get_value(player_data, "Digitimer");
             player_digimon = sj_object_get_value(player_data, "Digimon");
             player_digivolved = sj_object_get_value(player_data,"Digivolved");
+            player_zubat_weapon = sj_object_get_value(player_data,"ZubatWeapon");
+            player_pikachu_weapon = sj_object_get_value(player_data,"PikachuWeapon");
+            player_articuno_weapon = sj_object_get_value(player_data,"ArticunoWeapon");
             
-            SJson *posX;
-            SJson *posY;
-            posX = sj_array_get_nth(player_pos, 0);
-            posY = sj_array_get_nth(player_pos, 1);
-            
-            sj_get_float_value(posX, &self->ent->position.x);
-            sj_get_float_value(posY, &self->ent->position.y);
+            SJson *offsetX;
+            SJson *offsetY;
+            offsetX = sj_array_get_nth(camera_offset, 0);
+            offsetY = sj_array_get_nth(camera_offset, 1);
+            float cam_offset_x;
+            float cam_offset_y;
+            sj_get_float_value(offsetX, &cam_offset_x);
+            sj_get_float_value(offsetY, &cam_offset_y);
+            set_camera_offset(vector2d(cam_offset_x,cam_offset_y));
             sj_get_integer_value(player_health,&self->ent->health);
             sj_get_integer_value(player_experience,&self->ent->experience);
             sj_get_integer_value(player_agumon_lives,&self->agumon_lives);
@@ -70,19 +69,27 @@ if (player_data){
             sj_get_float_value(player_digitimer,&self->digi_timer);
             sj_get_integer_value(player_digimon,&self->digimon);
             sj_get_integer_value(player_digivolved,&self->digivolved);
-
-	}
-else{
-self->ent->position = vector2d(550,200);
-self->ent->health = 100;
-self->ent->experience = 0;
-self->agumon_lives = 1;
-self->gabumon_lives = 1;
-self->guilmon_lives = 1;
-self->level = 0;
-self->digimon = 1;
-	return;}
+            sj_get_integer_value(player_zubat_weapon,&self->zubat_weapon);
+            sj_get_integer_value(player_pikachu_weapon,&self->pikachu_weapon);
+            sj_get_integer_value(player_articuno_weapon,&self->articuno_weapon);
+            
+			switch (self->digimon){
+			case 1: load_agumon(self);
+			break;
+			case 2: load_guilmon(self);
+			break;
+			case 3: load_gabumon(self);
+			break;
+			case 4: load_wargreymon(self);
+			break;
+			case 5: load_gallantmon(self);
+			break;
+			case 6: load_etemon(self);
+			break;
 }
+}
+}
+
 void load_agumon(Player* self){
 	self->ent->position.y -= 10;
 	gf2d_entity_load(self->ent,"images/aguman.png",48,48,11,self->ent->position,vector2d(3,3));
