@@ -36,6 +36,8 @@ typedef struct Entity_S
     int				gravity;
     int				colliding;
     int				timer;
+    int				frozen;
+    int				special;
     int				invincibility;
     void *data;                     /**<additional entity specific data*/
     
@@ -100,6 +102,12 @@ void gf2d_pickup_spawn(char* filename, int width, int height, int frames_per_lin
  * @param the information for the entity
  */
 void gf2d_projectile_spawn(char* filename, int width, int height, int frames_per_line, Vector2D pos,Vector2D scale,Vector2D velocity,Vector2D flip,Vector2D boxoffset, int boxw, int boxh, float owner, int duration);
+
+/**
+ * @brief spawn a specific weapon projectile entity
+ * @param the information for the entity
+ */
+void gf2d_special_projectile_spawn(char* filename, int width, int height, int frames_per_line, Vector2D pos,Vector2D scale,Vector2D velocity,Vector2D flip,Vector2D boxoffset, int boxw, int boxh, float owner, int duration, int special);
 
 /**
  * @brief takes information from json file and intitializes the entity with that information

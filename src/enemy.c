@@ -211,11 +211,6 @@ void zubat_think(Entity *self){
 		}
 		else{self->flip.x = 1;}
 	}
-	if(self->timer == 0){
-	if(self->flip.x == 0)gf2d_projectile_spawn("images/zubat_attack.png",25,24,3,vector2d(self->position.x+80,self->position.y+20),vector2d(2,2),vector2d(1.5,0),self->flip,vector2d(26,24),24,20,3,30);
-	if(self->flip.x == 1)gf2d_projectile_spawn("images/zubat_attack.png",25,24,3,vector2d(self->position.x-40,self->position.y+20),vector2d(2,2),vector2d(-1.5,0),self->flip,vector2d(26,24),24,20,3,30);
-	self->timer = 250;}
-	self->timer--;
 	
 	if(e->timer < 100){
 		self->velocity.y = +2;}

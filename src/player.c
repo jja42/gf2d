@@ -93,10 +93,10 @@ void load_agumon(Player* self){
 	self->landing_frame = 24;
 	self->ground_attack_start_frame = 25;
 	self->ground_attack_end_frame = 35;
-	self->ground_attack_damage_frame = 34;
+	self->ground_attack_damage_frame = 35;
 	self->air_attack_start_frame = 37;
 	self->air_attack_end_frame = 46;
-	self->air_attack_damage_frame = 45;
+	self->air_attack_damage_frame = 46;
 	self->damaged_frame = 46;
 	self->attack = agumon_attack;
 	self->air_attack = agumon_attack;
@@ -263,6 +263,20 @@ void etemon_attack(Player* self){
 	//if(self->ent->flip.x == 0)gf2d_entity_spawn("images/etemon_ranged_attack.png",24,24,3,vector2d(self->ent->position.x+100,self->ent->position.y+30),vector2d(3,3),vector2d(3,0),self->ent->flip,vector2d(1,1),1);
 	//if(self->ent->flip.x == 1)gf2d_entity_spawn("images/etemon_ranged_attack.png",24,24,3,vector2d(self->ent->position.x,self->ent->position.y+30),vector2d(3,3),vector2d(-3,0),self->ent->flip,vector2d(1,1),1);
 }
+void zubat_weapon_attack(Player* self){
+	if(self->ent->flip.x == 0)gf2d_special_projectile_spawn("images/zubat_attack.png",25,24,3,vector2d(self->ent->position.x+80,self->ent->position.y+20),vector2d(2,2),vector2d(1.5,0),self->ent->flip,vector2d(26,24),24,20,1,30,1);
+	if(self->ent->flip.x == 1)gf2d_special_projectile_spawn("images/zubat_attack.png",25,24,3,vector2d(self->ent->position.x-40,self->ent->position.y+20),vector2d(2,2),vector2d(-1.5,0),self->ent->flip,vector2d(26,24),24,20,1,30,1);
+}
+
+void articuno_weapon_attack(Player* self){
+	if(self->ent->flip.x == 0)gf2d_special_projectile_spawn("images/articuno_weapon_attack.png",20,10,3,vector2d(self->ent->position.x+130,self->ent->position.y+50),vector2d(2,2),vector2d(2,0),self->ent->flip,vector2d(24,10),16,8,1,30,2);
+	if(self->ent->flip.x == 1)gf2d_special_projectile_spawn("images/articuno_weapon_attack.png",20,10,3,vector2d(self->ent->position.x,self->ent->position.y+50),vector2d(2,2),vector2d(-2,0),self->ent->flip,vector2d(24,10),16,8,1,30,2);
+}
+
+void pikachu_weapon_attack(Player* self){
+	gf2d_special_projectile_spawn("images/pikachu_attack.png",22,203,3,vector2d(self->ent->position.x,self->ent->position.y-500),vector2d(2,2),vector2d(0,2),self->ent->flip,vector2d(24,204),16,202,1,30,3);
+}
+
 
 void etemon_air_attack(Player* self){
 }

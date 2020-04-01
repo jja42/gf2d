@@ -4,14 +4,14 @@
 #include <stdlib.h>
 
 void projectile_touch(Entity* self, Entity* other){
+	if(self->special == 1 && other->owner == self->owner)other->health += 10;
 if (other->owner != self->owner && other->invincibility == 0){
-	other->health -= 10;
-	// if(self->owner == 3) //zubat
-	// if(self->owner == 4) //pikachu
-	// if(self->owner == 5) //articuno
-	// if(self->tag == 3) //zubat
-	// if(self->tag == 3) //pikachu
-	// if(self->tag == 3) //articuno
+	if(other->tag != 6)other->health -= 10;
+	if((self->owner == 5 || self->special == 2) && other->tag != 6) {
+		other->frozen = 100;}
+	if((self->owner == 4 || self->special == 3) && other->tag == 6){
+		return;}
+	if(self->special == 1)self->velocity.x = -1 * self->velocity.x;
 	if(other->tag == 1)other->invincibility = 100;
 	slog("%i", other->health);
 	if(other->health == 0 && (other->tag == 8 || other->tag == 1)){
@@ -35,12 +35,14 @@ void player_touch(Entity* self, Entity* other){
 void enemy_touch(Entity* self, Entity* other){
 if(other->tag == 1 && other->invincibility == 0){
 other->health -= 10;
+if(self->owner == 3)self->health+=10;
 other->invincibility = 100;
 slog("taking damage");
 }
 }
 
 void platform_touch(Entity* self, Entity* other){
+	if(other->owner == 4 || other->special == 3)return;
 	//check if low enough                                                             //check if high enough
 if((self->box->pos.y - self->box->height <= other->box->pos.y+other->box->height) && (other->box->pos.y+other->box->height <= self->box->pos.y - self->box->height + 10.0))other->gravity = 0;
 else {
@@ -51,15 +53,15 @@ else {
 
 void solid_collision(Entity* self, int dir){
 	if(dir == 0){self->colliding = 1;
-		slog("colliding left");
+		//slog("colliding left");
 	return;}
 	if(dir == 1){self->colliding = 2;
-		slog("colliding right");
+		//slog("colliding right");
 	return;}
 }
 
 void enemy_drop(Entity* self){
-if(self->tag == 8){
+if(self->tag == 8 && self->owner == 2){
 int drop = rand() % 10;
 switch(drop){
 

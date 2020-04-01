@@ -28,6 +28,9 @@ int level;
 int digimon;
 int ground_attack_damage_frame;
 int air_attack_damage_frame;
+int zubat_weapon;
+int articuno_weapon;
+int pikachu_weapon;
 }Player;
 
 /**
@@ -86,4 +89,7 @@ void etemon_air_attack(Player* self);
 void player_touch(Entity* self, Entity* other);
 void player_pickup(int tag, Player* self);
 void load_player_data(Player* self);
+void articuno_weapon_attack(Player* self);
+void zubat_weapon_attack(Player* self);
+void pikachu_weapon_attack(Player* self);
 #endif
