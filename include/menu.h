@@ -111,4 +111,9 @@ void guilmon_lives_text_think(Menu *self);
 
 void life_text_think(Menu *self);
 
+void pikachu_weapon_text_think(Menu *self);
+
+void zubat_weapon_text_think(Menu *self);
+
+void articuno_weapon_text_think(Menu *self);
 #endif

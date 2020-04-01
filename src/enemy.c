@@ -75,7 +75,7 @@ void load_wormmon(Enemy* self,Vector2D position, Vector2D flip){
 void load_zubat(Enemy* self){
 	self->ent = gf2d_entity_new();
 	self->ent->touch = enemy_touch;
-	self->ent->health = 50;
+	self->ent->health = 10;
 	self->ent->healthmax = 100;
 	self->ent->owner = 3;
 	self->ent->tag = 8;
@@ -96,8 +96,7 @@ void load_zubat(Enemy* self){
 void load_pikachu(Enemy* self){
 	self->ent = gf2d_entity_new();
 	self->ent->touch = enemy_touch;
-	self->ent->health = 50;
-	self->ent->healthmax = 100;
+	self->ent->health = 10;
 	self->ent->owner = 4;
 	self->ent->tag = 8;
 	self->ent->data = self;
@@ -117,8 +116,7 @@ void load_pikachu(Enemy* self){
 void load_articuno(Enemy* self){
 	self->ent = gf2d_entity_new();
 	self->ent->touch = player_touch;
-	self->ent->health = 50;
-	self->ent->healthmax = 100;
+	self->ent->health = 10;
 	self->patrol_bound_left = 500;
     self->patrol_bound_right = 900;
 	self->ent->owner = 5;

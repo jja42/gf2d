@@ -44,7 +44,7 @@ void menu_manager_init(Uint32 maxMenus){
         slog("failed to allocate %i menus for the menu manager",maxMenus);
     }
     menu_manager.maxMenus = maxMenus;
-    menu_manager.menu_state = MS_SelectScreen;
+    menu_manager.menu_state = MS_TitleScreen;
     menu_manager.last_save = 0;
     memset(menu_manager.menuList,0,sizeof(Menu)*maxMenus);
     menu_manager.player = (Player*)gf2d_entity_get(0)->data;
@@ -303,6 +303,48 @@ void life_text_think(Menu *self){
 if(get_menu_state() == MS_Pause){
 	char life[16];
 	snprintf(life,16, "%i", menu_manager.player->ent->health);
+	SDL_Color White = {255, 255, 255};  
+
+    SDL_Surface* surfaceMessage = TTF_RenderText_Solid(self->Sans, &life, White); 
+
+    SDL_Texture* Message = SDL_CreateTextureFromSurface(gf2d_graphics_get_renderer(), surfaceMessage); 
+
+    self->Message = Message;
+}
+}
+
+void pikachu_weapon_text_think(Menu *self){
+if(get_menu_state() == MS_Pause && menu_manager.player->pikachu_weapon){
+	char life[16];
+	snprintf(life,16, "Thunder");
+	SDL_Color White = {255, 255, 255};  
+
+    SDL_Surface* surfaceMessage = TTF_RenderText_Solid(self->Sans, &life, White); 
+
+    SDL_Texture* Message = SDL_CreateTextureFromSurface(gf2d_graphics_get_renderer(), surfaceMessage); 
+
+    self->Message = Message;
+}
+}
+
+void zubat_weapon_text_think(Menu *self){
+if(get_menu_state() == MS_Pause && menu_manager.player->zubat_weapon){
+	char life[16];
+	snprintf(life,16, "Leech Life");
+	SDL_Color White = {255, 255, 255};  
+
+    SDL_Surface* surfaceMessage = TTF_RenderText_Solid(self->Sans, &life, White); 
+
+    SDL_Texture* Message = SDL_CreateTextureFromSurface(gf2d_graphics_get_renderer(), surfaceMessage); 
+
+    self->Message = Message;
+}
+}
+
+void articuno_weapon_text_think(Menu *self){
+if(get_menu_state() == MS_Pause && menu_manager.player->articuno_weapon){
+	char life[16];
+	snprintf(life,16, "Ice Beam");
 	SDL_Color White = {255, 255, 255};  
 
     SDL_Surface* surfaceMessage = TTF_RenderText_Solid(self->Sans, &life, White); 

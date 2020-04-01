@@ -51,7 +51,7 @@ int main(int argc, char * argv[])
     /*setup*/
     gf2d_entity_manager_init(100);
     setup_player_ent(player);
-    menu_manager_init(10);
+    menu_manager_init(20);
     camera_init();
     
     button_generate(button_start_think,gf2d_box(vector2d(800,495),128,38,vector2d(0,0)));
@@ -66,12 +66,18 @@ int main(int argc, char * argv[])
     SDL_Rect agumon_lives_counter = { 1000, 155, 100, 45};
     SDL_Rect gabumon_lives_counter = { 1000, 280, 100, 45};
     SDL_Rect guilmon_lives_counter = { 1000, 425, 100, 45};
+    SDL_Rect zubat_weapon = { 550, 155, 100, 45};
+    SDL_Rect pikachu_weapon = { 550, 280, 100, 45};
+    SDL_Rect articuno_weapon = { 550, 425, 100, 45};
     SDL_Rect life_counter = {1030,730,100,45};
     text_generate(agumon_lives_counter,agumon_lives_text_think,Sans);
     text_generate(gabumon_lives_counter,gabumon_lives_text_think,Sans);
     text_generate(guilmon_lives_counter,guilmon_lives_text_think,Sans);
     text_generate(xp_counter,xp_text_think,Sans);
     text_generate(life_counter,life_text_think,Sans);
+    text_generate(pikachu_weapon,pikachu_weapon_text_think,Sans);
+    text_generate(zubat_weapon,zubat_weapon_text_think,Sans);
+    text_generate(articuno_weapon,articuno_weapon_text_think,Sans);
     
     background = gf2d_sprite_load_image("images/backgrounds/sky_back.png");
     select_screen = gf2d_sprite_load_image("images/backgrounds/selectscreen.png");
@@ -116,17 +122,17 @@ int main(int argc, char * argv[])
         if(current_time > change_timer){load_etemon(player);
         change_timer = SDL_GetTicks() + 500;}
 		}
-		if(keys[SDL_SCANCODE_7] && grounded && !attacking){
+		if(keys[SDL_SCANCODE_7] && grounded && !attacking && player->zubat_weapon){
         if(current_time > change_timer){player->air_attack = zubat_weapon_attack;
 		player->attack = zubat_weapon_attack;
         change_timer = SDL_GetTicks() + 500;}
 		}
-		if(keys[SDL_SCANCODE_8] && grounded && !attacking){
+		if(keys[SDL_SCANCODE_8] && grounded && !attacking && player->articuno_weapon){
         if(current_time > change_timer){player->attack = articuno_weapon_attack;
 			player->air_attack = articuno_weapon_attack;
         change_timer = SDL_GetTicks() + 500;}
 		}
-		if(keys[SDL_SCANCODE_9] && grounded && !attacking){
+		if(keys[SDL_SCANCODE_9] && grounded && !attacking && player->pikachu_weapon){
         if(current_time > change_timer){player->attack = pikachu_weapon_attack;
 			player->air_attack = pikachu_weapon_attack;
         change_timer = SDL_GetTicks() + 500;}

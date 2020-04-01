@@ -156,9 +156,8 @@ void gf2d_entity_update(Entity *self){
 	else{self->velocity = vector2d(0,0);}
 	
 	gf2d_box_update(self->box,self->position);
-	if(self->tag == 1){camera_update();
-		if(self->invincibility > 0)self->invincibility-=1;}
-		
+	if(self->tag == 1){camera_update();}
+	if(self->invincibility > 0)self->invincibility-=1;
 	if(self->tag != 7)self->velocity = vector2d(0,0);
 	if(self->duration<99){self->duration-=.1;
 		self->frame+=.1;

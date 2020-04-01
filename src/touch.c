@@ -12,9 +12,9 @@ if (other->owner != self->owner && other->invincibility == 0){
 	if((self->owner == 4 || self->special == 3) && other->tag == 6){
 		return;}
 	if(self->special == 1)self->velocity.x = -1 * self->velocity.x;
-	if(other->tag == 1)other->invincibility = 100;
+	if(other->tag != 6)other->invincibility = 100;
 	slog("%i", other->health);
-	if(other->health == 0 && (other->tag == 8 || other->tag == 1)){
+	if(other->health <= 0 && (other->tag == 8 || other->tag == 1)){
 		enemy_drop(other);
 		gf2d_entity_free(other);}
 	gf2d_entity_free(self);
@@ -95,5 +95,15 @@ break;
 case 9: gf2d_pickup_spawn("images/guilmon_extra_life.png", 20, 16, 1, vector2d(self->position.x,self->position.y+50), vector2d(3,3),vector2d(0,0),vector2d(0,0),vector2d(30,24),30,24,5,30);
 break;
 }
+}
+Player* p = (Player*)gf2d_entity_get(0)->data;
+if (self->owner == 3){
+	p->zubat_weapon = 1;
+}
+if (self->owner == 5){
+	p->articuno_weapon = 1;
+}
+if (self->owner == 4){
+	p->pikachu_weapon = 1;
 }
 }
