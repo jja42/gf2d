@@ -44,10 +44,12 @@ void enemy_touch(Entity* self, Entity* other){
 if(other->tag == 1 && other->invincibility == 0){
 other->health -= 10;
 if(self->owner == 3 && self->health < self->healthmax){
-	slog("stealing health. current health: %i",self->health);
-	self->health+=10;}
+	self->health+=10;
+	slog("stealing health. current health: %i",self->health);}
 other->invincibility = 100;
 slog("taking damage");
+if(other->health <= 0){
+	gf2d_entity_free(other);}
 }
 }
 
