@@ -12,7 +12,7 @@
 		"Position":["750.000000","450.000000"],
 		"EnemyType":"5",
 		"LeftBound":"0",
-		"RightBound":"1200",
+		"RightBound":"1000",
 		"Flip":"1"
 		}
 	]

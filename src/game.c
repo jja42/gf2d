@@ -8,6 +8,7 @@
 #include "touch.h"
 #include "menu.h"
 #include "camera.h"
+#include "gfc_audio.h"
 
 int main(int argc, char * argv[])
 {
@@ -87,6 +88,7 @@ int main(int argc, char * argv[])
     title_screen = gf2d_sprite_load_image("images/backgrounds/titlescreen.png");
     pause_screen = gf2d_sprite_load_image("images/backgrounds/pausescreen.png");
     mouse = gf2d_sprite_load_all("images/pointer.png",32,32,16);
+    gfc_audio_init(256, 16, 4, 1, 1, 1);
     
     /*main game loop*/
     while(!done && get_menu_state() != MS_Exit)

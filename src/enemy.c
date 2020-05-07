@@ -119,12 +119,12 @@ void load_pikachu(Enemy* self,Vector2D position, int patrol_bound_left, int patr
 	self->patrol_bound_left = patrol_bound_left;
 	self->patrol_bound_right = patrol_bound_right;
 	self->ent->gravity = 1;
-	gf2d_entity_load(self->ent,"images/pikachu.png",37,50,4,self->ent->position,vector2d(2,2));
+	gf2d_entity_load(self->ent,"images/pikachu.png",37,50,4,self->ent->position,vector2d(3,3));
 	self->ent->frame = 0;
 	self->move_end_frame = 4;
 	self->attack_start_frame = 5;
 	self->attack_end_frame = 7;
-	self->ent->box = gf2d_box(self->ent->position, 22, 36, vector2d(38,64));
+	self->ent->box = gf2d_box(self->ent->position, 33, 54, vector2d(57,96));
 	self->enemy_type = 5;
 	self->ent->think = pikachu_think;
 }
