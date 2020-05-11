@@ -2,6 +2,7 @@
 #define __TOUCH_H__
 
 #include "gf2d_entity.h"
+#include "gfc_audio.h"
 
 void projectile_touch(Entity* self, Entity* other);
 

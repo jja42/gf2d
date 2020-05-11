@@ -7,7 +7,9 @@
 #include "level.h"
 #include "player.h"
 #include "camera.h"
-
+#include "gfc_audio.h"
+#include "audio.h"
+#include "SDL.h"
 typedef struct 
 {
     Uint32      maxMenus;         /**<Maximum number of entities*/
@@ -16,6 +18,8 @@ typedef struct
     MenuState	menu_state;
     float 		last_save;
     Player		*player;
+	int 		menu_timer;
+	char*		password[10];
 }MenuManager;
 
 static MenuManager menu_manager = {0};
@@ -50,6 +54,7 @@ void menu_manager_init(Uint32 maxMenus){
     memset(menu_manager.menuList,0,sizeof(Menu)*maxMenus);
     menu_manager.player = (Player*)gf2d_entity_get(0)->data;
     slog("Menu manager initalized");
+    menu_manager.menu_timer = 50;
     atexit(menu_manager_close);
 }
 
@@ -89,7 +94,9 @@ void menu_update_all(){
 
 void menu_draw(Menu *self){
     if(SDL_RenderCopy(gf2d_graphics_get_renderer(), self->Message, NULL, &self->box)){
-    slog("rendering %s", self->Message);}
+    //slog("rendering %s", self->Message);
+    return;
+    }
 }
 
 void menu_draw_all()
@@ -128,7 +135,7 @@ Menu *text_generate(
 }
 
 void button_exit_think (Menu *self){
-    if(get_menu_state() == MS_TitleScreen){
+    if(get_menu_state() == MS_TitleScreen||get_menu_state() == MS_GameOver){
     int mx,my;
     SDL_GetMouseState(&mx,&my);
     if (collide_menu(self, vector2d(mx,my))){
@@ -145,7 +152,7 @@ void button_pause_exit_think (Menu *self){
     SDL_GetMouseState(&mx,&my);
     if (collide_menu(self, vector2d(mx,my))){
         if (SDL_GetMouseState(NULL, NULL) && SDL_BUTTON(SDL_BUTTON_LEFT)) {
-			menu_manager.menu_state = MS_Exit;
+			menu_manager.menu_state = MS_SelectScreen;
         }
     }
 }
@@ -181,6 +188,11 @@ void button_save_think (Menu *self){
             SJson *player_zubat_weapon;
             SJson *player_pikachu_weapon;
             SJson *player_articuno_weapon;
+            SJson *player_lives;
+            SJson *player_zubat_complete;
+            SJson *player_articuno_complete;
+            SJson *player_pikachu_complete;
+            SJson *player_hp_pickups;
 
             player_data = sj_object_new();
             camera_offset = sj_array_new();
@@ -196,6 +208,11 @@ void button_save_think (Menu *self){
             player_zubat_weapon = sj_new_int(player->zubat_weapon);
             player_pikachu_weapon = sj_new_int(player->pikachu_weapon);
             player_articuno_weapon = sj_new_int(player->articuno_weapon);
+            player_lives = sj_new_int(player->lives);
+            player_zubat_complete = sj_new_int(player->zubat_completed);
+            player_articuno_complete = sj_new_int(player->articuno_completed);
+            player_pikachu_complete = sj_new_int(player->pikachu_completed);
+            player_hp_pickups = sj_new_int(player->hp_pickups);
             
             sj_array_append(camera_offset,sj_new_float(get_camera_offset().x));
             sj_array_append(camera_offset,sj_new_float(get_camera_offset().y));
@@ -212,6 +229,11 @@ void button_save_think (Menu *self){
             sj_object_insert(player_data, "ZubatWeapon", player_zubat_weapon);
             sj_object_insert(player_data, "PikachuWeapon", player_pikachu_weapon);
             sj_object_insert(player_data, "ArticunoWeapon", player_articuno_weapon);
+            sj_object_insert(player_data, "ArticunoComplete", player_articuno_complete);
+            sj_object_insert(player_data, "ZubatComplete", player_zubat_complete);
+            sj_object_insert(player_data, "PikachuComplete", player_pikachu_complete);
+            sj_object_insert(player_data, "Lives", player_lives);
+            sj_object_insert(player_data,"HpPickups",player_hp_pickups);
             sj_echo(player_data);
             sj_save(player_data, "sav/player.save");
             sj_free(player_data);
@@ -221,7 +243,7 @@ void button_save_think (Menu *self){
 }
 
 void button_pikachu_level_think (Menu *self){
-    if(get_menu_state() == MS_SelectScreen){
+    if(get_menu_state() == MS_SelectScreen && menu_manager.player->pikachu_completed!=1){
 	int mx,my;
     SDL_GetMouseState(&mx,&my);
     if (collide_menu(self, vector2d(mx,my))){
@@ -234,7 +256,7 @@ void button_pikachu_level_think (Menu *self){
 }
 
 void button_articuno_level_think (Menu *self){
-    if(get_menu_state() == MS_SelectScreen){
+    if(get_menu_state() == MS_SelectScreen && menu_manager.player->articuno_completed!=1){
 	int mx,my;
     SDL_GetMouseState(&mx,&my);
     if (collide_menu(self, vector2d(mx,my))){
@@ -247,12 +269,25 @@ void button_articuno_level_think (Menu *self){
 }
 
 void button_start_think(Menu *self){
-	if(get_menu_state() == MS_TitleScreen){
+	if(get_menu_state() == MS_TitleScreen||get_menu_state() == MS_PasswordScreen){
 	int mx,my;
     SDL_GetMouseState(&mx,&my);
     if (collide_menu(self, vector2d(mx,my))){
         if (SDL_GetMouseState(NULL, NULL) && SDL_BUTTON(SDL_BUTTON_LEFT)) {
 			menu_manager.menu_state = MS_SelectScreen;
+        }
+    }
+}
+}
+void button_retry_think(Menu *self){
+if(get_menu_state() == MS_GameOver){
+	int mx,my;
+    SDL_GetMouseState(&mx,&my);
+    if (collide_menu(self, vector2d(mx,my))){
+        if (SDL_GetMouseState(NULL, NULL) && SDL_BUTTON(SDL_BUTTON_LEFT)) {
+			reset_player(menu_manager.player);
+			reload_num_level(menu_manager.player->level);
+			set_menu_state(MS_None);
         }
     }
 }
@@ -274,7 +309,7 @@ void button_continue_think(Menu *self){
 }
 
 void button_zubat_level_think(Menu *self){
-	if(get_menu_state() == MS_SelectScreen){
+	if(get_menu_state() == MS_SelectScreen && menu_manager.player->zubat_completed!=1){
 	int mx,my;
     SDL_GetMouseState(&mx,&my);
     if (collide_menu(self, vector2d(mx,my))){
@@ -286,6 +321,181 @@ void button_zubat_level_think(Menu *self){
 	}
 }
 
+void button_hp_think(Menu *self){
+	if(get_menu_state() == MS_Pause && menu_manager.player->hp_pickups > 0){
+	int mx,my;
+    SDL_GetMouseState(&mx,&my);
+    if (collide_menu(self, vector2d(mx,my))){
+        if (SDL_GetMouseState(NULL, NULL) && SDL_BUTTON(SDL_BUTTON_LEFT)) {
+			if(menu_manager.player->ent->health < menu_manager.player->ent->healthmax){
+			menu_manager.player->ent->health+=10;
+			menu_manager.player->hp_pickups -= 1;
+			gfc_sound_play(PlayerRestore,0,.5,5,1);}
+			else{
+				return;}
+        }
+    }
+	}
+}
+
+void button_articuno_weapon_think(Menu *self){
+	if(get_menu_state() == MS_Pause && menu_manager.player->articuno_weapon){
+	int mx,my;
+    SDL_GetMouseState(&mx,&my);
+    if (collide_menu(self, vector2d(mx,my))){
+        if (SDL_GetMouseState(NULL, NULL) && SDL_BUTTON(SDL_BUTTON_LEFT)) {
+			menu_manager.player->attack = articuno_weapon_attack;
+			menu_manager.player->air_attack = articuno_weapon_attack;
+			gfc_sound_play(PlayerRestore,0,.5,5,1);}
+        }
+    }
+	}
+
+void button_pikachu_weapon_think(Menu *self){
+	if(get_menu_state() == MS_Pause && menu_manager.player->pikachu_weapon){
+	int mx,my;
+    SDL_GetMouseState(&mx,&my);
+    if (collide_menu(self, vector2d(mx,my))){
+        if (SDL_GetMouseState(NULL, NULL) && SDL_BUTTON(SDL_BUTTON_LEFT)) {
+			menu_manager.player->attack = pikachu_weapon_attack;
+			menu_manager.player->air_attack = pikachu_weapon_attack;
+			gfc_sound_play(PlayerRestore,0,.5,5,1);}
+        }
+    }
+	}
+
+void button_zubat_weapon_think(Menu *self){
+	if(get_menu_state() == MS_Pause && menu_manager.player->zubat_weapon){
+	int mx,my;
+    SDL_GetMouseState(&mx,&my);
+    if (collide_menu(self, vector2d(mx,my))){
+        if (SDL_GetMouseState(NULL, NULL) && SDL_BUTTON(SDL_BUTTON_LEFT)) {
+			menu_manager.player->attack = zubat_weapon_attack;
+			menu_manager.player->air_attack = zubat_weapon_attack;
+			gfc_sound_play(PlayerRestore,0,.5,5,1);}
+        }
+    }
+	}
+
+void button_agumon_switch_think(Menu *self){
+	if(get_menu_state() == MS_Pause && menu_manager.player->agumon_lives > 0 && menu_manager.player->digimon != 1){
+	int mx,my;
+    SDL_GetMouseState(&mx,&my);
+    if (collide_menu(self, vector2d(mx,my))){
+        if (SDL_GetMouseState(NULL, NULL) && SDL_BUTTON(SDL_BUTTON_LEFT)) {
+			load_agumon(menu_manager.player);
+			gfc_sound_play(PlayerRestore,0,.5,5,1);
+			menu_manager.player->agumon_lives -= 1;}
+        }
+    }
+	}
+
+void button_gabumon_switch_think(Menu *self){
+	if(get_menu_state() == MS_Pause && menu_manager.player->gabumon_lives > 0 && menu_manager.player->digimon != 3){
+	int mx,my;
+    SDL_GetMouseState(&mx,&my);
+    if (collide_menu(self, vector2d(mx,my))){
+        if (SDL_GetMouseState(NULL, NULL) && SDL_BUTTON(SDL_BUTTON_LEFT)) {
+			load_gabumon(menu_manager.player);
+			gfc_sound_play(PlayerRestore,0,.5,5,1);
+			menu_manager.player->gabumon_lives -=1;}
+        }
+    }
+	}
+
+void button_guilmon_switch_think(Menu *self){
+	if(get_menu_state() == MS_Pause && menu_manager.player->guilmon_lives > 0 && menu_manager.player->digimon != 2){
+	int mx,my;
+    SDL_GetMouseState(&mx,&my);
+    if (collide_menu(self, vector2d(mx,my))){
+        if (SDL_GetMouseState(NULL, NULL) && SDL_BUTTON(SDL_BUTTON_LEFT)) {
+			load_guilmon(menu_manager.player);
+			gfc_sound_play(PlayerRestore,0,.5,5,1);
+			menu_manager.player->guilmon_lives -=1;}
+        }
+    }
+	}
+
+void button_password_think(Menu *self){
+	if(get_menu_state() == MS_SelectScreen){
+	if(menu_manager.menu_timer <= 0){
+	int mx,my;
+    SDL_GetMouseState(&mx,&my);
+    if (collide_menu(self, vector2d(mx,my))){
+        if (SDL_GetMouseState(NULL, NULL) && SDL_BUTTON(SDL_BUTTON_LEFT)) {
+			menu_manager.menu_state = MS_PasswordScreen;
+        }
+    }
+	}
+else{
+	menu_manager.menu_timer -= 1;
+}
+}
+}
+
+void button_password_zero_think(Menu *self){
+	if(get_menu_state() == MS_PasswordScreen){
+	if(menu_manager.menu_timer <= 0){
+	int mx,my;
+    SDL_GetMouseState(&mx,&my);
+    if (collide_menu(self, vector2d(mx,my))){
+        if (SDL_GetMouseState(NULL, NULL) && SDL_BUTTON(SDL_BUTTON_LEFT)) {
+			strcat(menu_manager.password,"0");
+			menu_manager.menu_timer = 50;
+        }
+    }
+	}
+else{
+	menu_manager.menu_timer -= 1;
+}
+}
+	}
+	
+	void button_password_one_think(Menu *self){
+	if(get_menu_state() == MS_PasswordScreen){
+	if(menu_manager.menu_timer <= 0){
+	int mx,my;
+    SDL_GetMouseState(&mx,&my);
+    if (collide_menu(self, vector2d(mx,my))){
+        if (SDL_GetMouseState(NULL, NULL) && SDL_BUTTON(SDL_BUTTON_LEFT)) {
+			strcat(menu_manager.password,"1");
+			menu_manager.menu_timer = 50;
+        }
+    }
+	}
+else{
+	menu_manager.menu_timer -= 1;
+}
+}
+	}
+
+void button_password_enter_think (Menu *self){
+    if(get_menu_state() == MS_PasswordScreen){
+	if(menu_manager.menu_timer <= 0){
+    int mx,my;
+    SDL_GetMouseState(&mx,&my);
+    if (collide_menu(self, vector2d(mx,my))){
+        if (SDL_GetMouseState(NULL, NULL) && SDL_BUTTON(SDL_BUTTON_LEFT)) {
+			if(!strcmp(menu_manager.password,"101")||!strcmp(menu_manager.password,"000")||!strcmp(menu_manager.password,"111")){
+			gfc_sound_play(PauseMenu,0,.5,5,1);
+			menu_manager.menu_timer = 50;
+			if(!strcmp(menu_manager.password,"101"))menu_manager.player->articuno_completed = 1;
+			if(!strcmp(menu_manager.password,"000"))menu_manager.player->zubat_completed = 1;
+			if(!strcmp(menu_manager.password,"111"))menu_manager.player->pikachu_completed = 1;
+		}
+		else{
+			gfc_sound_play(No,0,.5,5,1);
+			menu_manager.menu_timer = 50;
+		}
+        menu_manager.password[0] = 0;}
+    }
+}
+    else{
+	menu_manager.menu_timer -= 1;
+}
+}
+}
+	
 void xp_text_think(Menu *self){
 	if(get_menu_state() == MS_Pause){
 	char xp[16];
@@ -342,10 +552,38 @@ if(get_menu_state() == MS_Pause){
 }
 }
 
+void hp_count_text_think(Menu *self){
+if(get_menu_state() == MS_Pause){
+	char lives[16];
+	snprintf(lives,16, "x %i", menu_manager.player->hp_pickups);
+	SDL_Color White = {255, 255, 255};  
+
+    SDL_Surface* surfaceMessage = TTF_RenderText_Solid(self->Sans, &lives, White); 
+
+    SDL_Texture* Message = SDL_CreateTextureFromSurface(gf2d_graphics_get_renderer(), surfaceMessage); 
+
+    self->Message = Message;
+}
+}
+
 void life_text_think(Menu *self){
 if(get_menu_state() == MS_Pause){
 	char life[16];
 	snprintf(life,16, "%i", menu_manager.player->ent->health);
+	SDL_Color White = {255, 255, 255};  
+
+    SDL_Surface* surfaceMessage = TTF_RenderText_Solid(self->Sans, &life, White); 
+
+    SDL_Texture* Message = SDL_CreateTextureFromSurface(gf2d_graphics_get_renderer(), surfaceMessage); 
+
+    self->Message = Message;
+}
+}
+
+void lives_count_text_think(Menu *self){
+if(get_menu_state() == MS_Pause){
+	char life[16];
+	snprintf(life,16, "%i", menu_manager.player->lives);
 	SDL_Color White = {255, 255, 255};  
 
     SDL_Surface* surfaceMessage = TTF_RenderText_Solid(self->Sans, &life, White); 
@@ -424,6 +662,17 @@ else{
 	SDL_Color White = {255, 255, 255};  
 
     SDL_Surface* surfaceMessage = TTF_RenderText_Solid(self->Sans, &life, White); 
+
+    SDL_Texture* Message = SDL_CreateTextureFromSurface(gf2d_graphics_get_renderer(), surfaceMessage); 
+
+    self->Message = Message;
+}
+}
+
+void password_text_think(Menu *self){
+if(get_menu_state() == MS_PasswordScreen){
+	SDL_Color White = {255, 255, 255};  
+    SDL_Surface* surfaceMessage = TTF_RenderText_Solid(self->Sans, &menu_manager.password, White); 
 
     SDL_Texture* Message = SDL_CreateTextureFromSurface(gf2d_graphics_get_renderer(), surfaceMessage); 
 

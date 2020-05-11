@@ -12,15 +12,13 @@ void load_level_pikachu(){
 }
 void load_level_articuno(){
 	load_level("levels/articuno.level");
+	gf2d_door_spawn(2,vector2d(950,2200));
 }
 void load_level(char* level_name){
 	gf2d_level_clear();
 	SJson *levelFile = sj_load(level_name);
 	if(levelFile){
 	Player *p = (Player*)gf2d_entity_get(0)->data;
-	if(p->level == 0){
-     set_camera_offset(vector2d(0,0));
-	}
 	SJson *player_pos = sj_object_get_value(levelFile, "PlayerPos");
 	SJson *player_level = sj_object_get_value(levelFile, "PlayerLevel");
 	 SJson *playerposX;
@@ -32,6 +30,12 @@ void load_level(char* level_name){
      sj_get_integer_value(player_level,&p->level);
 	SJson *Platform_array = sj_object_get_value(levelFile, "Platforms");
 	SJson *Enemy_array = sj_object_get_value(levelFile, "Enemies");
+	if(p->level == 1){
+     set_camera_offset(vector2d(0,0));
+	}
+	if(p->level == 3){
+     set_camera_offset(vector2d(-400,-1800));
+	}
 	
 	for (int i = 0;i < sj_array_get_count(Platform_array);i++){
 		SJson *platform_data = sj_array_get_nth(Platform_array,i);
@@ -103,6 +107,23 @@ break;
 }
 }
 
+void reload_num_level(int num){
+switch(num){
+case 1: load_level_zubat();
+break;
+case 2: load_level_zubat_boss();
+break;
+case 3: load_level_articuno();
+break;
+case 4: load_level_articuno_boss();
+break;
+case 5: load_level_pikachu();
+break;
+case 6: load_level_pikachu_boss();
+break;
+}
+}
+
 void load_boss_level(int num){
 switch(num){
 case 1: load_level_zubat_boss();
@@ -115,6 +136,7 @@ break;
 }
 
 void load_level_articuno_boss(){
+	load_level("levels/articuno_boss.level");
 }
 
 void load_level_zubat_boss(){

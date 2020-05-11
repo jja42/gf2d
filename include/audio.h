@@ -1,0 +1,32 @@
+#ifndef __AUDIO_H__
+#define __AUDIO_H__
+#include "gfc_audio.h"
+	Sound* TitleScreen;
+    Sound* ArticunoLevel;
+    Sound* GameOver;
+    Sound* PasswordScreen;
+    Sound* PikachuLevel;
+    Sound* ZubatLevel;
+    Sound* StageSelect;
+    Sound* ArticunoAttack;
+    Sound* BetamonJump;
+    Sound* BossHit;
+    Sound* EnemyHit;
+    Sound* EnemyShoot;
+    Sound* EtemonProjectile;
+    Sound* FireballAttack;
+    Sound* GabumonPunch;
+    Sound* GabumonSpin;
+    Sound* GallantmonProjectile;
+    Sound* GuilmonClaw;
+    Sound* LevelComplete;
+    Sound* PauseMenu;
+    Sound* PikachuAttack;
+    Sound* PlayerHit;
+    Sound* PlayerDefeat;
+    Sound* PlayerRestore;
+    Sound* ProjectileHit;
+    Sound* WarGreymonProjectile;
+    Sound* ZubatAttack;
+    Sound* No;
+#endif

@@ -2,10 +2,18 @@
 #include "simple_logger.h"
 #include "player.h"
 #include <stdlib.h>
+#include "gfc_audio.h"
+#include "level.h"
+#include "menu.h"
+#include "audio.h"
+#include "camera.h"
 
 void projectile_touch(Entity* self, Entity* other){
 if (other->owner != self->owner && other->invincibility == 0){
-	if(other->tag != 6)other->health -= 10;
+	if(other->tag != 6) other->health -= 10;
+	if(other->tag == 1) gfc_sound_play(PlayerHit,0,.5,4,1);
+	if(other->tag == 8) gfc_sound_play(EnemyHit,0,.5,3,1);
+	if(other->tag == 6) gfc_sound_play(ProjectileHit,0,.5,5,1);
 	if((self->owner == 5 || self->special == 2) && other->tag != 6) {
 		other->frozen = 100;}
 	if((self->owner == 4 || self->special == 3) && other->tag == 6){
@@ -13,10 +21,21 @@ if (other->owner != self->owner && other->invincibility == 0){
 	if(self->special == 1)self->velocity.x = -1 * self->velocity.x;
 	if(other->tag != 6)other->invincibility = 100;
 	slog("%i", other->health);
-	if(other->health <= 0 && (other->tag == 8 || other->tag == 1)){
+	if(other->health <= 0 && other->tag == 8 ){
 		if(self->special == 1)hp_drop(other);
 		else{enemy_drop(other);}
 		gf2d_entity_free(other);}
+	if(other->health <= 0 && other->tag == 1 ){
+		Player* p = (Player*)other->data;
+		if(p->lives > 1){p->lives -= 1;
+			p->ent->health = p->ent->healthmax;
+			set_camera_offset(vector2d(0,0));
+			reload_num_level(p->level);}
+		else{
+			gfc_sound_play(PlayerDefeat,0,.5,4,1);
+			set_menu_state(MS_GameOver);
+			}
+		}
 	gf2d_entity_free(self);
 }
 }
@@ -43,13 +62,21 @@ void player_touch(Entity* self, Entity* other){
 void enemy_touch(Entity* self, Entity* other){
 if(other->tag == 1 && other->invincibility == 0){
 other->health -= 10;
+gfc_sound_play(PlayerHit,1,.5,4,1);
 if(self->owner == 3 && self->health < self->healthmax){
 	self->health+=10;
 	slog("stealing health. current health: %i",self->health);}
 other->invincibility = 100;
 slog("taking damage");
 if(other->health <= 0){
-	gf2d_entity_free(other);}
+	Player* p = (Player*)other->data;
+		if(p->lives > 1){p->lives -= 1;
+			p->ent->health = p->ent->healthmax;
+			set_camera_offset(vector2d(0,0));
+			reload_num_level(p->level);}
+		else{
+			gfc_sound_play(PlayerDefeat,0,.5,4,1);
+			set_menu_state(MS_GameOver);}}
 }
 }
 
@@ -111,18 +138,24 @@ break;
 Player* p = (Player*)gf2d_entity_get(0)->data;
 if (self->owner == 3){
 	p->zubat_weapon = 1;
+	p->zubat_completed = 1;
 	p->level = 0;
 	p->menu_timer = 200;
+	gfc_sound_play(LevelComplete,0,.5,1,1);
 }
 if (self->owner == 5){
 	p->articuno_weapon = 1;
+	p->articuno_completed = 1;
 	p->level = 0;
 	p->menu_timer = 200;
+	gfc_sound_play(LevelComplete,0,.5,1,1);
 }
 if (self->owner == 4){
 	p->pikachu_weapon = 1;
+	p->pikachu_completed = 1;
 	p->level = 0;
 	p->menu_timer = 200;
+	gfc_sound_play(LevelComplete,0,.5,1,1);
 }
 }
 

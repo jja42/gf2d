@@ -1,6 +1,8 @@
 #include "player.h"
 #include "touch.h"
 #include "simple_logger.h"
+#include "audio.h"
+#include "camera.h"
 
 void setup_player_ent(Player* self){
 self->ent = gf2d_entity_new();
@@ -12,10 +14,39 @@ self->ent->data = self;
 self->ent->gravity = 1;
 self->ent->health = 100;
 self->ent->experience = 0;
-self->agumon_lives = 1;
-self->gabumon_lives = 1;
-self->guilmon_lives = 1;
+self->agumon_lives = 3;
+self->gabumon_lives = 3;
+self->guilmon_lives = 3;
+self->lives = 3;
 self->level = 0;
+self->zubat_completed = 0;
+self->articuno_completed = 0;
+self->pikachu_completed = 0;
+self->zubat_weapon = 0;
+self->articuno_weapon = 0;
+self->pikachu_weapon = 0;
+self->hp_pickups = 0;
+self->ent->frame = 0;
+load_agumon(self);
+}
+
+void reset_player(Player* self){
+self->ent->healthmax = 100;
+self->ent->gravity = 1;
+self->ent->health = 100;
+self->ent->experience = 0;
+self->agumon_lives = 3;
+self->gabumon_lives = 3;
+self->guilmon_lives = 3;
+self->lives = 3;
+self->zubat_completed = 0;
+self->articuno_completed = 0;
+self->pikachu_completed = 0;
+self->zubat_weapon = 0;
+self->articuno_weapon = 0;
+self->pikachu_weapon = 0;
+self->hp_pickups = 0;
+self->ent->frame = 0;
 load_agumon(self);
 }
 
@@ -29,6 +60,7 @@ if (player_data){
             SJson *player_agumon_lives;
             SJson *player_gabumon_lives;
             SJson *player_guilmon_lives;
+            SJson *player_lives;
             SJson *player_level;
             SJson *player_digitimer;
             SJson *player_digimon;
@@ -36,6 +68,10 @@ if (player_data){
             SJson *player_articuno_weapon;
             SJson *player_pikachu_weapon;
             SJson *player_zubat_weapon;
+            SJson *player_zubat_complete;
+            SJson *player_articuno_complete;
+            SJson *player_pikachu_complete;
+            SJson *player_hp_pickups;
             
             camera_offset = sj_object_get_value(player_data, "Offset");
             player_health = sj_object_get_value(player_data, "Health");
@@ -50,6 +86,11 @@ if (player_data){
             player_zubat_weapon = sj_object_get_value(player_data,"ZubatWeapon");
             player_pikachu_weapon = sj_object_get_value(player_data,"PikachuWeapon");
             player_articuno_weapon = sj_object_get_value(player_data,"ArticunoWeapon");
+            player_zubat_complete = sj_object_get_value(player_data,"ZubatComplete");
+            player_articuno_complete = sj_object_get_value(player_data,"ArticunoComplete");
+            player_pikachu_complete = sj_object_get_value(player_data,"PikachuComplete");
+            player_lives = sj_object_get_value(player_data,"Lives");
+            player_hp_pickups = sj_object_get_value(player_data,"HpPickups");
             
             SJson *offsetX;
             SJson *offsetY;
@@ -72,6 +113,11 @@ if (player_data){
             sj_get_integer_value(player_zubat_weapon,&self->zubat_weapon);
             sj_get_integer_value(player_pikachu_weapon,&self->pikachu_weapon);
             sj_get_integer_value(player_articuno_weapon,&self->articuno_weapon);
+            sj_get_integer_value(player_lives,&self->lives);
+            sj_get_integer_value(player_zubat_complete,&self->zubat_completed);
+            sj_get_integer_value(player_articuno_complete,&self->articuno_completed);
+            sj_get_integer_value(player_pikachu_complete,&self->pikachu_completed);
+            sj_get_integer_value(player_hp_pickups,&self->hp_pickups);
             
 			switch (self->digimon){
 			case 1: load_agumon(self);
@@ -91,7 +137,7 @@ if (player_data){
 }
 
 void load_agumon(Player* self){
-	self->ent->position.y -= 10;
+	self->ent->position.y -= 1;
 	gf2d_entity_load(self->ent,"images/aguman.png",48,48,11,self->ent->position,vector2d(3,3));
 	self->ent->frame = 0;
 	self->move_end_frame = 17;
@@ -114,7 +160,7 @@ void load_agumon(Player* self){
 }
 
 void load_guilmon(Player* self){
-	self->ent->position.y -= 10;
+	self->ent->position.y -= 1;
 	gf2d_entity_load(self->ent,"images/guilmon_2.png",40,50,9,self->ent->position,vector2d(3,3));
 	self->ent->frame = 0;
 	self->move_end_frame = 8;
@@ -137,7 +183,7 @@ void load_guilmon(Player* self){
 }
 
 void load_gabumon(Player* self){
-	self->ent->position.y -= 10;
+	self->ent->position.y -= 1;
 	gf2d_entity_load(self->ent,"images/gabumon.png",48,48,9,self->ent->position,vector2d(3,3));
 	self->ent->frame = 0;
 	self->move_end_frame = 9;
@@ -160,7 +206,7 @@ void load_gabumon(Player* self){
 }
 
 void load_wargreymon(Player* self){
-	self->ent->position.y -= 50;
+	self->ent->position.y -= 20;
 	gf2d_entity_load(self->ent,"images/greymon_beta.png",64,64,8,self->ent->position,vector2d(3,3));
 	self->ent->frame = 0;
 	self->move_end_frame = 8;
@@ -183,7 +229,7 @@ void load_wargreymon(Player* self){
 }
 
 void load_gallantmon(Player* self){
-	self->ent->position.y -= 70;
+	self->ent->position.y -= 65;
 	self->ent->position.x -= 50;
 	gf2d_entity_load(self->ent,"images/gallantmon_beta.png",100,80,8,self->ent->position,vector2d(3,3));
 	self->ent->frame = 0;
@@ -233,67 +279,81 @@ void load_etemon(Player* self){
 void agumon_attack(Player* self){
 if(self->ent->flip.x == 0)gf2d_projectile_spawn("images/fireball.png",24,24,3,vector2d(self->ent->position.x+57.5,self->ent->position.y+62.5),vector2d(2.5,2.5),vector2d(2.5,0),self->ent->flip,vector2d(40,32.5),20,20,1,30);
 if(self->ent->flip.x == 1)gf2d_projectile_spawn("images/fireball.png",24,24,3,vector2d(self->ent->position.x+20,self->ent->position.y+62.5),vector2d(2.5,2.5),vector2d(-2.5,0),self->ent->flip,vector2d(40,32.5),20,20,1,30);
+gfc_sound_play(FireballAttack,0,.5,2,1);
 }
 
 void gabumon_attack(Player* self){
 if(self->ent->flip.x == 0)gf2d_projectile_spawn("images/empty.png",24,24,3,vector2d(self->ent->position.x+80,self->ent->position.y+62.5),vector2d(2.5,2.5),vector2d(0,0),self->ent->flip,vector2d(40,32.5),20,20,1,1);
 if(self->ent->flip.x == 1)gf2d_projectile_spawn("images/empty.png",24,24,3,vector2d(self->ent->position.x,self->ent->position.y+62.5),vector2d(2.5,2.5),vector2d(0,0),self->ent->flip,vector2d(40,32.5),20,20,1,1);
+gfc_sound_play(GabumonPunch,0,.5,2,1);
 }
 
 void gabumon_air_attack(Player* self){
 if(self->ent->flip.x == 0)gf2d_projectile_spawn("images/empty.png",24,24,3,vector2d(self->ent->position.x+60,self->ent->position.y+70),vector2d(2.5,2.5),vector2d(0,0),self->ent->flip,vector2d(40,32.5),20,20,1,1);
 if(self->ent->flip.x == 1)gf2d_projectile_spawn("images/empty.png",24,24,3,vector2d(self->ent->position.x+20,self->ent->position.y+70),vector2d(2.5,2.5),vector2d(0,0),self->ent->flip,vector2d(40,32.5),20,20,1,1);
+gfc_sound_play(GabumonSpin,0,.5,2,1);
 }
 
 void guilmon_attack(Player* self){
 	if(self->ent->flip.x == 0)gf2d_projectile_spawn("images/guilmon_ranged_attack.png",16,16,3,vector2d(self->ent->position.x+57.5,self->ent->position.y+62.5),vector2d(2.5,2.5),vector2d(2.5,0),self->ent->flip,vector2d(40,32.5),20,20,1,30);
 	if(self->ent->flip.x == 1)gf2d_projectile_spawn("images/guilmon_ranged_attack.png",16,16,3,vector2d(self->ent->position.x+20,self->ent->position.y+62.5),vector2d(2.5,2.5),vector2d(-2.5,0),self->ent->flip,vector2d(40,32.5),20,20,1,30);
+gfc_sound_play(FireballAttack,0,.5,2,1);
 }
 void guilmon_air_attack(Player* self){
 	if(self->ent->flip.x == 0)gf2d_projectile_spawn("images/empty.png",24,24,3,vector2d(self->ent->position.x+57.5,self->ent->position.y+62.5),vector2d(2.5,2.5),vector2d(0,0),self->ent->flip,vector2d(40,32.5),20,20,1,1);
 	if(self->ent->flip.x == 1)gf2d_projectile_spawn("images/empty.png",24,24,3,vector2d(self->ent->position.x+20,self->ent->position.y+62.5),vector2d(2.5,2.5),vector2d(0,0),self->ent->flip,vector2d(40,32.5),20,20,1,1);
+gfc_sound_play(GuilmonClaw,0,.5,2,1);
 }
 
 void wargreymon_attack(Player* self){
 	if(self->ent->flip.x == 0)gf2d_projectile_spawn("images/greymon_ranged_attack.png",24,28,3,vector2d(self->ent->position.x+65,self->ent->position.y+30),vector2d(4,4),vector2d(3,0),self->ent->flip,vector2d(44,56),36,36,1,30);
 	if(self->ent->flip.x == 1)gf2d_projectile_spawn("images/greymon_ranged_attack.png",24,28,3,vector2d(self->ent->position.x+20,self->ent->position.y+30),vector2d(4,4),vector2d(-3,0),self->ent->flip,vector2d(44,56),36,36,1,30);
+gfc_sound_play(WarGreymonProjectile,0,.5,2,1);
 }
 void wargreymon_air_attack(Player* self){
 	if(self->ent->flip.x == 0)gf2d_projectile_spawn("images/empty.png",24,28,3,vector2d(self->ent->position.x+80,self->ent->position.y+40),vector2d(4,4),vector2d(0,0),self->ent->flip,vector2d(44,56),36,36,1,1);
 	if(self->ent->flip.x == 1)gf2d_projectile_spawn("images/empty.png",24,28,3,vector2d(self->ent->position.x+20,self->ent->position.y+30),vector2d(4,4),vector2d(0,0),self->ent->flip,vector2d(44,56),36,36,1,1);
+gfc_sound_play(GuilmonClaw,0,.5,2,1);
 }
 
 void gallantmon_attack(Player* self){
 	if(self->ent->flip.x == 0)gf2d_projectile_spawn("images/gallantmon_ranged_attack.png",24,24,3,vector2d(self->ent->position.x+200,self->ent->position.y+100),vector2d(3,3),vector2d(3,0),self->ent->flip,vector2d(48,36),21,21,1,30);
 	if(self->ent->flip.x == 1)gf2d_projectile_spawn("images/gallantmon_ranged_attack.png",24,24,3,vector2d(self->ent->position.x,self->ent->position.y+100),vector2d(3,3),vector2d(-3,0),self->ent->flip,vector2d(48,36),21,21,1,30);
+gfc_sound_play(GallantmonProjectile,0,.5,2,1);
 }
 void gallantmon_air_attack(Player* self){
 	if(self->ent->flip.x == 0)gf2d_projectile_spawn("images/empty.png",24,24,3,vector2d(self->ent->position.x+200,self->ent->position.y+100),vector2d(3,3),vector2d(0,0),self->ent->flip,vector2d(48,36),21,21,1,1);
 	if(self->ent->flip.x == 1)gf2d_projectile_spawn("images/empty.png",24,24,3,vector2d(self->ent->position.x+20,self->ent->position.y+100),vector2d(3,3),vector2d(0,0),self->ent->flip,vector2d(48,36),21,21,1,1);
+gfc_sound_play(GuilmonClaw,0,.5,2,1);
 }
 
 void etemon_attack(Player* self){
 	if(self->ent->flip.x == 0)gf2d_projectile_spawn("images/etemon_ranged_attack.png",24,24,3,vector2d(self->ent->position.x+100,self->ent->position.y+50),vector2d(3,3),vector2d(3,0),self->ent->flip,vector2d(36,42),24,24,1,30);
 	if(self->ent->flip.x == 1)gf2d_projectile_spawn("images/etemon_ranged_attack.png",24,24,3,vector2d(self->ent->position.x,self->ent->position.y+50),vector2d(3,3),vector2d(-3,0),self->ent->flip,vector2d(36,42),24,24,1,30);
+gfc_sound_play(EtemonProjectile,0,.5,2,1);
 }
 
 void etemon_air_attack(Player* self){
 	if(self->ent->flip.x == 0)gf2d_projectile_spawn("images/empty.png",24,24,3,vector2d(self->ent->position.x+100,self->ent->position.y+30),vector2d(3,3),vector2d(0,0),self->ent->flip,vector2d(36,42),24,24,1,1);
 	if(self->ent->flip.x == 1)gf2d_projectile_spawn("images/empty.png",24,24,3,vector2d(self->ent->position.x,self->ent->position.y+30),vector2d(3,3),vector2d(0,0),self->ent->flip,vector2d(36,42),24,24,1,1);
+gfc_sound_play(GabumonSpin,0,.5,2,1);
 }
 
 void zubat_weapon_attack(Player* self){
 	if(self->ent->flip.x == 0)gf2d_special_projectile_spawn("images/zubat_attack.png",25,24,3,vector2d(self->ent->position.x+80,self->ent->position.y+20),vector2d(2,2),vector2d(1.5,0),self->ent->flip,vector2d(26,24),24,20,1,30,1);
 	if(self->ent->flip.x == 1)gf2d_special_projectile_spawn("images/zubat_attack.png",25,24,3,vector2d(self->ent->position.x-40,self->ent->position.y+20),vector2d(2,2),vector2d(-1.5,0),self->ent->flip,vector2d(26,24),24,20,1,30,1);
+gfc_sound_play(ZubatAttack,0,.5,2,1);
 }
 
 void articuno_weapon_attack(Player* self){
 	if(self->ent->flip.x == 0)gf2d_special_projectile_spawn("images/articuno_weapon_attack.png",20,10,3,vector2d(self->ent->position.x+130,self->ent->position.y+50),vector2d(2,2),vector2d(2,0),self->ent->flip,vector2d(24,10),16,8,1,30,2);
 	if(self->ent->flip.x == 1)gf2d_special_projectile_spawn("images/articuno_weapon_attack.png",20,10,3,vector2d(self->ent->position.x,self->ent->position.y+50),vector2d(2,2),vector2d(-2,0),self->ent->flip,vector2d(24,10),16,8,1,30,2);
+gfc_sound_play(ArticunoAttack,0,.5,2,1);
 }
 
 void pikachu_weapon_attack(Player* self){
 	gf2d_special_projectile_spawn("images/pikachu_attack.png",22,203,3,vector2d(self->ent->position.x,self->ent->position.y-500),vector2d(2,2),vector2d(0,2),self->ent->flip,vector2d(24,204),16,202,1,30,3);
+gfc_sound_play(PikachuAttack,0,.5,2,1);
 }
 
 void player_pickup(int tag, Player *self){
@@ -303,18 +363,15 @@ case 2: self->ent->experience += 35;
 break;
 
 case 3: self->agumon_lives++;
-load_agumon(self);
 break;
 
 case 4: self->gabumon_lives++;
-load_gabumon(self);
 break;
 
 case 5: self->guilmon_lives++;
-load_guilmon(self);
 break;
 
-case 9: if(self->ent->health < self->ent->healthmax)self->ent->health+=10;
+case 9: self->hp_pickups++;
 break;
 }
 }

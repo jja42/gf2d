@@ -3,6 +3,7 @@
 #include "touch.h"
 #include "camera.h"
 #include <stdlib.h>
+#include "audio.h"
 
 
 void load_enemy(Vector2D position,int flip,int enemy_type,int patrol_bound_left,int patrol_bound_right){
@@ -175,7 +176,8 @@ void penguinmon_think(Entity* self){
 	if(self->flip.x == 0)gf2d_projectile_spawn("images/enemy_attack.png",8,6,3,vector2d(self->position.x+50,self->position.y+20),vector2d(3,3),vector2d(2.5,0),self->flip,vector2d(12,6),12,6,2,30);
 	if(self->flip.x == 1)gf2d_projectile_spawn("images/enemy_attack.png",8,6,3,vector2d(self->position.x,self->position.y+20),vector2d(3,3),vector2d(-2.5,0),self->flip,vector2d(12,6),12,6,2,30);
 	self->timer = 200;
-	self->frame = 0;}
+	self->frame = 0;
+	gfc_sound_play(EnemyShoot,0,.25,3,1);}
 	self->timer--;
 }
 
@@ -184,7 +186,8 @@ void wormmon_think(Entity* self){
 	if(self->timer == 0){
 	if(self->flip.x == 0)gf2d_projectile_spawn("images/enemy_attack.png",8,6,3,vector2d(self->position.x+25,self->position.y+30),vector2d(3,3),vector2d(2.5,0),self->flip,vector2d(12,6),12,6,2,30);
 	if(self->flip.x == 1)gf2d_projectile_spawn("images/enemy_attack.png",8,6,3,vector2d(self->position.x,self->position.y+30),vector2d(3,3),vector2d(-2.5,0),self->flip,vector2d(12,6),12,6,2,30);
-	self->timer = 250;}
+	self->timer = 250;
+	gfc_sound_play(EnemyShoot,0,.25,3,1);}
 	self->timer--;
 }
 
@@ -205,7 +208,8 @@ void betamon_think(Entity* self){
 		else{self->flip.x = 0;}
 	}
 	if(self->timer < 50){
-		self->velocity.y += -5;}
+		self->velocity.y += -5;
+		gfc_sound_play(BetamonJump,0,.25,3,1);}
 	if(self->timer > 200)self->timer = 0;
 		self->timer++;
 }
@@ -235,7 +239,9 @@ void zubat_think(Entity *self){
 		self->velocity.y += 2;}
 	if(e->timer > 100 && e->timer < 200){
 		self->velocity.y -= 2;}
-	if(e->timer > 400)e->timer = 0;
+	if(e->timer > 400){
+		e->timer = 0;
+		gfc_sound_play(ZubatAttack,0,.5,2,1);}
 		e->timer++;
 	
 }
@@ -264,7 +270,8 @@ void articuno_think(Entity *self){
 	int rando =	rand() % 2;
 	if(rando == 0)gf2d_projectile_spawn("images/articuno_attack.png",10,20,3,vector2d(self->position.x+130,self->position.y+150),vector2d(2,2),vector2d(0,2),self->flip,vector2d(10,24),8,16,5,30);
 	if(rando == 1)gf2d_projectile_spawn("images/articuno_attack.png",10,20,3,vector2d(self->position.x+50,self->position.y+150),vector2d(2,2),vector2d(0,2),self->flip,vector2d(10,24),8,16,5,30);
-	self->timer = 150;}
+	self->timer = 150;
+	gfc_sound_play(ArticunoAttack,0,.5,2,1);}
 	self->timer--;
 	
 	if(e->timer < 100){
@@ -303,6 +310,7 @@ void pikachu_think(Entity *self){
 			self->frame = 0;
 			gf2d_projectile_spawn("images/pikachu_attack.png",22,203,3,vector2d(self->position.x,self->position.y-500),vector2d(2,2),vector2d(0,2),self->flip,vector2d(24,204),16,202,4,30);
 			e->timer = 0;
+			gfc_sound_play(PikachuAttack,0,.5,2,1);
 			}
 		}
 	if(self->timer == 0){

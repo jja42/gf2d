@@ -13,7 +13,9 @@ typedef enum
     MS_TitleScreen = 1,
     MS_SelectScreen = 2,
     MS_Exit = 3,
-    MS_Pause = 4
+    MS_Pause = 4,
+    MS_GameOver = 5,
+    MS_PasswordScreen = 6
 }MenuState;
 
 typedef struct Menu_S
@@ -99,6 +101,30 @@ void button_start_think(Menu *self);
 
 void button_continue_think(Menu *self);
 
+void button_password_think(Menu *self);
+
+void button_password_enter_think(Menu *self);
+
+void button_articuno_weapon_think(Menu *self);
+
+void button_pikachu_weapon_think(Menu *self);
+
+void button_zubat_weapon_think(Menu *self);
+
+void button_agumon_switch_think(Menu *self);
+
+void button_gabumon_switch_think(Menu *self);
+
+void button_guilmon_switch_think(Menu *self);
+
+void button_hp_think(Menu *self);
+
+void button_password_zero_think(Menu *self);
+
+void button_password_one_think(Menu *self);
+
+void button_retry_think(Menu *self);
+
 MenuState get_menu_state();
 
 void set_menu_state(MenuState state);
@@ -117,5 +143,11 @@ void pikachu_weapon_text_think(Menu *self);
 
 void zubat_weapon_text_think(Menu *self);
 
+void password_text_think(Menu *self);
+
 void articuno_weapon_text_think(Menu *self);
+
+void lives_count_text_think(Menu *self);
+
+void hp_count_text_think(Menu *self);
 #endif
