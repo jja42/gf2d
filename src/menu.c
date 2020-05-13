@@ -654,9 +654,12 @@ void button_password_enter_think (Menu *self){
 			if(!strcmp(menu_manager.password,"101")||!strcmp(menu_manager.password,"000")||!strcmp(menu_manager.password,"111")||!strcmp(menu_manager.password,"010")){
 			gfc_sound_play(PauseMenu,0,.5,5,1);
 			menu_manager.menu_timer = 50;
-			if(!strcmp(menu_manager.password,"101"))menu_manager.player->articuno_completed = 1;
-			if(!strcmp(menu_manager.password,"000"))menu_manager.player->zubat_completed = 1;
-			if(!strcmp(menu_manager.password,"111"))menu_manager.player->pikachu_completed = 1;
+			if(!strcmp(menu_manager.password,"101")){menu_manager.player->articuno_completed = 1;
+				menu_manager.player->articuno_weapon = 1;}
+			if(!strcmp(menu_manager.password,"000")){menu_manager.player->zubat_completed = 1;
+				menu_manager.player->zubat_weapon = 1;}
+			if(!strcmp(menu_manager.password,"111")){menu_manager.player->pikachu_completed = 1;
+				menu_manager.player->pikachu_weapon = 1;}
 			if(!strcmp(menu_manager.password,"010")){
 				load_custom_level();
 				menu_manager.menu_state = MS_None;}
@@ -970,8 +973,6 @@ void editor_add_enemy(Entity* self, int enemy_type){
         menu_manager.enemy_list[i] = *self;
         return;
     }
-    slog("request for entity failed: all full up");
-    return NULL;
 }
 
 void editor_add_platform(Entity* self){
@@ -984,6 +985,4 @@ void editor_add_platform(Entity* self){
         menu_manager.platform_list[i] = *self;
         return;
     }
-    slog("request for entity failed: all full up");
-    return NULL;
 }
