@@ -30,17 +30,11 @@ void load_level(char* level_name){
      sj_get_integer_value(player_level,&p->level);
 	SJson *Platform_array = sj_object_get_value(levelFile, "Platforms");
 	SJson *Enemy_array = sj_object_get_value(levelFile, "Enemies");
-	if(p->level == 1){
+	if(p->level == 1||p->level == 2||p->level == 7||p->level == 5){
      set_camera_offset(vector2d(0,0));
 	}
 	if(p->level == 3){
      set_camera_offset(vector2d(-400,-1800));
-	}
-	if(p->level == 7){
-     set_camera_offset(vector2d(0,0));
-	}
-	if(p->level == 5){
-		set_camera_offset(vector2d(0,0));
 	}
 	
 	
