@@ -328,6 +328,8 @@ void button_continue_think(Menu *self){
 			load_player_data(menu_manager.player);
 			if(menu_manager.player->level != 0){
 			load_num_level(menu_manager.player->level);}
+			load_player_data(menu_manager.player);
+			gf2d_apply_offset();
 			menu_manager.menu_state = MS_None;
         }
     }

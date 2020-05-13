@@ -39,6 +39,9 @@ void load_level(char* level_name){
 	if(p->level == 7){
      set_camera_offset(vector2d(0,0));
 	}
+	if(p->level == 5){
+		set_camera_offset(vector2d(0,0));
+	}
 	
 	
 	for (int i = 0;i < sj_array_get_count(Platform_array);i++){

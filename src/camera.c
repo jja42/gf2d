@@ -24,4 +24,5 @@ return camera.offset;
 
 void set_camera_offset(Vector2D offset){
 	camera.offset = offset;
+	slog("Camera Offset : %f, %f",get_camera_offset().x,get_camera_offset().y);
 }

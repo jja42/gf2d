@@ -23,7 +23,7 @@ if (other->owner != self->owner && other->invincibility == 0){
 	slog("%i", other->health);
 	if(other->health <= 0 && other->tag == 8 ){
 		if(self->special == 1)hp_drop(other);
-		else{enemy_drop(other);}
+		enemy_drop(other);
 		gf2d_entity_free(other);}
 	if(other->health <= 0 && other->tag == 1 ){
 		Player* p = (Player*)other->data;
