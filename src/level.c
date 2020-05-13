@@ -36,6 +36,10 @@ void load_level(char* level_name){
 	if(p->level == 3){
      set_camera_offset(vector2d(-400,-1800));
 	}
+	if(p->level == 7){
+     set_camera_offset(vector2d(0,0));
+	}
+	
 	
 	for (int i = 0;i < sj_array_get_count(Platform_array);i++){
 		SJson *platform_data = sj_array_get_nth(Platform_array,i);
@@ -104,6 +108,7 @@ case 5: load_level_pikachu();
 break;
 case 6: load_level_pikachu_boss();
 break;
+case 7: load_custom_level();
 }
 }
 
@@ -144,4 +149,9 @@ load_level("levels/zubat_boss.level");
 }
 
 void load_level_pikachu_boss(){
+}
+
+void load_custom_level(){
+load_level("levels/custom.level");
+gf2d_door_spawn(5,vector2d(1275,600));
 }

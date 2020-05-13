@@ -15,7 +15,8 @@ typedef enum
     MS_Exit = 3,
     MS_Pause = 4,
     MS_GameOver = 5,
-    MS_PasswordScreen = 6
+    MS_PasswordScreen = 6,
+    MS_Editor = 7
 }MenuState;
 
 typedef struct Menu_S
@@ -125,9 +126,27 @@ void button_password_one_think(Menu *self);
 
 void button_retry_think(Menu *self);
 
+void button_editor_think(Menu *self);
+
+void button_editor_exit_think(Menu *self);
+
+void button_editor_save_think(Menu *self);
+
+void button_editor_betamon_think(Menu *self);
+
+void button_editor_wormmon_think(Menu *self);
+
+void button_editor_penguinmon_think(Menu *self);
+
+void button_editor_platform_think(Menu *self);
+
+void button_editor_place_think(Menu *self);
+
 MenuState get_menu_state();
 
 void set_menu_state(MenuState state);
+
+void set_menu_flip();
 
 void xp_text_think(Menu *self);
 
@@ -150,4 +169,8 @@ void articuno_weapon_text_think(Menu *self);
 void lives_count_text_think(Menu *self);
 
 void hp_count_text_think(Menu *self);
+
+void editor_add_enemy(Entity* self, int enemy_type);
+
+void editor_add_platform(Entity* self);
 #endif

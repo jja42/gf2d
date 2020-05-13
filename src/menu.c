@@ -10,6 +10,7 @@
 #include "gfc_audio.h"
 #include "audio.h"
 #include "SDL.h"
+#include "enemy.h"
 typedef struct 
 {
     Uint32      maxMenus;         /**<Maximum number of entities*/
@@ -20,6 +21,10 @@ typedef struct
     Player		*player;
 	int 		menu_timer;
 	char*		password[10];
+	int			entity_selected;
+	int			flip;
+	Entity 		*enemy_list;
+	Entity 		*platform_list;
 }MenuManager;
 
 static MenuManager menu_manager = {0};
@@ -55,6 +60,10 @@ void menu_manager_init(Uint32 maxMenus){
     menu_manager.player = (Player*)gf2d_entity_get(0)->data;
     slog("Menu manager initalized");
     menu_manager.menu_timer = 50;
+    menu_manager.entity_selected = 0;
+    menu_manager.flip = 0;
+    menu_manager.enemy_list = (Entity*)gfc_allocate_array(sizeof(Entity),30);
+    menu_manager.platform_list = (Entity*)gfc_allocate_array(sizeof(Entity),30);
     atexit(menu_manager_close);
 }
 
@@ -292,6 +301,23 @@ if(get_menu_state() == MS_GameOver){
     }
 }
 }
+void button_editor_think(Menu *self){
+	if(get_menu_state() == MS_SelectScreen){
+	int mx,my;
+    SDL_GetMouseState(&mx,&my);
+    if (collide_menu(self, vector2d(mx,my))){
+        if (SDL_GetMouseState(NULL, NULL) && SDL_BUTTON(SDL_BUTTON_LEFT)) {
+			set_camera_offset(vector2d(0,0));
+			gf2d_level_clear();
+			menu_manager.menu_state = MS_Editor;
+			menu_manager.player->ent->position = vector2d(200,600);
+			gf2d_platform_spawn(vector2d(200,742),vector2d(3,3));
+			gf2d_door_spawn(5,vector2d(1275,600));
+			gf2d_platform_spawn(vector2d(1250,742),vector2d(3,3));
+        }
+    }
+}
+}
 
 void button_continue_think(Menu *self){
 	if(get_menu_state() == MS_TitleScreen){
@@ -304,6 +330,155 @@ void button_continue_think(Menu *self){
 			load_num_level(menu_manager.player->level);}
 			menu_manager.menu_state = MS_None;
         }
+    }
+}
+}
+
+void button_editor_exit_think(Menu *self){
+	if(get_menu_state() == MS_Editor){
+	int mx,my;
+    SDL_GetMouseState(&mx,&my);
+    if (collide_menu(self, vector2d(mx,my))){
+        if (SDL_GetMouseState(NULL, NULL) && SDL_BUTTON(SDL_BUTTON_LEFT)) {
+			menu_manager.menu_state = MS_SelectScreen;
+        }
+    }
+}
+}
+
+void button_editor_save_think(Menu *self){
+	if(get_menu_state() == MS_Editor&& menu_manager.last_save + 250 < SDL_GetTicks()) {
+    menu_manager.last_save = SDL_GetTicks();
+	int mx,my;
+    SDL_GetMouseState(&mx,&my);
+    if (collide_menu(self, vector2d(mx,my))){
+        if (SDL_GetMouseState(NULL, NULL) && SDL_BUTTON(SDL_BUTTON_LEFT)) {
+			SJson *level_data;
+			SJson *player_position;
+            SJson *player_level;
+            SJson *platforms;
+            SJson *enemies;
+
+            level_data = sj_object_new();
+            platforms = sj_array_new();
+            enemies = sj_array_new();
+            player_position = sj_array_new();
+			sj_array_append(player_position,sj_new_float(150.0));
+			sj_array_append(player_position,sj_new_float(400.0));
+            player_level = sj_new_int(7);
+        int i;
+		for (i = 0; i < 30; i++)
+			{
+			if (menu_manager.platform_list[i]._inuse){
+				SJson *platform_data = sj_object_new();
+				SJson *platform_pos = sj_array_new();
+				SJson *platform_scale = sj_array_new();
+				sj_array_append(platform_pos,sj_new_float(menu_manager.platform_list[i].position.x));
+				sj_array_append(platform_pos,sj_new_float(menu_manager.platform_list[i].position.y));
+				sj_array_append(platform_scale,sj_new_float(menu_manager.platform_list[i].scale.x));
+				sj_array_append(platform_scale,sj_new_float(menu_manager.platform_list[i].scale.y));
+				sj_object_insert(platform_data, "Position", platform_pos);
+				sj_object_insert(platform_data, "Scale", platform_scale);
+				sj_array_append(platforms,platform_data);
+			}
+			}
+		
+		for (i = 0; i < 30; i++)
+			{
+			if (menu_manager.enemy_list[i]._inuse){
+				SJson *enemy_data = sj_object_new();
+				SJson *enemy_pos = sj_array_new();
+				SJson *enemy_type = sj_new_int(menu_manager.enemy_list[i].type);
+				SJson *left_bound = sj_new_int(menu_manager.enemy_list[i].position.x-30);
+				SJson *right_bound = sj_new_int(menu_manager.enemy_list[i].position.x+30);
+				SJson *flip = sj_new_int(menu_manager.enemy_list[i].flip.x);
+				sj_array_append(enemy_pos,sj_new_float(menu_manager.enemy_list[i].position.x));
+				sj_array_append(enemy_pos,sj_new_float(menu_manager.enemy_list[i].position.y));
+				sj_object_insert(enemy_data, "Position", enemy_pos);
+				sj_object_insert(enemy_data, "EnemyType", enemy_type);
+				sj_object_insert(enemy_data, "LeftBound", left_bound);
+				sj_object_insert(enemy_data, "RightBound", right_bound);
+				sj_object_insert(enemy_data, "Flip", flip);
+				sj_array_append(enemies,enemy_data);
+			}
+			}
+            sj_object_insert(level_data, "PlayerPos", player_position);
+            sj_object_insert(level_data, "PlayerLevel", player_level);
+            sj_object_insert(level_data, "Platforms", platforms);
+            sj_object_insert(level_data, "Enemies", enemies);
+            sj_echo(level_data);
+            sj_save(level_data, "levels/custom.level");
+            sj_free(level_data);
+        }
+    }
+}
+}
+
+void button_editor_betamon_think(Menu *self){
+	if(get_menu_state() == MS_Editor){
+	int mx,my;
+    SDL_GetMouseState(&mx,&my);
+    if (collide_menu(self, vector2d(mx,my))){
+        if (SDL_GetMouseState(NULL, NULL) && SDL_BUTTON(SDL_BUTTON_LEFT)) {
+			menu_manager.entity_selected = 1;
+        }
+    }
+}
+}
+
+void button_editor_wormmon_think(Menu *self){
+	if(get_menu_state() == MS_Editor){
+	int mx,my;
+    SDL_GetMouseState(&mx,&my);
+    if (collide_menu(self, vector2d(mx,my))){
+        if (SDL_GetMouseState(NULL, NULL) && SDL_BUTTON(SDL_BUTTON_LEFT)) {
+			menu_manager.entity_selected = 2;
+        }
+    }
+}
+}
+
+void button_editor_penguinmon_think(Menu *self){
+	if(get_menu_state() == MS_Editor){
+	int mx,my;
+    SDL_GetMouseState(&mx,&my);
+    if (collide_menu(self, vector2d(mx,my))){
+        if (SDL_GetMouseState(NULL, NULL) && SDL_BUTTON(SDL_BUTTON_LEFT)) {
+			menu_manager.entity_selected = 3;
+        }
+    }
+}
+}
+
+void button_editor_platform_think(Menu *self){
+	if(get_menu_state() == MS_Editor){
+	int mx,my;
+    SDL_GetMouseState(&mx,&my);
+    if (collide_menu(self, vector2d(mx,my))){
+        if (SDL_GetMouseState(NULL, NULL) && SDL_BUTTON(SDL_BUTTON_LEFT)) {
+			menu_manager.entity_selected = 4;
+        }
+    }
+}
+}
+
+void button_editor_place_think(Menu *self){
+	if(get_menu_state() == MS_Editor){
+	int mx,my;
+    SDL_GetMouseState(&mx,&my);
+    if (collide_menu(self, vector2d(mx,my))){
+		if(menu_manager.menu_timer<=0){
+        if (SDL_GetMouseState(NULL, NULL) && SDL_BUTTON(SDL_BUTTON_LEFT)) {
+			menu_manager.menu_timer = 100;
+			if(menu_manager.entity_selected == 0) gfc_sound_play(No,0,.25,5,1);
+			if(menu_manager.entity_selected == 1) load_enemy(vector2d(mx,my),menu_manager.flip,1,mx-10,mx+10);
+			if(menu_manager.entity_selected == 2) load_enemy(vector2d(mx,my),menu_manager.flip,3,0,0);
+			if(menu_manager.entity_selected == 3) load_enemy(vector2d(mx,my),menu_manager.flip,2,mx-10,mx+10);
+			if(menu_manager.entity_selected == 4) gf2d_platform_spawn(vector2d(mx,my),vector2d(3,3));
+        }
+	}
+	else{
+		menu_manager.menu_timer--;}
     }
 }
 }
@@ -476,12 +651,15 @@ void button_password_enter_think (Menu *self){
     SDL_GetMouseState(&mx,&my);
     if (collide_menu(self, vector2d(mx,my))){
         if (SDL_GetMouseState(NULL, NULL) && SDL_BUTTON(SDL_BUTTON_LEFT)) {
-			if(!strcmp(menu_manager.password,"101")||!strcmp(menu_manager.password,"000")||!strcmp(menu_manager.password,"111")){
+			if(!strcmp(menu_manager.password,"101")||!strcmp(menu_manager.password,"000")||!strcmp(menu_manager.password,"111")||!strcmp(menu_manager.password,"010")){
 			gfc_sound_play(PauseMenu,0,.5,5,1);
 			menu_manager.menu_timer = 50;
 			if(!strcmp(menu_manager.password,"101"))menu_manager.player->articuno_completed = 1;
 			if(!strcmp(menu_manager.password,"000"))menu_manager.player->zubat_completed = 1;
 			if(!strcmp(menu_manager.password,"111"))menu_manager.player->pikachu_completed = 1;
+			if(!strcmp(menu_manager.password,"010")){
+				load_custom_level();
+				menu_manager.menu_state = MS_None;}
 		}
 		else{
 			gfc_sound_play(No,0,.5,5,1);
@@ -508,6 +686,17 @@ void xp_text_think(Menu *self){
 
     self->Message = Message;
 }
+else{
+	char life[16];
+	snprintf(life,16, " ");
+	SDL_Color White = {255, 255, 255};  
+
+    SDL_Surface* surfaceMessage = TTF_RenderText_Solid(self->Sans, &life, White); 
+
+    SDL_Texture* Message = SDL_CreateTextureFromSurface(gf2d_graphics_get_renderer(), surfaceMessage); 
+
+    self->Message = Message;
+}
 }
 
 void agumon_lives_text_think(Menu *self){
@@ -517,6 +706,17 @@ if(get_menu_state() == MS_Pause){
 	SDL_Color White = {255, 255, 255};  
 
     SDL_Surface* surfaceMessage = TTF_RenderText_Solid(self->Sans, &lives, White); 
+
+    SDL_Texture* Message = SDL_CreateTextureFromSurface(gf2d_graphics_get_renderer(), surfaceMessage); 
+
+    self->Message = Message;
+}
+else{
+	char life[16];
+	snprintf(life,16, " ");
+	SDL_Color White = {255, 255, 255};  
+
+    SDL_Surface* surfaceMessage = TTF_RenderText_Solid(self->Sans, &life, White); 
 
     SDL_Texture* Message = SDL_CreateTextureFromSurface(gf2d_graphics_get_renderer(), surfaceMessage); 
 
@@ -536,6 +736,17 @@ if(get_menu_state() == MS_Pause){
 
     self->Message = Message;
 }
+else{
+	char life[16];
+	snprintf(life,16, " ");
+	SDL_Color White = {255, 255, 255};  
+
+    SDL_Surface* surfaceMessage = TTF_RenderText_Solid(self->Sans, &life, White); 
+
+    SDL_Texture* Message = SDL_CreateTextureFromSurface(gf2d_graphics_get_renderer(), surfaceMessage); 
+
+    self->Message = Message;
+}
 }
 
 void guilmon_lives_text_think(Menu *self){
@@ -545,6 +756,17 @@ if(get_menu_state() == MS_Pause){
 	SDL_Color White = {255, 255, 255};  
 
     SDL_Surface* surfaceMessage = TTF_RenderText_Solid(self->Sans, &lives, White); 
+
+    SDL_Texture* Message = SDL_CreateTextureFromSurface(gf2d_graphics_get_renderer(), surfaceMessage); 
+
+    self->Message = Message;
+}
+else{
+	char life[16];
+	snprintf(life,16, " ");
+	SDL_Color White = {255, 255, 255};  
+
+    SDL_Surface* surfaceMessage = TTF_RenderText_Solid(self->Sans, &life, White); 
 
     SDL_Texture* Message = SDL_CreateTextureFromSurface(gf2d_graphics_get_renderer(), surfaceMessage); 
 
@@ -564,6 +786,17 @@ if(get_menu_state() == MS_Pause){
 
     self->Message = Message;
 }
+else{
+	char life[16];
+	snprintf(life,16, " ");
+	SDL_Color White = {255, 255, 255};  
+
+    SDL_Surface* surfaceMessage = TTF_RenderText_Solid(self->Sans, &life, White); 
+
+    SDL_Texture* Message = SDL_CreateTextureFromSurface(gf2d_graphics_get_renderer(), surfaceMessage); 
+
+    self->Message = Message;
+}
 }
 
 void life_text_think(Menu *self){
@@ -578,12 +811,34 @@ if(get_menu_state() == MS_Pause){
 
     self->Message = Message;
 }
+else{
+	char life[16];
+	snprintf(life,16, " ");
+	SDL_Color White = {255, 255, 255};  
+
+    SDL_Surface* surfaceMessage = TTF_RenderText_Solid(self->Sans, &life, White); 
+
+    SDL_Texture* Message = SDL_CreateTextureFromSurface(gf2d_graphics_get_renderer(), surfaceMessage); 
+
+    self->Message = Message;
+}
 }
 
 void lives_count_text_think(Menu *self){
 if(get_menu_state() == MS_Pause){
 	char life[16];
 	snprintf(life,16, "%i", menu_manager.player->lives);
+	SDL_Color White = {255, 255, 255};  
+
+    SDL_Surface* surfaceMessage = TTF_RenderText_Solid(self->Sans, &life, White); 
+
+    SDL_Texture* Message = SDL_CreateTextureFromSurface(gf2d_graphics_get_renderer(), surfaceMessage); 
+
+    self->Message = Message;
+}
+else{
+	char life[16];
+	snprintf(life,16, " ");
 	SDL_Color White = {255, 255, 255};  
 
     SDL_Surface* surfaceMessage = TTF_RenderText_Solid(self->Sans, &life, White); 
@@ -678,6 +933,17 @@ if(get_menu_state() == MS_PasswordScreen){
 
     self->Message = Message;
 }
+else{
+	char life[16];
+	snprintf(life,16, " ");
+	SDL_Color White = {255, 255, 255};  
+
+    SDL_Surface* surfaceMessage = TTF_RenderText_Solid(self->Sans, &life, White); 
+
+    SDL_Texture* Message = SDL_CreateTextureFromSurface(gf2d_graphics_get_renderer(), surfaceMessage); 
+
+    self->Message = Message;
+}
 }
 
 MenuState get_menu_state(){
@@ -685,4 +951,39 @@ MenuState get_menu_state(){
 	
 void	set_menu_state(MenuState state){
 	menu_manager.menu_state = state;
+}
+
+void	set_menu_flip(){
+	if(menu_manager.flip == 0)menu_manager.flip = 1;
+	else{
+		menu_manager.flip = 0;
+	}
+}
+
+void editor_add_enemy(Entity* self, int enemy_type){
+	int i;
+	slog("Adding enemy of type: %i",enemy_type);
+    for (i = 0; i < 30; i++)
+    {
+        if (menu_manager.enemy_list[i]._inuse)continue;
+        //. found a free entry
+        menu_manager.enemy_list[i] = *self;
+        return;
+    }
+    slog("request for entity failed: all full up");
+    return NULL;
+}
+
+void editor_add_platform(Entity* self){
+	int i;
+	slog("Adding platform");
+    for (i = 0; i < 30; i++)
+    {
+        if (menu_manager.platform_list[i]._inuse)continue;
+        //. found a free entry
+        menu_manager.platform_list[i] = *self;
+        return;
+    }
+    slog("request for entity failed: all full up");
+    return NULL;
 }

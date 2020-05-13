@@ -29,4 +29,5 @@
     Sound* WarGreymonProjectile;
     Sound* ZubatAttack;
     Sound* No;
+    Sound* Editor;
 #endif

@@ -52,7 +52,9 @@ void door_touch(Entity* self, Entity* other){
 if(other->tag == 1){
 Player* p = (Player*)other->data;
 p->level = 0;
-load_boss_level(self->special);
+if(self->special != 5)load_boss_level(self->special);
+else{set_menu_state(MS_SelectScreen);
+}
 }
 }
 

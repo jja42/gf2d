@@ -13,4 +13,5 @@ void load_level(char* level_name);
 void load_num_level(int num);
 void reload_num_level(int num);
 void load_boss_level(int num);
+void load_custom_level();
 #endif

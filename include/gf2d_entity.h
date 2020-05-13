@@ -30,7 +30,7 @@ typedef struct Entity_S
     int           experience;
     float           duration;
     int             tag;			/**1 - player, 2 - experience, 3 - pickup agu 4 - pickup gabu 5 - pickup guil 6 - platform 7 - projectile 8 - enemy 9 - hp */
-    char*			name;
+    int				type;
     float			frame;
     Box*			box;
     int				gravity;

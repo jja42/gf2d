@@ -27,6 +27,7 @@ int main(int argc, char * argv[])
     Sprite* password_screen;
     Sprite* gameover;
     Sprite* black_box;
+    Sprite* editor_screen;
     Uint8 titletheme = 0;
     Uint8 selecttheme = 0;
     Uint8 leveltheme = 0;
@@ -40,6 +41,7 @@ int main(int argc, char * argv[])
     float current_time = 0;
     float pause_timer = 0;
     float jump_timer = 0;
+    int editor_timer = 0;
     Sprite *mouse;
     Player *player = malloc(sizeof(Player));
     /*program initializtion*/
@@ -94,6 +96,7 @@ int main(int argc, char * argv[])
     WarGreymonProjectile =  gfc_sound_load("sfx/WarGreymonProjectile.mp3",.25,4);
     ZubatAttack =  gfc_sound_load("sfx/ZubatAttack.mp3",.25,2);
     No = gfc_sound_load("sfx/No.mp3",.25,5);
+    Editor = gfc_sound_load("themes/Editor.mp3",.25,1);
      
     //button init
     button_generate(button_start_think,gf2d_box(vector2d(800,495),128,38,vector2d(0,0)));
@@ -118,6 +121,14 @@ int main(int argc, char * argv[])
     button_generate(button_guilmon_switch_think,gf2d_box(vector2d(1010,175),50,50,vector2d(0,0)));
     button_generate(button_password_zero_think,gf2d_box(vector2d(575,585),105,105,vector2d(0,0)));
     button_generate(button_password_one_think,gf2d_box(vector2d(1040,585),105,105,vector2d(0,0)));
+    button_generate(button_editor_think,gf2d_box(vector2d(803,819),116,20,vector2d(0,0)));
+    button_generate(button_editor_exit_think,gf2d_box(vector2d(248,820),116,20,vector2d(0,0)));
+    button_generate(button_editor_save_think,gf2d_box(vector2d(1370,820),116,20,vector2d(0,0)));
+    button_generate(button_editor_betamon_think,gf2d_box(vector2d(424,70),31,33,vector2d(0,0)));
+    button_generate(button_editor_wormmon_think,gf2d_box(vector2d(558,74),23,32,vector2d(0,0)));
+    button_generate(button_editor_penguinmon_think,gf2d_box(vector2d(728,70),32,34,vector2d(0,0)));
+    button_generate(button_editor_platform_think,gf2d_box(vector2d(957,73),72,24,vector2d(0,0)));
+    button_generate(button_editor_place_think,gf2d_box(vector2d(800,450),800,340,vector2d(0,0)));
     
     //text init
     TTF_Init();
@@ -153,6 +164,7 @@ int main(int argc, char * argv[])
     pause_screen = gf2d_sprite_load_image("images/backgrounds/pausescreen.png");
     password_screen = gf2d_sprite_load_image("images/backgrounds/passwordscreen.png");
     gameover = gf2d_sprite_load_image("images/backgrounds/gameover.png");
+    editor_screen = gf2d_sprite_load_image("images/backgrounds/editorscreen.png");
     mouse = gf2d_sprite_load_all("images/pointer.png",32,32,16);
     black_box = gf2d_sprite_load_image("images/level_black.png");
     
@@ -467,6 +479,41 @@ int main(int argc, char * argv[])
                 NULL,
                 (int)mf);
 	 gf2d_grahics_next_frame();}
+	 
+	 
+	 
+	 
+	 
+	 
+	 if(get_menu_state() == MS_Editor){
+		current_time = SDL_GetTicks();
+		if(!titletheme){
+			gfc_sound_play(Editor,20,.15,1,0);
+			titletheme = 1;
+			selecttheme = 0;
+		}
+		if(keys[SDL_SCANCODE_F]){
+        if(current_time > editor_timer){
+		set_menu_flip();
+		editor_timer = SDL_GetTicks() + 100;}
+		}
+		gf2d_sprite_draw_image(editor_screen,vector2d(0,0),vector2d(1,1));
+		gf2d_entity_draw_all();
+		  SDL_GetMouseState(&mx,&my);
+       menu_update_all();
+        mf+=0.1;
+        if (mf >= 16.0)mf = 0;
+		 gf2d_sprite_draw(
+                mouse,
+                vector2d(mx,my),
+                NULL,
+                NULL,
+                NULL,
+                NULL,
+                NULL,
+                (int)mf);
+	 gf2d_grahics_next_frame();}
+	 
 	 if (keys[SDL_SCANCODE_ESCAPE])done = 1;
 }
 	

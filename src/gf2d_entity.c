@@ -7,6 +7,7 @@
 #include "touch.h"
 #include "camera.h"
 #include "enemy.h"
+#include "menu.h"
 typedef struct
 {
     Entity *entity_list;
@@ -142,8 +143,8 @@ void gf2d_entity_update(Entity *self){
 	if(self->tag == 7){
 	 veloc = self->velocity;}
 		
-	if(self->colliding == 1){self->velocity = vector2d(-.1,0);}
-	if(self->colliding == 2){self->velocity = vector2d(.1,0);}
+	if(self->colliding == 1 && self->tag!=6){self->velocity = vector2d(-.1,0);}
+	if(self->colliding == 2 && self->tag!=6){self->velocity = vector2d(.1,0);}
 	
 	if(self->tag == 8)self->think(self);
 	
@@ -221,6 +222,7 @@ void gf2d_platform_spawn(Vector2D position, Vector2D scale){
 	self->box = gf2d_box(self->position, 24*scale.x, 8*scale.y, vector2d(24*scale.x,8*scale.y));
     self->touch = platform_touch;
     self->tag = 6;
+    if(get_menu_state() == MS_Editor)editor_add_platform(self);
 }
 
 void gf2d_enemy_spawn(Vector2D position, int enemy_type, int patrol_bound_left, int patrol_bound_right, int flip){

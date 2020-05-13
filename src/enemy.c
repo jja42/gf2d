@@ -4,6 +4,7 @@
 #include "camera.h"
 #include <stdlib.h>
 #include "audio.h"
+#include "menu.h"
 
 
 void load_enemy(Vector2D position,int flip,int enemy_type,int patrol_bound_left,int patrol_bound_right){
@@ -45,6 +46,10 @@ void load_betamon(Enemy* self,Vector2D position, int patrol_bound_left, int patr
 	self->ent->box = gf2d_box(self->ent->position, 33, 30, vector2d(42,39));
 	self->ent->think = betamon_think;
 	self->enemy_type = 1;
+	self->ent->type = 1;
+	if(get_menu_state()== MS_Editor){
+		editor_add_enemy(self->ent,self->enemy_type);
+	}
 }
 void load_penguinmon(Enemy* self,Vector2D position, int patrol_bound_left, int patrol_bound_right){
 	self->ent = gf2d_entity_new();
@@ -67,6 +72,10 @@ void load_penguinmon(Enemy* self,Vector2D position, int patrol_bound_left, int p
 	self->ent->box = gf2d_box(self->ent->position, 30, 30, vector2d(36,36));
 	self->ent->think = penguinmon_think;
 	self->enemy_type = 2;
+	self->ent->type = 2;
+	if(get_menu_state()== MS_Editor){
+		editor_add_enemy(self->ent,self->enemy_type);
+	}
 }
 void load_wormmon(Enemy* self,Vector2D position, Vector2D flip){
 	self->ent = gf2d_entity_new();
@@ -87,6 +96,10 @@ void load_wormmon(Enemy* self,Vector2D position, Vector2D flip){
 	self->ent->box = gf2d_box(self->ent->position, 18, 30, vector2d(24,39));
 	self->ent->think = wormmon_think;
 	self->enemy_type = 3;
+	self->ent->type = 3;
+	if(get_menu_state()== MS_Editor){
+		editor_add_enemy(self->ent,self->enemy_type);
+	}
 }
 void load_zubat(Enemy* self,Vector2D position, int patrol_bound_left, int patrol_bound_right){
 	self->ent = gf2d_entity_new();
