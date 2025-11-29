@@ -18,12 +18,17 @@ LIB_PATH = ../gfc
 LIBS = $(LIB_PATH)/libs/libgfc.a $(LIB_PATH)/simple_json/libs/libsj.a $(LIB_PATH)/simple_logger/libs/libsl.a
 
 # SDL / Emscripten flags
-SDL_FLAGS = -s USE_SDL=2 \
-            -s USE_SDL_IMAGE=2 \
-            -s USE_SDL_TTF=2 \
-            -s USE_SDL_MIXER=2 \
+SDL_FLAGS = -sUSE_SDL=2 \
+            -sUSE_SDL_IMAGE=2 \
+			-sSDL2_IMAGE_FORMATS='["png"]' \
+            -sUSE_SDL_TTF=2 \
+            -sUSE_SDL_MIXER=2 \
+			-sALLOW_MEMORY_GROWTH=1	\
             --preload-file ../themes \
             --preload-file ../sfx \
+			--preload-file ../fonts \
+			--preload-file ../images \
+			--preload-file ../levels \
             -lm
 
 # Compiler flags
@@ -37,7 +42,7 @@ all: $(PROJECT).html
 
 # Build main project
 $(PROJECT).html: libs $(SRC)
-	$(CC) $(CFLAGS) $(INC_PARAMS) $(SRC) $(LIBS) $(SDL_FLAGS) -o $(PROJECT).html
+	$(CC) $(CFLAGS) $(INC_PARAMS) $(SRC) $(LIBS) $(SDL_FLAGS) -o ../build/index.html
 
 # Build all libraries first
 libs: gfc sj sl

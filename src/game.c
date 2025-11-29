@@ -44,11 +44,17 @@ int done = 0;
     Player *player;
 
 void game_loop(){
-        /*main game loop*/
-    while(!done && get_menu_state() != MS_Exit)
-    {
+    if(done || get_menu_state() == MS_Exit) {
+        emscripten_cancel_main_loop();
+        return;
+    }
         SDL_PumpEvents();   // update SDL's internal event structures
         keys = SDL_GetKeyboardState(NULL); // get the keyboard state for this frame
+    
+    SDL_Event e;
+    while(SDL_PollEvent(&e)) {
+        if(e.type == SDL_QUIT) done = 1;
+    }
         /*update things here*/
         //===================GROUNDED START========================
         if(get_menu_state() == MS_None){
@@ -391,7 +397,6 @@ void game_loop(){
 	 gf2d_grahics_next_frame();}
 	 
 	 if (keys[SDL_SCANCODE_ESCAPE])done = 1;
-}
 }
 
 int main(int argc, char * argv[])

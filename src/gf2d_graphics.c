@@ -46,7 +46,7 @@ void gf2d_graphics_initialize(
 )
 {
     Uint32 flags = 0;
-    if (SDL_Init(SDL_INIT_EVERYTHING) != 0)
+    if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_EVENTS | SDL_INIT_TIMER) != 0)
     {
         slog("Unable to initilaize SDL system: %s",SDL_GetError());
         return;
