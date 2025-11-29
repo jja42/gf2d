@@ -8,8 +8,8 @@ int level_bounds_top;
 int level_bounds_bottom;
 int level_bounds_left;
 int level_bounds_right;
-Vector2D offset;
-Vector2D velocity;
+GFC_Vector2D offset;
+GFC_Vector2D velocity;
 Player		*player;
 }Camera;
 
@@ -17,9 +17,9 @@ void camera_init();
 
 void camera_update();
 
-Vector2D get_camera_velocity();
+GFC_Vector2D get_camera_velocity();
 
-Vector2D get_camera_offset();
+GFC_Vector2D get_camera_offset();
 
-void set_camera_offset(Vector2D offset);
+void set_camera_offset(GFC_Vector2D offset);
 #endif

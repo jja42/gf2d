@@ -7,9 +7,9 @@
 
 typedef struct
 {
-    Vector2D pos;
+    GFC_Vector2D pos;
     float width,height;
-    Vector2D offset;
+    GFC_Vector2D offset;
 }Box;
 
 /**
@@ -21,7 +21,7 @@ typedef struct
  * @param Ent the entity to associate with this box
  * @return a GF2D Box pointer
  */
-Box *gf2d_box(Vector2D pos, float w, float h, Vector2D offset);
+Box *gf2d_box(GFC_Vector2D pos, float w, float h, GFC_Vector2D offset);
 
 /**
  * @brief check if two boxes are overlapping
@@ -37,6 +37,6 @@ Uint8 gf2d_box_overlap(Box *a,Box *b);
  * @param pos position to update to
  * @return updated Box
  */
-void gf2d_box_update(Box *r,Vector2D pos);
+void gf2d_box_update(Box *r,GFC_Vector2D pos);
 
 #endif

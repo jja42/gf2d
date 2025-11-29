@@ -5,14 +5,14 @@
 
 void load_level_zubat(){
 	load_level("levels/zubat.level");
-	gf2d_door_spawn(1,vector2d(500,-1500));
+	gf2d_door_spawn(1,gfc_vector2d(500,-1500));
 }
 void load_level_pikachu(){
 	load_level("levels/pikachu.level");
 }
 void load_level_articuno(){
 	load_level("levels/articuno.level");
-	gf2d_door_spawn(2,vector2d(950,2200));
+	gf2d_door_spawn(2,gfc_vector2d(950,2200));
 }
 void load_level(char* level_name){
 	gf2d_level_clear();
@@ -31,10 +31,10 @@ void load_level(char* level_name){
 	SJson *Platform_array = sj_object_get_value(levelFile, "Platforms");
 	SJson *Enemy_array = sj_object_get_value(levelFile, "Enemies");
 	if(p->level == 1||p->level == 2||p->level == 7||p->level == 5){
-     set_camera_offset(vector2d(0,0));
+     set_camera_offset(gfc_vector2d(0,0));
 	}
 	if(p->level == 3){
-     set_camera_offset(vector2d(-400,-1800));
+     set_camera_offset(gfc_vector2d(-400,-1800));
 	}
 	
 	
@@ -58,7 +58,7 @@ void load_level(char* level_name){
 		sj_get_float_value(platformposY, &platform_y);
 		sj_get_float_value(platformscaleX,&platformscalex);
 		sj_get_float_value(platformscaleY,&platformscaley);
-		gf2d_platform_spawn(vector2d(platform_x,platform_y),vector2d(platformscalex,platformscaley));
+		gf2d_platform_spawn(gfc_vector2d(platform_x,platform_y),gfc_vector2d(platformscalex,platformscaley));
 	}
 	for (int j = 0;j < sj_array_get_count(Enemy_array);j++){
 		SJson *enemy_data = sj_array_get_nth(Enemy_array,j);
@@ -83,7 +83,7 @@ void load_level(char* level_name){
 		sj_get_integer_value(enemy_left_bound,&enemy_leftbound);
 		sj_get_integer_value(enemy_right_bound,&enemy_rightbound);
 		sj_get_integer_value(enemyflip,&enemy_flip);
-		gf2d_enemy_spawn(vector2d(enemy_x,enemy_y),enemytype,enemy_leftbound,enemy_rightbound,enemy_flip);
+		gf2d_enemy_spawn(gfc_vector2d(enemy_x,enemy_y),enemytype,enemy_leftbound,enemy_rightbound,enemy_flip);
 	}
 }
 gf2d_apply_offset();
@@ -150,5 +150,5 @@ void load_level_pikachu_boss(){
 
 void load_custom_level(){
 load_level("levels/custom.level");
-gf2d_door_spawn(5,vector2d(1275,600));
+gf2d_door_spawn(5,gfc_vector2d(1275,600));
 }

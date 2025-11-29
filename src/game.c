@@ -45,7 +45,7 @@ int main(int argc, char * argv[])
     Sprite *mouse;
     Player *player = malloc(sizeof(Player));
     /*program initializtion*/
-    init_logger("gf2d.log");
+    init_logger("gf2d.log",0);
     slog("---==== BEGIN ====---");
     gf2d_graphics_initialize(
         "gf2d",
@@ -53,7 +53,7 @@ int main(int argc, char * argv[])
         900,
         1600,
         900,
-        vector4d(0,0,0,255),
+        gfc_vector4d(0,0,0,255),
         0);
     gf2d_graphics_set_frame_delay(16);
     gf2d_sprite_init(1024);
@@ -99,36 +99,36 @@ int main(int argc, char * argv[])
     Editor = gfc_sound_load("themes/Editor.mp3",.25,1);
      
     //button init
-    button_generate(button_start_think,gf2d_box(vector2d(800,495),128,38,vector2d(0,0)));
-    button_generate(button_continue_think,gf2d_box(vector2d(790,609),198,38,vector2d(0,0)));
-    button_generate(button_exit_think,gf2d_box(vector2d(788,722),100,38,vector2d(0,0)));
-    button_generate(button_zubat_level_think,gf2d_box(vector2d(262,546),110,93,vector2d(0,0)));
-    button_generate(button_pikachu_level_think,gf2d_box(vector2d(1341,546),110,93,vector2d(0,0)));
-    button_generate(button_articuno_level_think,gf2d_box(vector2d(802,180),110,93,vector2d(0,0)));
-    button_generate(button_pause_exit_think,gf2d_box(vector2d(1090,574),56,23,vector2d(0,0)));
-    button_generate(button_save_think,gf2d_box(vector2d(506,574),68,20,vector2d(0,0)));
-    button_generate(button_password_think,gf2d_box(vector2d(802,545),128,92,vector2d(0,0)));
-    button_generate(button_start_think,gf2d_box(vector2d(277,818),92,20,vector2d(0,0)));
-    button_generate(button_password_enter_think,gf2d_box(vector2d(1315,816),77,20,vector2d(0,0)));
-    button_generate(button_retry_think,gf2d_box(vector2d(812,303),292,31,vector2d(0,0)));
-    button_generate(button_exit_think,gf2d_box(vector2d(812,601),292,31,vector2d(0,0)));
-    button_generate(button_hp_think,gf2d_box(vector2d(795,345),50,50,vector2d(0,0)));
-    button_generate(button_articuno_weapon_think,gf2d_box(vector2d(985,472),50,22,vector2d(0,0)));
-    button_generate(button_pikachu_weapon_think,gf2d_box(vector2d(785,472),50,22,vector2d(0,0)));
-    button_generate(button_zubat_weapon_think,gf2d_box(vector2d(585,472),50,22,vector2d(0,0)));
-    button_generate(button_agumon_switch_think,gf2d_box(vector2d(480,175),50,50,vector2d(0,0)));
-    button_generate(button_gabumon_switch_think,gf2d_box(vector2d(755,175),50,50,vector2d(0,0)));
-    button_generate(button_guilmon_switch_think,gf2d_box(vector2d(1010,175),50,50,vector2d(0,0)));
-    button_generate(button_password_zero_think,gf2d_box(vector2d(575,585),105,105,vector2d(0,0)));
-    button_generate(button_password_one_think,gf2d_box(vector2d(1040,585),105,105,vector2d(0,0)));
-    button_generate(button_editor_think,gf2d_box(vector2d(803,819),116,20,vector2d(0,0)));
-    button_generate(button_editor_exit_think,gf2d_box(vector2d(248,820),116,20,vector2d(0,0)));
-    button_generate(button_editor_save_think,gf2d_box(vector2d(1370,820),116,20,vector2d(0,0)));
-    button_generate(button_editor_betamon_think,gf2d_box(vector2d(424,70),31,33,vector2d(0,0)));
-    button_generate(button_editor_wormmon_think,gf2d_box(vector2d(558,74),23,32,vector2d(0,0)));
-    button_generate(button_editor_penguinmon_think,gf2d_box(vector2d(728,70),32,34,vector2d(0,0)));
-    button_generate(button_editor_platform_think,gf2d_box(vector2d(957,73),72,24,vector2d(0,0)));
-    button_generate(button_editor_place_think,gf2d_box(vector2d(800,450),800,340,vector2d(0,0)));
+    button_generate(button_start_think,gf2d_box(gfc_vector2d(800,495),128,38,gfc_vector2d(0,0)));
+    button_generate(button_continue_think,gf2d_box(gfc_vector2d(790,609),198,38,gfc_vector2d(0,0)));
+    button_generate(button_exit_think,gf2d_box(gfc_vector2d(788,722),100,38,gfc_vector2d(0,0)));
+    button_generate(button_zubat_level_think,gf2d_box(gfc_vector2d(262,546),110,93,gfc_vector2d(0,0)));
+    button_generate(button_pikachu_level_think,gf2d_box(gfc_vector2d(1341,546),110,93,gfc_vector2d(0,0)));
+    button_generate(button_articuno_level_think,gf2d_box(gfc_vector2d(802,180),110,93,gfc_vector2d(0,0)));
+    button_generate(button_pause_exit_think,gf2d_box(gfc_vector2d(1090,574),56,23,gfc_vector2d(0,0)));
+    button_generate(button_save_think,gf2d_box(gfc_vector2d(506,574),68,20,gfc_vector2d(0,0)));
+    button_generate(button_password_think,gf2d_box(gfc_vector2d(802,545),128,92,gfc_vector2d(0,0)));
+    button_generate(button_start_think,gf2d_box(gfc_vector2d(277,818),92,20,gfc_vector2d(0,0)));
+    button_generate(button_password_enter_think,gf2d_box(gfc_vector2d(1315,816),77,20,gfc_vector2d(0,0)));
+    button_generate(button_retry_think,gf2d_box(gfc_vector2d(812,303),292,31,gfc_vector2d(0,0)));
+    button_generate(button_exit_think,gf2d_box(gfc_vector2d(812,601),292,31,gfc_vector2d(0,0)));
+    button_generate(button_hp_think,gf2d_box(gfc_vector2d(795,345),50,50,gfc_vector2d(0,0)));
+    button_generate(button_articuno_weapon_think,gf2d_box(gfc_vector2d(985,472),50,22,gfc_vector2d(0,0)));
+    button_generate(button_pikachu_weapon_think,gf2d_box(gfc_vector2d(785,472),50,22,gfc_vector2d(0,0)));
+    button_generate(button_zubat_weapon_think,gf2d_box(gfc_vector2d(585,472),50,22,gfc_vector2d(0,0)));
+    button_generate(button_agumon_switch_think,gf2d_box(gfc_vector2d(480,175),50,50,gfc_vector2d(0,0)));
+    button_generate(button_gabumon_switch_think,gf2d_box(gfc_vector2d(755,175),50,50,gfc_vector2d(0,0)));
+    button_generate(button_guilmon_switch_think,gf2d_box(gfc_vector2d(1010,175),50,50,gfc_vector2d(0,0)));
+    button_generate(button_password_zero_think,gf2d_box(gfc_vector2d(575,585),105,105,gfc_vector2d(0,0)));
+    button_generate(button_password_one_think,gf2d_box(gfc_vector2d(1040,585),105,105,gfc_vector2d(0,0)));
+    button_generate(button_editor_think,gf2d_box(gfc_vector2d(803,819),116,20,gfc_vector2d(0,0)));
+    button_generate(button_editor_exit_think,gf2d_box(gfc_vector2d(248,820),116,20,gfc_vector2d(0,0)));
+    button_generate(button_editor_save_think,gf2d_box(gfc_vector2d(1370,820),116,20,gfc_vector2d(0,0)));
+    button_generate(button_editor_betamon_think,gf2d_box(gfc_vector2d(424,70),31,33,gfc_vector2d(0,0)));
+    button_generate(button_editor_wormmon_think,gf2d_box(gfc_vector2d(558,74),23,32,gfc_vector2d(0,0)));
+    button_generate(button_editor_penguinmon_think,gf2d_box(gfc_vector2d(728,70),32,34,gfc_vector2d(0,0)));
+    button_generate(button_editor_platform_think,gf2d_box(gfc_vector2d(957,73),72,24,gfc_vector2d(0,0)));
+    button_generate(button_editor_place_think,gf2d_box(gfc_vector2d(800,450),800,340,gfc_vector2d(0,0)));
     
     //text init
     TTF_Init();
@@ -354,7 +354,7 @@ int main(int argc, char * argv[])
         gf2d_graphics_clear_screen();// clears drawing buffers
         // all drawing should happen betweem clear_screen and next_frame
             //backgrounds drawn first
-            gf2d_sprite_draw_image(background,vector2d(0,0),vector2d(10,10));
+            gf2d_sprite_draw_image(background,gfc_vector2d(0,0),gfc_vector2d(10,10));
             
             gf2d_entity_draw_all();
             gf2d_entity_update_all();
@@ -375,7 +375,7 @@ int main(int argc, char * argv[])
 				set_menu_state(MS_None);
 				 pause_timer = SDL_GetTicks() + 200;}
 		}
-	 if(get_menu_state() == MS_Pause){gf2d_sprite_draw_image(pause_screen,vector2d(0,0),vector2d(1,1));
+	 if(get_menu_state() == MS_Pause){gf2d_sprite_draw_image(pause_screen,gfc_vector2d(0,0),gfc_vector2d(1,1));
 		  SDL_GetMouseState(&mx,&my);
        menu_update_all();
        menu_draw_all();
@@ -383,7 +383,7 @@ int main(int argc, char * argv[])
         if (mf >= 16.0)mf = 0;
 		 gf2d_sprite_draw(
                 mouse,
-                vector2d(mx,my),
+                gfc_vector2d(mx,my),
                 NULL,
                 NULL,
                 NULL,
@@ -397,17 +397,17 @@ int main(int argc, char * argv[])
 		 if(!selecttheme){
 			 gfc_sound_play(StageSelect,5,.25,1,0);
 			 selecttheme = 1;}
-		 gf2d_sprite_draw_image(select_screen,vector2d(0,0),vector2d(1,1));
-		 if(player->zubat_completed)gf2d_sprite_draw_image(black_box,vector2d(152,453),vector2d(1,1));
-		 if(player->articuno_completed)gf2d_sprite_draw_image(black_box,vector2d(692,87),vector2d(1,1));
-		 if(player->pikachu_completed)gf2d_sprite_draw_image(black_box,vector2d(1231,453),vector2d(1,1));
+		 gf2d_sprite_draw_image(select_screen,gfc_vector2d(0,0),gfc_vector2d(1,1));
+		 if(player->zubat_completed)gf2d_sprite_draw_image(black_box,gfc_vector2d(152,453),gfc_vector2d(1,1));
+		 if(player->articuno_completed)gf2d_sprite_draw_image(black_box,gfc_vector2d(692,87),gfc_vector2d(1,1));
+		 if(player->pikachu_completed)gf2d_sprite_draw_image(black_box,gfc_vector2d(1231,453),gfc_vector2d(1,1));
 		 SDL_GetMouseState(&mx,&my);
        menu_update_all();
         mf+=0.1;
         if (mf >= 16.0)mf = 0;
 		 gf2d_sprite_draw(
                 mouse,
-                vector2d(mx,my),
+                gfc_vector2d(mx,my),
                 NULL,
                 NULL,
                 NULL,
@@ -420,14 +420,14 @@ int main(int argc, char * argv[])
 			gfc_sound_play(TitleScreen,5,.15,1,0);
 			titletheme = 1;
 		}
-		gf2d_sprite_draw_image(title_screen,vector2d(0,0),vector2d(1,1));
+		gf2d_sprite_draw_image(title_screen,gfc_vector2d(0,0),gfc_vector2d(1,1));
 		SDL_GetMouseState(&mx,&my);
         menu_update_all();
         mf+=0.1;
         if (mf >= 16.0)mf = 0;
 		 gf2d_sprite_draw(
                 mouse,
-                vector2d(mx,my),
+                gfc_vector2d(mx,my),
                 NULL,
                 NULL,
                 NULL,
@@ -441,14 +441,14 @@ int main(int argc, char * argv[])
 			gfc_sound_play(GameOver,5,.15,1,0);
 			titletheme = 1;
 		}
-		gf2d_sprite_draw_image(gameover,vector2d(0,0),vector2d(1,1));
+		gf2d_sprite_draw_image(gameover,gfc_vector2d(0,0),gfc_vector2d(1,1));
 		SDL_GetMouseState(&mx,&my);
         menu_update_all();
         mf+=0.1;
         if (mf >= 16.0)mf = 0;
 		 gf2d_sprite_draw(
                 mouse,
-                vector2d(mx,my),
+                gfc_vector2d(mx,my),
                 NULL,
                 NULL,
                 NULL,
@@ -463,7 +463,7 @@ int main(int argc, char * argv[])
 			titletheme = 1;
 			selecttheme = 0;
 		}
-		gf2d_sprite_draw_image(password_screen,vector2d(0,0),vector2d(1,1));
+		gf2d_sprite_draw_image(password_screen,gfc_vector2d(0,0),gfc_vector2d(1,1));
 		  SDL_GetMouseState(&mx,&my);
        menu_update_all();
        menu_draw_all();
@@ -471,7 +471,7 @@ int main(int argc, char * argv[])
         if (mf >= 16.0)mf = 0;
 		 gf2d_sprite_draw(
                 mouse,
-                vector2d(mx,my),
+                gfc_vector2d(mx,my),
                 NULL,
                 NULL,
                 NULL,
@@ -497,7 +497,7 @@ int main(int argc, char * argv[])
 		set_menu_flip();
 		editor_timer = SDL_GetTicks() + 100;}
 		}
-		gf2d_sprite_draw_image(editor_screen,vector2d(0,0),vector2d(1,1));
+		gf2d_sprite_draw_image(editor_screen,gfc_vector2d(0,0),gfc_vector2d(1,1));
 		gf2d_entity_draw_all();
 		  SDL_GetMouseState(&mx,&my);
        menu_update_all();
@@ -505,7 +505,7 @@ int main(int argc, char * argv[])
         if (mf >= 16.0)mf = 0;
 		 gf2d_sprite_draw(
                 mouse,
-                vector2d(mx,my),
+                gfc_vector2d(mx,my),
                 NULL,
                 NULL,
                 NULL,

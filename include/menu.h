@@ -23,10 +23,10 @@ typedef struct Menu_S
 {
     Uint8       _inuse;             /**<Check if entity in memory is active or not*/
     Uint8		text;
-    Vector2D    position;           /**<2D position of entity*/
+    GFC_Vector2D    position;           /**<2D position of entity*/
     SDL_Rect	box;
     Box			*hitbox;
-    TextLine	textline;
+    GFC_TextLine	textline;
     TTF_Font* 	Sans;
     SDL_Texture *Message;
     void        (*think)(struct Menu_S *self);
@@ -96,7 +96,7 @@ void button_articuno_level_think (Menu *self);
 
 void button_pikachu_level_think (Menu *self);
 
-int collide_menu(Menu *self,Vector2D mouse);
+int collide_menu(Menu *self,GFC_Vector2D mouse);
 
 void button_start_think(Menu *self);
 

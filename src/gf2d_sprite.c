@@ -186,7 +186,7 @@ Sprite *gf2d_sprite_load_all(
     return sprite;
 }
 
-void gf2d_sprite_draw_image(Sprite *image,Vector2D position,Vector2D scale)
+void gf2d_sprite_draw_image(Sprite *image,GFC_Vector2D position,GFC_Vector2D scale)
 {
     gf2d_sprite_draw(
         image,
@@ -201,20 +201,20 @@ void gf2d_sprite_draw_image(Sprite *image,Vector2D position,Vector2D scale)
 
 void gf2d_sprite_draw(
     Sprite * sprite,
-    Vector2D position,
-    Vector2D * scale,
-    Vector2D * scaleCenter,
-    Vector3D * rotation,
-    Vector2D * flip,
-    Vector4D * colorShift,
+    GFC_Vector2D position,
+    GFC_Vector2D * scale,
+    GFC_Vector2D * scaleCenter,
+    GFC_Vector3D * rotation,
+    GFC_Vector2D * flip,
+    GFC_Vector4D * colorShift,
     Uint32 frame)
 {
     SDL_Rect cell,target;
     SDL_RendererFlip flipFlags = SDL_FLIP_NONE;
     SDL_Point r;
     int fpl;
-    Vector2D scaleFactor = {1,1};
-    Vector2D scaleOffset = {0,0};
+    GFC_Vector2D scaleFactor = {1,1};
+    GFC_Vector2D scaleOffset = {0,0};
     if (!sprite)
     {
         return;
@@ -222,15 +222,15 @@ void gf2d_sprite_draw(
     
     if (scale)
     {
-        vector2d_copy(scaleFactor,(*scale));
+        gfc_vector2d_copy(scaleFactor,(*scale));
     }
     if (scaleCenter)
     {
-        vector2d_copy(scaleOffset,(*scaleCenter));
+        gfc_vector2d_copy(scaleOffset,(*scaleCenter));
     }
     if (rotation)
     {
-        vector2d_copy(r,(*rotation));
+        gfc_vector2d_copy(r,(*rotation));
         r.x *= scaleFactor.x;
         r.y *= scaleFactor.y;
     }

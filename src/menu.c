@@ -147,7 +147,7 @@ void button_exit_think (Menu *self){
     if(get_menu_state() == MS_TitleScreen||get_menu_state() == MS_GameOver){
     int mx,my;
     SDL_GetMouseState(&mx,&my);
-    if (collide_menu(self, vector2d(mx,my))){
+    if (collide_menu(self, gfc_vector2d(mx,my))){
         if (SDL_GetMouseState(NULL, NULL) && SDL_BUTTON(SDL_BUTTON_LEFT)) {
 			menu_manager.menu_state = MS_Exit;
         }
@@ -159,7 +159,7 @@ void button_pause_exit_think (Menu *self){
     if(get_menu_state() == MS_Pause){
     int mx,my;
     SDL_GetMouseState(&mx,&my);
-    if (collide_menu(self, vector2d(mx,my))){
+    if (collide_menu(self, gfc_vector2d(mx,my))){
         if (SDL_GetMouseState(NULL, NULL) && SDL_BUTTON(SDL_BUTTON_LEFT)) {
 			menu_manager.menu_state = MS_SelectScreen;
         }
@@ -167,7 +167,7 @@ void button_pause_exit_think (Menu *self){
 }
 }
 
-int collide_menu(Menu* self,Vector2D Mouse){
+int collide_menu(Menu* self,GFC_Vector2D Mouse){
 if ((Mouse.x <= self->hitbox->pos.x+self->hitbox->width) && (Mouse.x >= self->hitbox->pos.x-self->hitbox->width) && 
 (Mouse.y <= self->hitbox->pos.y+self->hitbox->height) && (Mouse.y >= self->hitbox->pos.y-self->hitbox->height)) return 1;
 else{
@@ -178,7 +178,7 @@ void button_save_think (Menu *self){
     if(get_menu_state() == MS_Pause){
     int mx,my;
     SDL_GetMouseState(&mx,&my);
-    if (collide_menu(self, vector2d(mx,my))){
+    if (collide_menu(self, gfc_vector2d(mx,my))){
         if (SDL_GetMouseState(NULL, NULL) & SDL_BUTTON(SDL_BUTTON_LEFT) && menu_manager.last_save + 750 < SDL_GetTicks()) {
             menu_manager.last_save = SDL_GetTicks();
 			Player* player = menu_manager.player;
@@ -255,7 +255,7 @@ void button_pikachu_level_think (Menu *self){
     if(get_menu_state() == MS_SelectScreen && menu_manager.player->pikachu_completed!=1){
 	int mx,my;
     SDL_GetMouseState(&mx,&my);
-    if (collide_menu(self, vector2d(mx,my))){
+    if (collide_menu(self, gfc_vector2d(mx,my))){
         if (SDL_GetMouseState(NULL, NULL) && SDL_BUTTON(SDL_BUTTON_LEFT)) {
 			menu_manager.menu_state = MS_None;
 			load_level_pikachu();
@@ -268,7 +268,7 @@ void button_articuno_level_think (Menu *self){
     if(get_menu_state() == MS_SelectScreen && menu_manager.player->articuno_completed!=1){
 	int mx,my;
     SDL_GetMouseState(&mx,&my);
-    if (collide_menu(self, vector2d(mx,my))){
+    if (collide_menu(self, gfc_vector2d(mx,my))){
         if (SDL_GetMouseState(NULL, NULL) && SDL_BUTTON(SDL_BUTTON_LEFT)) {
 			menu_manager.menu_state = MS_None;
 			load_level_articuno();
@@ -281,7 +281,7 @@ void button_start_think(Menu *self){
 	if(get_menu_state() == MS_TitleScreen||get_menu_state() == MS_PasswordScreen){
 	int mx,my;
     SDL_GetMouseState(&mx,&my);
-    if (collide_menu(self, vector2d(mx,my))){
+    if (collide_menu(self, gfc_vector2d(mx,my))){
         if (SDL_GetMouseState(NULL, NULL) && SDL_BUTTON(SDL_BUTTON_LEFT)) {
 			menu_manager.menu_state = MS_SelectScreen;
         }
@@ -292,7 +292,7 @@ void button_retry_think(Menu *self){
 if(get_menu_state() == MS_GameOver){
 	int mx,my;
     SDL_GetMouseState(&mx,&my);
-    if (collide_menu(self, vector2d(mx,my))){
+    if (collide_menu(self, gfc_vector2d(mx,my))){
         if (SDL_GetMouseState(NULL, NULL) && SDL_BUTTON(SDL_BUTTON_LEFT)) {
 			reset_player(menu_manager.player);
 			reload_num_level(menu_manager.player->level);
@@ -305,15 +305,15 @@ void button_editor_think(Menu *self){
 	if(get_menu_state() == MS_SelectScreen){
 	int mx,my;
     SDL_GetMouseState(&mx,&my);
-    if (collide_menu(self, vector2d(mx,my))){
+    if (collide_menu(self, gfc_vector2d(mx,my))){
         if (SDL_GetMouseState(NULL, NULL) && SDL_BUTTON(SDL_BUTTON_LEFT)) {
-			set_camera_offset(vector2d(0,0));
+			set_camera_offset(gfc_vector2d(0,0));
 			gf2d_level_clear();
 			menu_manager.menu_state = MS_Editor;
-			menu_manager.player->ent->position = vector2d(200,600);
-			gf2d_platform_spawn(vector2d(200,742),vector2d(3,3));
-			gf2d_door_spawn(5,vector2d(1275,600));
-			gf2d_platform_spawn(vector2d(1250,742),vector2d(3,3));
+			menu_manager.player->ent->position = gfc_vector2d(200,600);
+			gf2d_platform_spawn(gfc_vector2d(200,742),gfc_vector2d(3,3));
+			gf2d_door_spawn(5,gfc_vector2d(1275,600));
+			gf2d_platform_spawn(gfc_vector2d(1250,742),gfc_vector2d(3,3));
         }
     }
 }
@@ -323,7 +323,7 @@ void button_continue_think(Menu *self){
 	if(get_menu_state() == MS_TitleScreen){
 	int mx,my;
     SDL_GetMouseState(&mx,&my);
-    if (collide_menu(self, vector2d(mx,my))){
+    if (collide_menu(self, gfc_vector2d(mx,my))){
         if (SDL_GetMouseState(NULL, NULL) && SDL_BUTTON(SDL_BUTTON_LEFT)) {
 			load_player_data(menu_manager.player);
 			if(menu_manager.player->level != 0){
@@ -340,7 +340,7 @@ void button_editor_exit_think(Menu *self){
 	if(get_menu_state() == MS_Editor){
 	int mx,my;
     SDL_GetMouseState(&mx,&my);
-    if (collide_menu(self, vector2d(mx,my))){
+    if (collide_menu(self, gfc_vector2d(mx,my))){
         if (SDL_GetMouseState(NULL, NULL) && SDL_BUTTON(SDL_BUTTON_LEFT)) {
 			menu_manager.menu_state = MS_SelectScreen;
         }
@@ -353,7 +353,7 @@ void button_editor_save_think(Menu *self){
     menu_manager.last_save = SDL_GetTicks();
 	int mx,my;
     SDL_GetMouseState(&mx,&my);
-    if (collide_menu(self, vector2d(mx,my))){
+    if (collide_menu(self, gfc_vector2d(mx,my))){
         if (SDL_GetMouseState(NULL, NULL) && SDL_BUTTON(SDL_BUTTON_LEFT)) {
 			SJson *level_data;
 			SJson *player_position;
@@ -420,7 +420,7 @@ void button_editor_betamon_think(Menu *self){
 	if(get_menu_state() == MS_Editor){
 	int mx,my;
     SDL_GetMouseState(&mx,&my);
-    if (collide_menu(self, vector2d(mx,my))){
+    if (collide_menu(self, gfc_vector2d(mx,my))){
         if (SDL_GetMouseState(NULL, NULL) && SDL_BUTTON(SDL_BUTTON_LEFT)) {
 			menu_manager.entity_selected = 1;
         }
@@ -432,7 +432,7 @@ void button_editor_wormmon_think(Menu *self){
 	if(get_menu_state() == MS_Editor){
 	int mx,my;
     SDL_GetMouseState(&mx,&my);
-    if (collide_menu(self, vector2d(mx,my))){
+    if (collide_menu(self, gfc_vector2d(mx,my))){
         if (SDL_GetMouseState(NULL, NULL) && SDL_BUTTON(SDL_BUTTON_LEFT)) {
 			menu_manager.entity_selected = 2;
         }
@@ -444,7 +444,7 @@ void button_editor_penguinmon_think(Menu *self){
 	if(get_menu_state() == MS_Editor){
 	int mx,my;
     SDL_GetMouseState(&mx,&my);
-    if (collide_menu(self, vector2d(mx,my))){
+    if (collide_menu(self, gfc_vector2d(mx,my))){
         if (SDL_GetMouseState(NULL, NULL) && SDL_BUTTON(SDL_BUTTON_LEFT)) {
 			menu_manager.entity_selected = 3;
         }
@@ -456,7 +456,7 @@ void button_editor_platform_think(Menu *self){
 	if(get_menu_state() == MS_Editor){
 	int mx,my;
     SDL_GetMouseState(&mx,&my);
-    if (collide_menu(self, vector2d(mx,my))){
+    if (collide_menu(self, gfc_vector2d(mx,my))){
         if (SDL_GetMouseState(NULL, NULL) && SDL_BUTTON(SDL_BUTTON_LEFT)) {
 			menu_manager.entity_selected = 4;
         }
@@ -468,15 +468,15 @@ void button_editor_place_think(Menu *self){
 	if(get_menu_state() == MS_Editor){
 	int mx,my;
     SDL_GetMouseState(&mx,&my);
-    if (collide_menu(self, vector2d(mx,my))){
+    if (collide_menu(self, gfc_vector2d(mx,my))){
 		if(menu_manager.menu_timer<=0){
         if (SDL_GetMouseState(NULL, NULL) && SDL_BUTTON(SDL_BUTTON_LEFT)) {
 			menu_manager.menu_timer = 100;
 			if(menu_manager.entity_selected == 0) gfc_sound_play(No,0,.25,5,1);
-			if(menu_manager.entity_selected == 1) load_enemy(vector2d(mx,my),menu_manager.flip,1,mx-10,mx+10);
-			if(menu_manager.entity_selected == 2) load_enemy(vector2d(mx,my),menu_manager.flip,3,0,0);
-			if(menu_manager.entity_selected == 3) load_enemy(vector2d(mx,my),menu_manager.flip,2,mx-10,mx+10);
-			if(menu_manager.entity_selected == 4) gf2d_platform_spawn(vector2d(mx,my),vector2d(3,3));
+			if(menu_manager.entity_selected == 1) load_enemy(gfc_vector2d(mx,my),menu_manager.flip,1,mx-10,mx+10);
+			if(menu_manager.entity_selected == 2) load_enemy(gfc_vector2d(mx,my),menu_manager.flip,3,0,0);
+			if(menu_manager.entity_selected == 3) load_enemy(gfc_vector2d(mx,my),menu_manager.flip,2,mx-10,mx+10);
+			if(menu_manager.entity_selected == 4) gf2d_platform_spawn(gfc_vector2d(mx,my),gfc_vector2d(3,3));
         }
 	}
 	else{
@@ -489,7 +489,7 @@ void button_zubat_level_think(Menu *self){
 	if(get_menu_state() == MS_SelectScreen && menu_manager.player->zubat_completed!=1){
 	int mx,my;
     SDL_GetMouseState(&mx,&my);
-    if (collide_menu(self, vector2d(mx,my))){
+    if (collide_menu(self, gfc_vector2d(mx,my))){
         if (SDL_GetMouseState(NULL, NULL) && SDL_BUTTON(SDL_BUTTON_LEFT)) {
 			menu_manager.menu_state = MS_None;
 			load_level_zubat();
@@ -502,7 +502,7 @@ void button_hp_think(Menu *self){
 	if(get_menu_state() == MS_Pause && menu_manager.player->hp_pickups > 0){
 	int mx,my;
     SDL_GetMouseState(&mx,&my);
-    if (collide_menu(self, vector2d(mx,my))){
+    if (collide_menu(self, gfc_vector2d(mx,my))){
         if (SDL_GetMouseState(NULL, NULL) && SDL_BUTTON(SDL_BUTTON_LEFT)) {
 			if(menu_manager.player->ent->health < menu_manager.player->ent->healthmax){
 			menu_manager.player->ent->health+=10;
@@ -519,7 +519,7 @@ void button_articuno_weapon_think(Menu *self){
 	if(get_menu_state() == MS_Pause && menu_manager.player->articuno_weapon){
 	int mx,my;
     SDL_GetMouseState(&mx,&my);
-    if (collide_menu(self, vector2d(mx,my))){
+    if (collide_menu(self, gfc_vector2d(mx,my))){
         if (SDL_GetMouseState(NULL, NULL) && SDL_BUTTON(SDL_BUTTON_LEFT)) {
 			menu_manager.player->attack = articuno_weapon_attack;
 			menu_manager.player->air_attack = articuno_weapon_attack;
@@ -532,7 +532,7 @@ void button_pikachu_weapon_think(Menu *self){
 	if(get_menu_state() == MS_Pause && menu_manager.player->pikachu_weapon){
 	int mx,my;
     SDL_GetMouseState(&mx,&my);
-    if (collide_menu(self, vector2d(mx,my))){
+    if (collide_menu(self, gfc_vector2d(mx,my))){
         if (SDL_GetMouseState(NULL, NULL) && SDL_BUTTON(SDL_BUTTON_LEFT)) {
 			menu_manager.player->attack = pikachu_weapon_attack;
 			menu_manager.player->air_attack = pikachu_weapon_attack;
@@ -545,7 +545,7 @@ void button_zubat_weapon_think(Menu *self){
 	if(get_menu_state() == MS_Pause && menu_manager.player->zubat_weapon){
 	int mx,my;
     SDL_GetMouseState(&mx,&my);
-    if (collide_menu(self, vector2d(mx,my))){
+    if (collide_menu(self, gfc_vector2d(mx,my))){
         if (SDL_GetMouseState(NULL, NULL) && SDL_BUTTON(SDL_BUTTON_LEFT)) {
 			menu_manager.player->attack = zubat_weapon_attack;
 			menu_manager.player->air_attack = zubat_weapon_attack;
@@ -558,7 +558,7 @@ void button_agumon_switch_think(Menu *self){
 	if(get_menu_state() == MS_Pause && menu_manager.player->agumon_lives > 0 && menu_manager.player->digimon != 1){
 	int mx,my;
     SDL_GetMouseState(&mx,&my);
-    if (collide_menu(self, vector2d(mx,my))){
+    if (collide_menu(self, gfc_vector2d(mx,my))){
         if (SDL_GetMouseState(NULL, NULL) && SDL_BUTTON(SDL_BUTTON_LEFT)) {
 			load_agumon(menu_manager.player);
 			gfc_sound_play(PlayerRestore,0,.5,5,1);
@@ -571,7 +571,7 @@ void button_gabumon_switch_think(Menu *self){
 	if(get_menu_state() == MS_Pause && menu_manager.player->gabumon_lives > 0 && menu_manager.player->digimon != 3){
 	int mx,my;
     SDL_GetMouseState(&mx,&my);
-    if (collide_menu(self, vector2d(mx,my))){
+    if (collide_menu(self, gfc_vector2d(mx,my))){
         if (SDL_GetMouseState(NULL, NULL) && SDL_BUTTON(SDL_BUTTON_LEFT)) {
 			load_gabumon(menu_manager.player);
 			gfc_sound_play(PlayerRestore,0,.5,5,1);
@@ -584,7 +584,7 @@ void button_guilmon_switch_think(Menu *self){
 	if(get_menu_state() == MS_Pause && menu_manager.player->guilmon_lives > 0 && menu_manager.player->digimon != 2){
 	int mx,my;
     SDL_GetMouseState(&mx,&my);
-    if (collide_menu(self, vector2d(mx,my))){
+    if (collide_menu(self, gfc_vector2d(mx,my))){
         if (SDL_GetMouseState(NULL, NULL) && SDL_BUTTON(SDL_BUTTON_LEFT)) {
 			load_guilmon(menu_manager.player);
 			gfc_sound_play(PlayerRestore,0,.5,5,1);
@@ -598,7 +598,7 @@ void button_password_think(Menu *self){
 	if(menu_manager.menu_timer <= 0){
 	int mx,my;
     SDL_GetMouseState(&mx,&my);
-    if (collide_menu(self, vector2d(mx,my))){
+    if (collide_menu(self, gfc_vector2d(mx,my))){
         if (SDL_GetMouseState(NULL, NULL) && SDL_BUTTON(SDL_BUTTON_LEFT)) {
 			menu_manager.menu_state = MS_PasswordScreen;
         }
@@ -615,7 +615,7 @@ void button_password_zero_think(Menu *self){
 	if(menu_manager.menu_timer <= 0){
 	int mx,my;
     SDL_GetMouseState(&mx,&my);
-    if (collide_menu(self, vector2d(mx,my))){
+    if (collide_menu(self, gfc_vector2d(mx,my))){
         if (SDL_GetMouseState(NULL, NULL) && SDL_BUTTON(SDL_BUTTON_LEFT)) {
 			strcat(menu_manager.password,"0");
 			menu_manager.menu_timer = 50;
@@ -633,7 +633,7 @@ else{
 	if(menu_manager.menu_timer <= 0){
 	int mx,my;
     SDL_GetMouseState(&mx,&my);
-    if (collide_menu(self, vector2d(mx,my))){
+    if (collide_menu(self, gfc_vector2d(mx,my))){
         if (SDL_GetMouseState(NULL, NULL) && SDL_BUTTON(SDL_BUTTON_LEFT)) {
 			strcat(menu_manager.password,"1");
 			menu_manager.menu_timer = 50;
@@ -651,7 +651,7 @@ void button_password_enter_think (Menu *self){
 	if(menu_manager.menu_timer <= 0){
     int mx,my;
     SDL_GetMouseState(&mx,&my);
-    if (collide_menu(self, vector2d(mx,my))){
+    if (collide_menu(self, gfc_vector2d(mx,my))){
         if (SDL_GetMouseState(NULL, NULL) && SDL_BUTTON(SDL_BUTTON_LEFT)) {
 			if(!strcmp(menu_manager.password,"101")||!strcmp(menu_manager.password,"000")||!strcmp(menu_manager.password,"111")||!strcmp(menu_manager.password,"010")){
 			gfc_sound_play(PauseMenu,0,.5,5,1);

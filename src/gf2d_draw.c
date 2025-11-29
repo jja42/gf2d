@@ -2,7 +2,7 @@
 #include "gf2d_graphics.h"
 #include "simple_logger.h"
 
-void gf2d_draw_lines(Vector2D *p1,Vector2D *p2, Uint32 lines,Vector4D color)
+void gf2d_draw_lines(GFC_Vector2D *p1,GFC_Vector2D *p2, Uint32 lines,GFC_Vector4D color)
 {
     int i;
     SDL_SetRenderDrawColor(gf2d_graphics_get_renderer(),
@@ -25,7 +25,7 @@ void gf2d_draw_lines(Vector2D *p1,Vector2D *p2, Uint32 lines,Vector4D color)
                            255);
 }
 
-void gf2d_draw_line(Vector2D p1,Vector2D p2, Vector4D color)
+void gf2d_draw_line(GFC_Vector2D p1,GFC_Vector2D p2, GFC_Vector4D color)
 {
     SDL_SetRenderDrawColor(gf2d_graphics_get_renderer(),
                            color.x,
@@ -44,7 +44,7 @@ void gf2d_draw_line(Vector2D p1,Vector2D p2, Vector4D color)
                            255);
 }
 
-void gf2d_draw_rect(SDL_Rect rect,Vector4D color)
+void gf2d_draw_rect(SDL_Rect rect,GFC_Vector4D color)
 {
     SDL_SetRenderDrawColor(gf2d_graphics_get_renderer(),
                            color.x,
@@ -59,7 +59,7 @@ void gf2d_draw_rect(SDL_Rect rect,Vector4D color)
                            255);
 }
 
-void gf2d_draw_rects(SDL_Rect *rects,Uint32 count,Vector4D color)
+void gf2d_draw_rects(SDL_Rect *rects,Uint32 count,GFC_Vector4D color)
 {
     SDL_SetRenderDrawColor(gf2d_graphics_get_renderer(),
                            color.x,
@@ -69,7 +69,7 @@ void gf2d_draw_rects(SDL_Rect *rects,Uint32 count,Vector4D color)
     SDL_RenderDrawRects(gf2d_graphics_get_renderer(),rects,count);
 }
 
-void gf2d_draw_pixel(Vector2D pixel,Vector4D color)
+void gf2d_draw_pixel(GFC_Vector2D pixel,GFC_Vector4D color)
 {
     SDL_SetRenderDrawColor(gf2d_graphics_get_renderer(),
                            color.x,
@@ -81,7 +81,7 @@ void gf2d_draw_pixel(Vector2D pixel,Vector4D color)
                         pixel.y);
 }
 
-void gf2d_draw_pixel_list(SDL_Point * pixels,Uint32 count,Vector4D color)
+void gf2d_draw_pixel_list(SDL_Point * pixels,Uint32 count,GFC_Vector4D color)
 {
     SDL_SetRenderDrawColor(gf2d_graphics_get_renderer(),
                            color.x,
@@ -98,44 +98,44 @@ void gf2d_draw_pixel_list(SDL_Point * pixels,Uint32 count,Vector4D color)
  * http://groups.csail.mit.edu/graphics/classes/6.837/F98/Lecture6/circle.html
  */
 
-static int gf2d_draw_circle_points(SDL_Point *p,Vector2D center, Vector2D point)
+static int gf2d_draw_circle_points(SDL_Point *p,GFC_Vector2D center, GFC_Vector2D point)
 {  
   if (point.x == 0)
   {
-    vector2d_set(p[0],center.x, center.y + point.y);
-    vector2d_set(p[1],center.x, center.y - point.y);
-    vector2d_set(p[2],center.x + point.y, center.y);
-    vector2d_set(p[3],center.x - point.y, center.y);
+    gfc_vector2d_set(p[0],center.x, center.y + point.y);
+    gfc_vector2d_set(p[1],center.x, center.y - point.y);
+    gfc_vector2d_set(p[2],center.x + point.y, center.y);
+    gfc_vector2d_set(p[3],center.x - point.y, center.y);
     return 4;
   }
   if (point.x == point.y)
   {
-    vector2d_set(p[0],center.x + point.x, center.y + point.y);
-    vector2d_set(p[1],center.x - point.x, center.y + point.y);
-    vector2d_set(p[2],center.x + point.x, center.y - point.y);
-    vector2d_set(p[3],center.x - point.x, center.y - point.y);
+    gfc_vector2d_set(p[0],center.x + point.x, center.y + point.y);
+    gfc_vector2d_set(p[1],center.x - point.x, center.y + point.y);
+    gfc_vector2d_set(p[2],center.x + point.x, center.y - point.y);
+    gfc_vector2d_set(p[3],center.x - point.x, center.y - point.y);
     return 4;
   }
   if (point.x < point.y)
   {
-    vector2d_set(p[0],center.x + point.x, center.y + point.y);
-    vector2d_set(p[1],center.x - point.x, center.y + point.y);
-    vector2d_set(p[2],center.x + point.x, center.y - point.y);
-    vector2d_set(p[3],center.x - point.x, center.y - point.y);
-    vector2d_set(p[4],center.x + point.y, center.y + point.x);
-    vector2d_set(p[5],center.x - point.y, center.y + point.x);
-    vector2d_set(p[6],center.x + point.y, center.y - point.x);
-    vector2d_set(p[7],center.x - point.y, center.y - point.x);
+    gfc_vector2d_set(p[0],center.x + point.x, center.y + point.y);
+    gfc_vector2d_set(p[1],center.x - point.x, center.y + point.y);
+    gfc_vector2d_set(p[2],center.x + point.x, center.y - point.y);
+    gfc_vector2d_set(p[3],center.x - point.x, center.y - point.y);
+    gfc_vector2d_set(p[4],center.x + point.y, center.y + point.x);
+    gfc_vector2d_set(p[5],center.x - point.y, center.y + point.x);
+    gfc_vector2d_set(p[6],center.x + point.y, center.y - point.x);
+    gfc_vector2d_set(p[7],center.x - point.y, center.y - point.x);
     return 8;
   }
   return 0;
 }
 
-void gf2d_draw_circle(Vector2D center, int radius, Vector4D color)
+void gf2d_draw_circle(GFC_Vector2D center, int radius, GFC_Vector4D color)
 {
     SDL_Point *pointArray;
     int i = 0;
-    Vector2D point = {0,0};
+    GFC_Vector2D point = {0,0};
     int p = (5 - radius*4)/4;
     point.y = radius;
     pointArray = (SDL_Point*)malloc(sizeof(SDL_Point)*radius*8);

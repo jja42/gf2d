@@ -18,19 +18,19 @@ int enemy_type;
 int timer;
 }Enemy;
 
-void load_enemy(Vector2D position,int flip,int enemy_type,int patrol_bound_left,int patrol_bound_right);
+void load_enemy(GFC_Vector2D position,int flip,int enemy_type,int patrol_bound_left,int patrol_bound_right);
 
-void load_betamon(Enemy* self,Vector2D position, int patrol_bound_left, int patrol_bound_right);
+void load_betamon(Enemy* self,GFC_Vector2D position, int patrol_bound_left, int patrol_bound_right);
 
-void load_penguinmon(Enemy* self,Vector2D position, int patrol_bound_left, int patrol_bound_right);
+void load_penguinmon(Enemy* self,GFC_Vector2D position, int patrol_bound_left, int patrol_bound_right);
 
-void load_wormmon(Enemy* self,Vector2D position, Vector2D flip);
+void load_wormmon(Enemy* self,GFC_Vector2D position, GFC_Vector2D flip);
 
-void load_zubat(Enemy* self,Vector2D position, int patrol_bound_left, int patrol_bound_right);
+void load_zubat(Enemy* self,GFC_Vector2D position, int patrol_bound_left, int patrol_bound_right);
 
-void load_pikachu(Enemy* self,Vector2D position, int patrol_bound_left, int patrol_bound_right);
+void load_pikachu(Enemy* self,GFC_Vector2D position, int patrol_bound_left, int patrol_bound_right);
 
-void load_articuno(Enemy* self,Vector2D position, int patrol_bound_left, int patrol_bound_right);
+void load_articuno(Enemy* self,GFC_Vector2D position, int patrol_bound_left, int patrol_bound_right);
 
 void betamon_think(Entity* self);
 

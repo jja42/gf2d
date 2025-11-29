@@ -22,7 +22,7 @@ void gf2d_graphics_initialize(
     int viewHeight,
     int renderWidth,
     int renderHeight,
-    Vector4D bgcolor,
+    GFC_Vector4D bgcolor,
     Bool fullscreen
 );
 

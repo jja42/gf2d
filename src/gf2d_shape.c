@@ -2,7 +2,7 @@
 #include "simple_logger.h"
 #include "gf2d_sprite.h"
 
-Box *gf2d_box(Vector2D pos, float w, float h, Vector2D offset)
+Box *gf2d_box(GFC_Vector2D pos, float w, float h, GFC_Vector2D offset)
 {
     Box *r = malloc(sizeof(Box));
     r->pos.x = pos.x + offset.x;
@@ -13,7 +13,7 @@ Box *gf2d_box(Vector2D pos, float w, float h, Vector2D offset)
     r->height = h;
     return r;
 }
-void gf2d_box_update(Box *r,Vector2D pos){
+void gf2d_box_update(Box *r,GFC_Vector2D pos){
     r->pos.x = pos.x + r->offset.x;
     r->pos.y = pos.y + r->offset.y;
 }

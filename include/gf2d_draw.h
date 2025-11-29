@@ -8,11 +8,11 @@
  * @param pixel the screen position to draw at
  * @param color the color to draw with
  */
-void gf2d_draw_pixel(Vector2D pixel,Vector4D color);
+void gf2d_draw_pixel(GFC_Vector2D pixel,GFC_Vector4D color);
 
-void gf2d_draw_circle(Vector2D center, int radius, Vector4D color);
+void gf2d_draw_circle(GFC_Vector2D center, int radius, GFC_Vector4D color);
 
-void gf2d_draw_rect(SDL_Rect rect,Vector4D color);
+void gf2d_draw_rect(SDL_Rect rect,GFC_Vector4D color);
 
 /**
  * @brief draw a line to the current rendering context
@@ -20,6 +20,6 @@ void gf2d_draw_rect(SDL_Rect rect,Vector4D color);
  * @param p2 ending point
  * @param color the color to draw with
  */
-void gf2d_draw_line(Vector2D p1,Vector2D p2, Vector4D color);
+void gf2d_draw_line(GFC_Vector2D p1,GFC_Vector2D p2, GFC_Vector4D color);
 
 #endif

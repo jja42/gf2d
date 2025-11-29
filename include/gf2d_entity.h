@@ -17,11 +17,11 @@ typedef struct Entity_S
     Uint8           _inuse; /**<flag to keep track if this isntance is in use and should not be reassigned*/
     Uint8           _set;
     Sprite          *sprite;          /**<the sprite for this entity*/
-    Vector2D        position;       /**<position of the entity*/
-    Vector2D        velocity;       /**<velocity of the entity*/
-    Vector2D        flip;   		/**<whether the entity is flipped on any axis*/
-    Vector3D        rotation;       /**<rotation of the entity*/
-    Vector2D        scale;          /**<*please default to 1,1*/
+    GFC_Vector2D        position;       /**<position of the entity*/
+    GFC_Vector2D        velocity;       /**<velocity of the entity*/
+    GFC_Vector2D        flip;   		/**<whether the entity is flipped on any axis*/
+    GFC_Vector3D        rotation;       /**<rotation of the entity*/
+    GFC_Vector2D        scale;          /**<*please default to 1,1*/
     void (*touch) (struct Entity_S* self,struct Entity_S* other);
     void (*think) (struct Entity_S* self);
     int           	health;
@@ -89,25 +89,25 @@ Entity *gf2d_entity_get(int index);
  * @brief give entity proper data based on params
  * @param the information for the entity
  */
-void gf2d_entity_load(Entity* ent, char* filename, int width, int height, int frames_per_line, Vector2D pos,Vector2D scale);
+void gf2d_entity_load(Entity* ent, char* filename, int width, int height, int frames_per_line, GFC_Vector2D pos,GFC_Vector2D scale);
 
 /**
  * @brief spawn a non-specific pickup entity
  * @param the information for the entity
  */
-void gf2d_pickup_spawn(char* filename, int width, int height, int frames_per_line, Vector2D pos,Vector2D scale,Vector2D velocity,Vector2D flip,Vector2D boxoffset, int boxw, int boxh, int tag, int duration);
+void gf2d_pickup_spawn(char* filename, int width, int height, int frames_per_line, GFC_Vector2D pos,GFC_Vector2D scale,GFC_Vector2D velocity,GFC_Vector2D flip,GFC_Vector2D boxoffset, int boxw, int boxh, int tag, int duration);
 
 /**
  * @brief spawn a non-specific projectile entity
  * @param the information for the entity
  */
-void gf2d_projectile_spawn(char* filename, int width, int height, int frames_per_line, Vector2D pos,Vector2D scale,Vector2D velocity,Vector2D flip,Vector2D boxoffset, int boxw, int boxh, float owner, int duration);
+void gf2d_projectile_spawn(char* filename, int width, int height, int frames_per_line, GFC_Vector2D pos,GFC_Vector2D scale,GFC_Vector2D velocity,GFC_Vector2D flip,GFC_Vector2D boxoffset, int boxw, int boxh, float owner, int duration);
 
 /**
  * @brief spawn a specific weapon projectile entity
  * @param the information for the entity
  */
-void gf2d_special_projectile_spawn(char* filename, int width, int height, int frames_per_line, Vector2D pos,Vector2D scale,Vector2D velocity,Vector2D flip,Vector2D boxoffset, int boxw, int boxh, float owner, int duration, int special);
+void gf2d_special_projectile_spawn(char* filename, int width, int height, int frames_per_line, GFC_Vector2D pos,GFC_Vector2D scale,GFC_Vector2D velocity,GFC_Vector2D flip,GFC_Vector2D boxoffset, int boxw, int boxh, float owner, int duration, int special);
 
 /**
  * @brief takes information from json file and intitializes the entity with that information
@@ -126,9 +126,9 @@ void gf2d_entity_update_all();
  */
 void gf2d_entity_update(Entity *self);
 
-void gf2d_platform_spawn(Vector2D position, Vector2D scale);
+void gf2d_platform_spawn(GFC_Vector2D position, GFC_Vector2D scale);
 
-void gf2d_enemy_spawn(Vector2D position, int enemy_type, int patrol_bound_left, int patrol_bound_right, int flip);
+void gf2d_enemy_spawn(GFC_Vector2D position, int enemy_type, int patrol_bound_left, int patrol_bound_right, int flip);
 
 void gf2d_basic_collision();
 
@@ -136,7 +136,7 @@ void projectile_touch(Entity* self, Entity* other);
 
 void gf2d_apply_offset();
 
-void gf2d_door_spawn(int level, Vector2D position);
+void gf2d_door_spawn(int level, GFC_Vector2D position);
 
 void gf2d_level_clear();
 #endif

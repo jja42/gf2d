@@ -79,7 +79,7 @@ void gf2d_entity_draw_all()
 }
 
 
-void gf2d_entity_load(Entity *ent, char* filename, int width, int height, int frames_per_line, Vector2D pos, Vector2D scale)
+void gf2d_entity_load(Entity *ent, char* filename, int width, int height, int frames_per_line, GFC_Vector2D pos, GFC_Vector2D scale)
 {   
     ent->sprite = gf2d_sprite_load_all(filename,width,height,frames_per_line);
     ent->position = pos;
@@ -87,7 +87,7 @@ void gf2d_entity_load(Entity *ent, char* filename, int width, int height, int fr
     ent->duration = 99;
 }
 
-void gf2d_pickup_spawn(char* filename, int width, int height, int frames_per_line, Vector2D pos, Vector2D scale, Vector2D velocity,Vector2D flip,Vector2D boxoffset, int boxw, int boxh, int tag, int duration){
+void gf2d_pickup_spawn(char* filename, int width, int height, int frames_per_line, GFC_Vector2D pos, GFC_Vector2D scale, GFC_Vector2D velocity,GFC_Vector2D flip,GFC_Vector2D boxoffset, int boxw, int boxh, int tag, int duration){
 Entity *ent = gf2d_entity_new();
 	ent->sprite = gf2d_sprite_load_all(filename,width,height,frames_per_line);
     ent->position = pos;
@@ -100,7 +100,7 @@ Entity *ent = gf2d_entity_new();
     ent->tag = tag;
 }
 
-void gf2d_projectile_spawn(char* filename, int width, int height, int frames_per_line, Vector2D pos, Vector2D scale, Vector2D velocity,Vector2D flip,Vector2D boxoffset, int boxw, int boxh, float owner, int duration){
+void gf2d_projectile_spawn(char* filename, int width, int height, int frames_per_line, GFC_Vector2D pos, GFC_Vector2D scale, GFC_Vector2D velocity,GFC_Vector2D flip,GFC_Vector2D boxoffset, int boxw, int boxh, float owner, int duration){
 	Entity *ent = gf2d_entity_new();
 	ent->sprite = gf2d_sprite_load_all(filename,width,height,frames_per_line);
     ent->position = pos;
@@ -113,7 +113,7 @@ void gf2d_projectile_spawn(char* filename, int width, int height, int frames_per
     ent->touch = projectile_touch;
     ent->tag = 7;
 }
-void gf2d_special_projectile_spawn(char* filename, int width, int height, int frames_per_line, Vector2D pos, Vector2D scale, Vector2D velocity,Vector2D flip,Vector2D boxoffset, int boxw, int boxh, float owner, int duration, int special){
+void gf2d_special_projectile_spawn(char* filename, int width, int height, int frames_per_line, GFC_Vector2D pos, GFC_Vector2D scale, GFC_Vector2D velocity,GFC_Vector2D flip,GFC_Vector2D boxoffset, int boxw, int boxh, float owner, int duration, int special){
 	Entity *ent = gf2d_entity_new();
 	ent->sprite = gf2d_sprite_load_all(filename,width,height,frames_per_line);
     ent->position = pos;
@@ -139,27 +139,27 @@ void gf2d_entity_update_all(){
 }
 
 void gf2d_entity_update(Entity *self){
-	Vector2D veloc;
+	GFC_Vector2D veloc;
 	if(self->tag == 7){
 	 veloc = self->velocity;}
 		
-	if(self->colliding == 1 && self->tag!=6){self->velocity = vector2d(-.1,0);}
-	if(self->colliding == 2 && self->tag!=6){self->velocity = vector2d(.1,0);}
+	if(self->colliding == 1 && self->tag!=6){self->velocity = gfc_vector2d(-.1,0);}
+	if(self->colliding == 2 && self->tag!=6){self->velocity = gfc_vector2d(.1,0);}
 	
 	if(self->tag == 8)self->think(self);
 	
 	if(self->gravity == 1)self->velocity.y += 3;
-	if(self->frozen > 0)self->velocity = vector2d(0,0);
+	if(self->frozen > 0)self->velocity = gfc_vector2d(0,0);
 	if(self->tag == 1){camera_update();}
 	self->velocity.x -= get_camera_velocity().x;
 	self->velocity.y -= get_camera_velocity().y;
 	
 	
-	if(self->tag!=1)vector2d_set(self->position,self->position.x+ self->velocity.x,self->position.y + self->velocity.y);
+	if(self->tag!=1)gfc_vector2d_set(self->position,self->position.x+ self->velocity.x,self->position.y + self->velocity.y);
 	
 	gf2d_box_update(self->box,self->position);
 	if(self->invincibility > 0)self->invincibility-=1;
-	if(self->tag != 7)self->velocity = vector2d(0,0);
+	if(self->tag != 7)self->velocity = gfc_vector2d(0,0);
 	if(self->tag == 7)self->velocity = veloc;
 	if(self->duration<99){self->duration-=.1;
 		self->frame+=.1;
@@ -216,25 +216,25 @@ for(int j = 0; j < gf2d_entity_manager.entity_max; j++){
 }
 }
 
-void gf2d_platform_spawn(Vector2D position, Vector2D scale){
+void gf2d_platform_spawn(GFC_Vector2D position, GFC_Vector2D scale){
 	Entity* self = gf2d_entity_new();
 	gf2d_entity_load(self,"images/platform.png",48,16,1,position,scale);
-	self->box = gf2d_box(self->position, 24*scale.x, 8*scale.y, vector2d(24*scale.x,8*scale.y));
+	self->box = gf2d_box(self->position, 24*scale.x, 8*scale.y, gfc_vector2d(24*scale.x,8*scale.y));
     self->touch = platform_touch;
     self->tag = 6;
     if(get_menu_state() == MS_Editor)editor_add_platform(self);
 }
 
-void gf2d_enemy_spawn(Vector2D position, int enemy_type, int patrol_bound_left, int patrol_bound_right, int flip){
+void gf2d_enemy_spawn(GFC_Vector2D position, int enemy_type, int patrol_bound_left, int patrol_bound_right, int flip){
 	patrol_bound_left -= get_camera_offset().x;
 	patrol_bound_right -= get_camera_offset().x;
 	load_enemy(position,flip,enemy_type,patrol_bound_left,patrol_bound_right);
 }
 
-void gf2d_door_spawn(int level, Vector2D position){
+void gf2d_door_spawn(int level, GFC_Vector2D position){
 	Entity* self = gf2d_entity_new();
-	gf2d_entity_load(self,"images/door.png",40,70,1,position,vector2d(2,2));
-	self->box = gf2d_box(self->position,40,70,vector2d(40,70));
+	gf2d_entity_load(self,"images/door.png",40,70,1,position,gfc_vector2d(2,2));
+	self->box = gf2d_box(self->position,40,70,gfc_vector2d(40,70));
 	self->touch = door_touch;
 	self->special = level;
 	self->tag = 6;
@@ -245,7 +245,7 @@ int i;
     for (i = 1; i < gf2d_entity_manager.entity_max;i++)
     {
         if (gf2d_entity_manager.entity_list[i]._inuse == 0)continue;
-        vector2d_set(gf2d_entity_manager.entity_list[i].position,gf2d_entity_manager.entity_list[i].position.x - get_camera_offset().x,gf2d_entity_manager.entity_list[i].position.y - get_camera_offset().y);
+        gfc_vector2d_set(gf2d_entity_manager.entity_list[i].position,gf2d_entity_manager.entity_list[i].position.x - get_camera_offset().x,gf2d_entity_manager.entity_list[i].position.y - get_camera_offset().y);
     }
 }
 

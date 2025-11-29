@@ -100,7 +100,7 @@ if (player_data){
             float cam_offset_y;
             sj_get_float_value(offsetX, &cam_offset_x);
             sj_get_float_value(offsetY, &cam_offset_y);
-            set_camera_offset(vector2d(cam_offset_x,cam_offset_y));
+            set_camera_offset(gfc_vector2d(cam_offset_x,cam_offset_y));
             sj_get_integer_value(player_health,&self->ent->health);
             sj_get_integer_value(player_experience,&self->ent->experience);
             sj_get_integer_value(player_agumon_lives,&self->agumon_lives);
@@ -138,7 +138,7 @@ if (player_data){
 
 void load_agumon(Player* self){
 	self->ent->position.y -= 1;
-	gf2d_entity_load(self->ent,"images/aguman.png",48,48,11,self->ent->position,vector2d(3,3));
+	gf2d_entity_load(self->ent,"images/aguman.png",48,48,11,self->ent->position,gfc_vector2d(3,3));
 	self->ent->frame = 0;
 	self->move_end_frame = 17;
 	self->jump_start_frame = 18;
@@ -153,7 +153,7 @@ void load_agumon(Player* self){
 	self->damaged_frame = 46;
 	self->attack = agumon_attack;
 	self->air_attack = agumon_attack;
-	self->ent->box = gf2d_box(self->ent->position, 30, 39, vector2d(72,105));
+	self->ent->box = gf2d_box(self->ent->position, 30, 39, gfc_vector2d(72,105));
 	self->digivolve = load_wargreymon;
 	self->digivolved = 0;
 	self->digimon = 1;
@@ -161,7 +161,7 @@ void load_agumon(Player* self){
 
 void load_guilmon(Player* self){
 	self->ent->position.y -= 1;
-	gf2d_entity_load(self->ent,"images/guilmon_2.png",40,50,9,self->ent->position,vector2d(3,3));
+	gf2d_entity_load(self->ent,"images/guilmon_2.png",40,50,9,self->ent->position,gfc_vector2d(3,3));
 	self->ent->frame = 0;
 	self->move_end_frame = 8;
 	self->jump_start_frame = 9;
@@ -174,7 +174,7 @@ void load_guilmon(Player* self){
 	self->damaged_frame = 44;
 	self->attack = guilmon_attack;
 	self->air_attack = guilmon_air_attack;
-	self->ent->box = gf2d_box(self->ent->position,39,45,vector2d(63,105));
+	self->ent->box = gf2d_box(self->ent->position,39,45,gfc_vector2d(63,105));
 	self->digivolve = load_gallantmon;
 	self->digivolved = 0;
 	self->digimon = 2;
@@ -184,7 +184,7 @@ void load_guilmon(Player* self){
 
 void load_gabumon(Player* self){
 	self->ent->position.y -= 1;
-	gf2d_entity_load(self->ent,"images/gabumon.png",48,48,9,self->ent->position,vector2d(3,3));
+	gf2d_entity_load(self->ent,"images/gabumon.png",48,48,9,self->ent->position,gfc_vector2d(3,3));
 	self->ent->frame = 0;
 	self->move_end_frame = 9;
 	self->jump_start_frame = 10;
@@ -197,7 +197,7 @@ void load_gabumon(Player* self){
 	self->damaged_frame = 42;
 	self->attack = gabumon_attack;
 	self->air_attack = gabumon_air_attack;
-	self->ent->box = gf2d_box(self->ent->position,36,42,vector2d(72,102));
+	self->ent->box = gf2d_box(self->ent->position,36,42,gfc_vector2d(72,102));
 	self->digivolve = load_etemon;
 	self->digivolved = 0;
 	self->digimon = 3;
@@ -207,7 +207,7 @@ void load_gabumon(Player* self){
 
 void load_wargreymon(Player* self){
 	self->ent->position.y -= 20;
-	gf2d_entity_load(self->ent,"images/greymon_beta.png",64,64,8,self->ent->position,vector2d(3,3));
+	gf2d_entity_load(self->ent,"images/greymon_beta.png",64,64,8,self->ent->position,gfc_vector2d(3,3));
 	self->ent->frame = 0;
 	self->move_end_frame = 8;
 	self->jump_start_frame = 9;
@@ -219,7 +219,7 @@ void load_wargreymon(Player* self){
 	self->air_attack_end_frame = 33;
 	self->attack = wargreymon_attack;
 	self->air_attack = wargreymon_air_attack;
-	self->ent->box = gf2d_box(self->ent->position,54,66,vector2d(87,102));
+	self->ent->box = gf2d_box(self->ent->position,54,66,gfc_vector2d(87,102));
 	self->digi_timer = 3000;
 	self->digivolved = 1;
 	self->dedigivolve = load_agumon;
@@ -231,7 +231,7 @@ void load_wargreymon(Player* self){
 void load_gallantmon(Player* self){
 	self->ent->position.y -= 65;
 	self->ent->position.x -= 50;
-	gf2d_entity_load(self->ent,"images/gallantmon_beta.png",100,80,8,self->ent->position,vector2d(3,3));
+	gf2d_entity_load(self->ent,"images/gallantmon_beta.png",100,80,8,self->ent->position,gfc_vector2d(3,3));
 	self->ent->frame = 0;
 	self->move_end_frame = 8;
 	self->jump_start_frame = 9;
@@ -243,7 +243,7 @@ void load_gallantmon(Player* self){
 	self->air_attack_end_frame = 34;
 	self->attack = gallantmon_attack;
 	self->air_attack = gallantmon_air_attack;
-	self->ent->box = gf2d_box(self->ent->position,54,75,vector2d(144,141));
+	self->ent->box = gf2d_box(self->ent->position,54,75,gfc_vector2d(144,141));
 	self->digi_timer = 3000;
 	self->digivolved = 1;
 	self->dedigivolve = load_guilmon;
@@ -255,7 +255,7 @@ void load_gallantmon(Player* self){
 void load_etemon(Player* self){
 	self->ent->position.y -= 50;
 	self->ent->position.x -= 10;
-	gf2d_entity_load(self->ent,"images/etemon_beta.png",64,64,8,self->ent->position,vector2d(3,3));
+	gf2d_entity_load(self->ent,"images/etemon_beta.png",64,64,8,self->ent->position,gfc_vector2d(3,3));
 	self->ent->frame = 0;
 	self->move_end_frame = 8;
 	self->jump_start_frame = 10;
@@ -267,7 +267,7 @@ void load_etemon(Player* self){
 	self->air_attack_end_frame = 39;
 	self->attack = etemon_attack;
 	self->air_attack = etemon_air_attack;
-	self->ent->box = gf2d_box(self->ent->position,48,72,vector2d(99,99));
+	self->ent->box = gf2d_box(self->ent->position,48,72,gfc_vector2d(99,99));
 	self->digi_timer = 3000;
 	self->digivolved = 1;
 	self->dedigivolve = load_gabumon;
@@ -277,82 +277,82 @@ void load_etemon(Player* self){
 }
 
 void agumon_attack(Player* self){
-if(self->ent->flip.x == 0)gf2d_projectile_spawn("images/fireball.png",24,24,3,vector2d(self->ent->position.x+57.5,self->ent->position.y+62.5),vector2d(2.5,2.5),vector2d(2.5,0),self->ent->flip,vector2d(40,32.5),20,20,1,30);
-if(self->ent->flip.x == 1)gf2d_projectile_spawn("images/fireball.png",24,24,3,vector2d(self->ent->position.x+20,self->ent->position.y+62.5),vector2d(2.5,2.5),vector2d(-2.5,0),self->ent->flip,vector2d(40,32.5),20,20,1,30);
+if(self->ent->flip.x == 0)gf2d_projectile_spawn("images/fireball.png",24,24,3,gfc_vector2d(self->ent->position.x+57.5,self->ent->position.y+62.5),gfc_vector2d(2.5,2.5),gfc_vector2d(2.5,0),self->ent->flip,gfc_vector2d(40,32.5),20,20,1,30);
+if(self->ent->flip.x == 1)gf2d_projectile_spawn("images/fireball.png",24,24,3,gfc_vector2d(self->ent->position.x+20,self->ent->position.y+62.5),gfc_vector2d(2.5,2.5),gfc_vector2d(-2.5,0),self->ent->flip,gfc_vector2d(40,32.5),20,20,1,30);
 gfc_sound_play(FireballAttack,0,.5,2,1);
 }
 
 void gabumon_attack(Player* self){
-if(self->ent->flip.x == 0)gf2d_projectile_spawn("images/empty.png",24,24,3,vector2d(self->ent->position.x+80,self->ent->position.y+62.5),vector2d(2.5,2.5),vector2d(0,0),self->ent->flip,vector2d(40,32.5),20,20,1,1);
-if(self->ent->flip.x == 1)gf2d_projectile_spawn("images/empty.png",24,24,3,vector2d(self->ent->position.x,self->ent->position.y+62.5),vector2d(2.5,2.5),vector2d(0,0),self->ent->flip,vector2d(40,32.5),20,20,1,1);
+if(self->ent->flip.x == 0)gf2d_projectile_spawn("images/empty.png",24,24,3,gfc_vector2d(self->ent->position.x+80,self->ent->position.y+62.5),gfc_vector2d(2.5,2.5),gfc_vector2d(0,0),self->ent->flip,gfc_vector2d(40,32.5),20,20,1,1);
+if(self->ent->flip.x == 1)gf2d_projectile_spawn("images/empty.png",24,24,3,gfc_vector2d(self->ent->position.x,self->ent->position.y+62.5),gfc_vector2d(2.5,2.5),gfc_vector2d(0,0),self->ent->flip,gfc_vector2d(40,32.5),20,20,1,1);
 gfc_sound_play(GabumonPunch,0,.5,2,1);
 }
 
 void gabumon_air_attack(Player* self){
-if(self->ent->flip.x == 0)gf2d_projectile_spawn("images/empty.png",24,24,3,vector2d(self->ent->position.x+60,self->ent->position.y+70),vector2d(2.5,2.5),vector2d(0,0),self->ent->flip,vector2d(40,32.5),20,20,1,1);
-if(self->ent->flip.x == 1)gf2d_projectile_spawn("images/empty.png",24,24,3,vector2d(self->ent->position.x+20,self->ent->position.y+70),vector2d(2.5,2.5),vector2d(0,0),self->ent->flip,vector2d(40,32.5),20,20,1,1);
+if(self->ent->flip.x == 0)gf2d_projectile_spawn("images/empty.png",24,24,3,gfc_vector2d(self->ent->position.x+60,self->ent->position.y+70),gfc_vector2d(2.5,2.5),gfc_vector2d(0,0),self->ent->flip,gfc_vector2d(40,32.5),20,20,1,1);
+if(self->ent->flip.x == 1)gf2d_projectile_spawn("images/empty.png",24,24,3,gfc_vector2d(self->ent->position.x+20,self->ent->position.y+70),gfc_vector2d(2.5,2.5),gfc_vector2d(0,0),self->ent->flip,gfc_vector2d(40,32.5),20,20,1,1);
 gfc_sound_play(GabumonSpin,0,.5,2,1);
 }
 
 void guilmon_attack(Player* self){
-	if(self->ent->flip.x == 0)gf2d_projectile_spawn("images/guilmon_ranged_attack.png",16,16,3,vector2d(self->ent->position.x+57.5,self->ent->position.y+62.5),vector2d(2.5,2.5),vector2d(2.5,0),self->ent->flip,vector2d(40,32.5),20,20,1,30);
-	if(self->ent->flip.x == 1)gf2d_projectile_spawn("images/guilmon_ranged_attack.png",16,16,3,vector2d(self->ent->position.x+20,self->ent->position.y+62.5),vector2d(2.5,2.5),vector2d(-2.5,0),self->ent->flip,vector2d(40,32.5),20,20,1,30);
+	if(self->ent->flip.x == 0)gf2d_projectile_spawn("images/guilmon_ranged_attack.png",16,16,3,gfc_vector2d(self->ent->position.x+57.5,self->ent->position.y+62.5),gfc_vector2d(2.5,2.5),gfc_vector2d(2.5,0),self->ent->flip,gfc_vector2d(40,32.5),20,20,1,30);
+	if(self->ent->flip.x == 1)gf2d_projectile_spawn("images/guilmon_ranged_attack.png",16,16,3,gfc_vector2d(self->ent->position.x+20,self->ent->position.y+62.5),gfc_vector2d(2.5,2.5),gfc_vector2d(-2.5,0),self->ent->flip,gfc_vector2d(40,32.5),20,20,1,30);
 gfc_sound_play(FireballAttack,0,.5,2,1);
 }
 void guilmon_air_attack(Player* self){
-	if(self->ent->flip.x == 0)gf2d_projectile_spawn("images/empty.png",24,24,3,vector2d(self->ent->position.x+57.5,self->ent->position.y+62.5),vector2d(2.5,2.5),vector2d(0,0),self->ent->flip,vector2d(40,32.5),20,20,1,1);
-	if(self->ent->flip.x == 1)gf2d_projectile_spawn("images/empty.png",24,24,3,vector2d(self->ent->position.x+20,self->ent->position.y+62.5),vector2d(2.5,2.5),vector2d(0,0),self->ent->flip,vector2d(40,32.5),20,20,1,1);
+	if(self->ent->flip.x == 0)gf2d_projectile_spawn("images/empty.png",24,24,3,gfc_vector2d(self->ent->position.x+57.5,self->ent->position.y+62.5),gfc_vector2d(2.5,2.5),gfc_vector2d(0,0),self->ent->flip,gfc_vector2d(40,32.5),20,20,1,1);
+	if(self->ent->flip.x == 1)gf2d_projectile_spawn("images/empty.png",24,24,3,gfc_vector2d(self->ent->position.x+20,self->ent->position.y+62.5),gfc_vector2d(2.5,2.5),gfc_vector2d(0,0),self->ent->flip,gfc_vector2d(40,32.5),20,20,1,1);
 gfc_sound_play(GuilmonClaw,0,.5,2,1);
 }
 
 void wargreymon_attack(Player* self){
-	if(self->ent->flip.x == 0)gf2d_projectile_spawn("images/greymon_ranged_attack.png",24,28,3,vector2d(self->ent->position.x+65,self->ent->position.y+30),vector2d(4,4),vector2d(3,0),self->ent->flip,vector2d(44,56),36,36,1,30);
-	if(self->ent->flip.x == 1)gf2d_projectile_spawn("images/greymon_ranged_attack.png",24,28,3,vector2d(self->ent->position.x+20,self->ent->position.y+30),vector2d(4,4),vector2d(-3,0),self->ent->flip,vector2d(44,56),36,36,1,30);
+	if(self->ent->flip.x == 0)gf2d_projectile_spawn("images/greymon_ranged_attack.png",24,28,3,gfc_vector2d(self->ent->position.x+65,self->ent->position.y+30),gfc_vector2d(4,4),gfc_vector2d(3,0),self->ent->flip,gfc_vector2d(44,56),36,36,1,30);
+	if(self->ent->flip.x == 1)gf2d_projectile_spawn("images/greymon_ranged_attack.png",24,28,3,gfc_vector2d(self->ent->position.x+20,self->ent->position.y+30),gfc_vector2d(4,4),gfc_vector2d(-3,0),self->ent->flip,gfc_vector2d(44,56),36,36,1,30);
 gfc_sound_play(WarGreymonProjectile,0,.5,2,1);
 }
 void wargreymon_air_attack(Player* self){
-	if(self->ent->flip.x == 0)gf2d_projectile_spawn("images/empty.png",24,28,3,vector2d(self->ent->position.x+80,self->ent->position.y+40),vector2d(4,4),vector2d(0,0),self->ent->flip,vector2d(44,56),36,36,1,1);
-	if(self->ent->flip.x == 1)gf2d_projectile_spawn("images/empty.png",24,28,3,vector2d(self->ent->position.x+20,self->ent->position.y+30),vector2d(4,4),vector2d(0,0),self->ent->flip,vector2d(44,56),36,36,1,1);
+	if(self->ent->flip.x == 0)gf2d_projectile_spawn("images/empty.png",24,28,3,gfc_vector2d(self->ent->position.x+80,self->ent->position.y+40),gfc_vector2d(4,4),gfc_vector2d(0,0),self->ent->flip,gfc_vector2d(44,56),36,36,1,1);
+	if(self->ent->flip.x == 1)gf2d_projectile_spawn("images/empty.png",24,28,3,gfc_vector2d(self->ent->position.x+20,self->ent->position.y+30),gfc_vector2d(4,4),gfc_vector2d(0,0),self->ent->flip,gfc_vector2d(44,56),36,36,1,1);
 gfc_sound_play(GuilmonClaw,0,.5,2,1);
 }
 
 void gallantmon_attack(Player* self){
-	if(self->ent->flip.x == 0)gf2d_projectile_spawn("images/gallantmon_ranged_attack.png",24,24,3,vector2d(self->ent->position.x+200,self->ent->position.y+100),vector2d(3,3),vector2d(3,0),self->ent->flip,vector2d(48,36),21,21,1,30);
-	if(self->ent->flip.x == 1)gf2d_projectile_spawn("images/gallantmon_ranged_attack.png",24,24,3,vector2d(self->ent->position.x,self->ent->position.y+100),vector2d(3,3),vector2d(-3,0),self->ent->flip,vector2d(48,36),21,21,1,30);
+	if(self->ent->flip.x == 0)gf2d_projectile_spawn("images/gallantmon_ranged_attack.png",24,24,3,gfc_vector2d(self->ent->position.x+200,self->ent->position.y+100),gfc_vector2d(3,3),gfc_vector2d(3,0),self->ent->flip,gfc_vector2d(48,36),21,21,1,30);
+	if(self->ent->flip.x == 1)gf2d_projectile_spawn("images/gallantmon_ranged_attack.png",24,24,3,gfc_vector2d(self->ent->position.x,self->ent->position.y+100),gfc_vector2d(3,3),gfc_vector2d(-3,0),self->ent->flip,gfc_vector2d(48,36),21,21,1,30);
 gfc_sound_play(GallantmonProjectile,0,.5,2,1);
 }
 void gallantmon_air_attack(Player* self){
-	if(self->ent->flip.x == 0)gf2d_projectile_spawn("images/empty.png",24,24,3,vector2d(self->ent->position.x+200,self->ent->position.y+100),vector2d(3,3),vector2d(0,0),self->ent->flip,vector2d(48,36),21,21,1,1);
-	if(self->ent->flip.x == 1)gf2d_projectile_spawn("images/empty.png",24,24,3,vector2d(self->ent->position.x+20,self->ent->position.y+100),vector2d(3,3),vector2d(0,0),self->ent->flip,vector2d(48,36),21,21,1,1);
+	if(self->ent->flip.x == 0)gf2d_projectile_spawn("images/empty.png",24,24,3,gfc_vector2d(self->ent->position.x+200,self->ent->position.y+100),gfc_vector2d(3,3),gfc_vector2d(0,0),self->ent->flip,gfc_vector2d(48,36),21,21,1,1);
+	if(self->ent->flip.x == 1)gf2d_projectile_spawn("images/empty.png",24,24,3,gfc_vector2d(self->ent->position.x+20,self->ent->position.y+100),gfc_vector2d(3,3),gfc_vector2d(0,0),self->ent->flip,gfc_vector2d(48,36),21,21,1,1);
 gfc_sound_play(GuilmonClaw,0,.5,2,1);
 }
 
 void etemon_attack(Player* self){
-	if(self->ent->flip.x == 0)gf2d_projectile_spawn("images/etemon_ranged_attack.png",24,24,3,vector2d(self->ent->position.x+100,self->ent->position.y+50),vector2d(3,3),vector2d(3,0),self->ent->flip,vector2d(36,42),24,24,1,30);
-	if(self->ent->flip.x == 1)gf2d_projectile_spawn("images/etemon_ranged_attack.png",24,24,3,vector2d(self->ent->position.x,self->ent->position.y+50),vector2d(3,3),vector2d(-3,0),self->ent->flip,vector2d(36,42),24,24,1,30);
+	if(self->ent->flip.x == 0)gf2d_projectile_spawn("images/etemon_ranged_attack.png",24,24,3,gfc_vector2d(self->ent->position.x+100,self->ent->position.y+50),gfc_vector2d(3,3),gfc_vector2d(3,0),self->ent->flip,gfc_vector2d(36,42),24,24,1,30);
+	if(self->ent->flip.x == 1)gf2d_projectile_spawn("images/etemon_ranged_attack.png",24,24,3,gfc_vector2d(self->ent->position.x,self->ent->position.y+50),gfc_vector2d(3,3),gfc_vector2d(-3,0),self->ent->flip,gfc_vector2d(36,42),24,24,1,30);
 gfc_sound_play(EtemonProjectile,0,.5,2,1);
 }
 
 void etemon_air_attack(Player* self){
-	if(self->ent->flip.x == 0)gf2d_projectile_spawn("images/empty.png",24,24,3,vector2d(self->ent->position.x+100,self->ent->position.y+30),vector2d(3,3),vector2d(0,0),self->ent->flip,vector2d(36,42),24,24,1,1);
-	if(self->ent->flip.x == 1)gf2d_projectile_spawn("images/empty.png",24,24,3,vector2d(self->ent->position.x,self->ent->position.y+30),vector2d(3,3),vector2d(0,0),self->ent->flip,vector2d(36,42),24,24,1,1);
+	if(self->ent->flip.x == 0)gf2d_projectile_spawn("images/empty.png",24,24,3,gfc_vector2d(self->ent->position.x+100,self->ent->position.y+30),gfc_vector2d(3,3),gfc_vector2d(0,0),self->ent->flip,gfc_vector2d(36,42),24,24,1,1);
+	if(self->ent->flip.x == 1)gf2d_projectile_spawn("images/empty.png",24,24,3,gfc_vector2d(self->ent->position.x,self->ent->position.y+30),gfc_vector2d(3,3),gfc_vector2d(0,0),self->ent->flip,gfc_vector2d(36,42),24,24,1,1);
 gfc_sound_play(GabumonSpin,0,.5,2,1);
 }
 
 void zubat_weapon_attack(Player* self){
-	if(self->ent->flip.x == 0)gf2d_special_projectile_spawn("images/zubat_attack.png",25,24,3,vector2d(self->ent->position.x+80,self->ent->position.y+20),vector2d(2,2),vector2d(1.5,0),self->ent->flip,vector2d(26,24),24,20,1,30,1);
-	if(self->ent->flip.x == 1)gf2d_special_projectile_spawn("images/zubat_attack.png",25,24,3,vector2d(self->ent->position.x-40,self->ent->position.y+20),vector2d(2,2),vector2d(-1.5,0),self->ent->flip,vector2d(26,24),24,20,1,30,1);
+	if(self->ent->flip.x == 0)gf2d_special_projectile_spawn("images/zubat_attack.png",25,24,3,gfc_vector2d(self->ent->position.x+80,self->ent->position.y+20),gfc_vector2d(2,2),gfc_vector2d(1.5,0),self->ent->flip,gfc_vector2d(26,24),24,20,1,30,1);
+	if(self->ent->flip.x == 1)gf2d_special_projectile_spawn("images/zubat_attack.png",25,24,3,gfc_vector2d(self->ent->position.x-40,self->ent->position.y+20),gfc_vector2d(2,2),gfc_vector2d(-1.5,0),self->ent->flip,gfc_vector2d(26,24),24,20,1,30,1);
 gfc_sound_play(ZubatAttack,0,.5,2,1);
 }
 
 void articuno_weapon_attack(Player* self){
-	if(self->ent->flip.x == 0)gf2d_special_projectile_spawn("images/articuno_weapon_attack.png",20,10,3,vector2d(self->ent->position.x+130,self->ent->position.y+50),vector2d(2,2),vector2d(2,0),self->ent->flip,vector2d(24,10),16,8,1,30,2);
-	if(self->ent->flip.x == 1)gf2d_special_projectile_spawn("images/articuno_weapon_attack.png",20,10,3,vector2d(self->ent->position.x,self->ent->position.y+50),vector2d(2,2),vector2d(-2,0),self->ent->flip,vector2d(24,10),16,8,1,30,2);
+	if(self->ent->flip.x == 0)gf2d_special_projectile_spawn("images/articuno_weapon_attack.png",20,10,3,gfc_vector2d(self->ent->position.x+130,self->ent->position.y+50),gfc_vector2d(2,2),gfc_vector2d(2,0),self->ent->flip,gfc_vector2d(24,10),16,8,1,30,2);
+	if(self->ent->flip.x == 1)gf2d_special_projectile_spawn("images/articuno_weapon_attack.png",20,10,3,gfc_vector2d(self->ent->position.x,self->ent->position.y+50),gfc_vector2d(2,2),gfc_vector2d(-2,0),self->ent->flip,gfc_vector2d(24,10),16,8,1,30,2);
 gfc_sound_play(ArticunoAttack,0,.5,2,1);
 }
 
 void pikachu_weapon_attack(Player* self){
-	gf2d_special_projectile_spawn("images/pikachu_attack.png",22,203,3,vector2d(self->ent->position.x,self->ent->position.y-500),vector2d(2,2),vector2d(0,2),self->ent->flip,vector2d(24,204),16,202,1,30,3);
+	gf2d_special_projectile_spawn("images/pikachu_attack.png",22,203,3,gfc_vector2d(self->ent->position.x,self->ent->position.y-500),gfc_vector2d(2,2),gfc_vector2d(0,2),self->ent->flip,gfc_vector2d(24,204),16,202,1,30,3);
 gfc_sound_play(PikachuAttack,0,.5,2,1);
 }
 

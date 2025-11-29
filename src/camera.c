@@ -3,7 +3,7 @@
 static Camera camera = {0};
 void camera_init(){
 camera.player = (Player*)gf2d_entity_get(0)->data;
-camera.offset = vector2d(0,0);
+camera.offset = gfc_vector2d(0,0);
 }
 
 void camera_update(){
@@ -14,15 +14,15 @@ camera.offset.y += camera.velocity.y;
 //slog("offset x: %f, offset y: %f",camera.offset.x,camera.offset.y);
 }
 
-Vector2D get_camera_velocity(){
+GFC_Vector2D get_camera_velocity(){
 return camera.velocity;
 }
 
-Vector2D get_camera_offset(){
+GFC_Vector2D get_camera_offset(){
 return camera.offset;
 }
 
-void set_camera_offset(Vector2D offset){
+void set_camera_offset(GFC_Vector2D offset){
 	camera.offset = offset;
 	slog("Camera Offset : %f, %f",get_camera_offset().x,get_camera_offset().y);
 }

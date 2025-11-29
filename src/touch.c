@@ -29,7 +29,7 @@ if (other->owner != self->owner && other->invincibility == 0){
 		Player* p = (Player*)other->data;
 		if(p->lives > 1){p->lives -= 1;
 			p->ent->health = p->ent->healthmax;
-			set_camera_offset(vector2d(0,0));
+			set_camera_offset(gfc_vector2d(0,0));
 			reload_num_level(p->level);}
 		else{
 			gfc_sound_play(PlayerDefeat,0,.5,4,1);
@@ -74,7 +74,7 @@ if(other->health <= 0){
 	Player* p = (Player*)other->data;
 		if(p->lives > 1){p->lives -= 1;
 			p->ent->health = p->ent->healthmax;
-			set_camera_offset(vector2d(0,0));
+			set_camera_offset(gfc_vector2d(0,0));
 			reload_num_level(p->level);}
 		else{
 			gfc_sound_play(PlayerDefeat,0,.5,4,1);
@@ -106,34 +106,34 @@ if(self->tag == 8 && self->owner == 2){
 int drop = rand() % 10;
 switch(drop){
 
-case 0: gf2d_pickup_spawn("images/exp_orb.png", 15, 15, 1, vector2d(self->position.x,self->position.y+50), vector2d(2,2),vector2d(0,0),vector2d(0,0),vector2d(14,14),14,14,2,30); 
+case 0: gf2d_pickup_spawn("images/exp_orb.png", 15, 15, 1,gfc_vector2d(self->position.x,self->position.y+50),gfc_vector2d(2,2),gfc_vector2d(0,0),gfc_vector2d(0,0),gfc_vector2d(14,14),14,14,2,30); 
 break;
 
-case 1: gf2d_pickup_spawn("images/exp_orb.png", 15, 15, 1, vector2d(self->position.x,self->position.y+50), vector2d(2,2),vector2d(0,0),vector2d(0,0),vector2d(14,14),14,14,2,30);
+case 1: gf2d_pickup_spawn("images/exp_orb.png", 15, 15, 1,gfc_vector2d(self->position.x,self->position.y+50),gfc_vector2d(2,2),gfc_vector2d(0,0),gfc_vector2d(0,0),gfc_vector2d(14,14),14,14,2,30);
 break;
 
-case 2: gf2d_pickup_spawn("images/exp_orb.png", 15, 15, 1, vector2d(self->position.x,self->position.y+50), vector2d(2,2),vector2d(0,0),vector2d(0,0),vector2d(14,14),14,14,2,30);
+case 2: gf2d_pickup_spawn("images/exp_orb.png", 15, 15, 1,gfc_vector2d(self->position.x,self->position.y+50),gfc_vector2d(2,2),gfc_vector2d(0,0),gfc_vector2d(0,0),gfc_vector2d(14,14),14,14,2,30);
 break;
 
-case 3: gf2d_pickup_spawn("images/exp_orb.png", 15, 15, 1, vector2d(self->position.x,self->position.y+50), vector2d(2,2),vector2d(0,0),vector2d(0,0),vector2d(14,14),14,14,2,30);
+case 3: gf2d_pickup_spawn("images/exp_orb.png", 15, 15, 1,gfc_vector2d(self->position.x,self->position.y+50),gfc_vector2d(2,2),gfc_vector2d(0,0),gfc_vector2d(0,0),gfc_vector2d(14,14),14,14,2,30);
 break;
 
-case 4: gf2d_pickup_spawn("images/exp_orb.png", 15, 15, 1, vector2d(self->position.x,self->position.y+50), vector2d(2,2),vector2d(0,0),vector2d(0,0),vector2d(14,14),14,14,2,30);
+case 4: gf2d_pickup_spawn("images/exp_orb.png", 15, 15, 1,gfc_vector2d(self->position.x,self->position.y+50),gfc_vector2d(2,2),gfc_vector2d(0,0),gfc_vector2d(0,0),gfc_vector2d(14,14),14,14,2,30);
 break;
 
-case 5: gf2d_pickup_spawn("images/exp_orb.png", 15, 15, 1, vector2d(self->position.x,self->position.y+50), vector2d(2,2),vector2d(0,0),vector2d(0,0),vector2d(14,14),14,14,2,30);
+case 5: gf2d_pickup_spawn("images/exp_orb.png", 15, 15, 1,gfc_vector2d(self->position.x,self->position.y+50),gfc_vector2d(2,2),gfc_vector2d(0,0),gfc_vector2d(0,0),gfc_vector2d(14,14),14,14,2,30);
 break;
 
-case 6: gf2d_pickup_spawn("images/exp_orb.png", 15, 15, 1, vector2d(self->position.x,self->position.y+50), vector2d(2,2),vector2d(0,0),vector2d(0,0),vector2d(14,14),14,14,2,30);
+case 6: gf2d_pickup_spawn("images/exp_orb.png", 15, 15, 1,gfc_vector2d(self->position.x,self->position.y+50),gfc_vector2d(2,2),gfc_vector2d(0,0),gfc_vector2d(0,0),gfc_vector2d(14,14),14,14,2,30);
 break;
 
-case 7: gf2d_pickup_spawn("images/aguman_extra_life.png", 19, 13, 1, vector2d(self->position.x,self->position.y+50), vector2d(3,3),vector2d(0,0),vector2d(0,0),vector2d(27,18),27,18,3,30);
+case 7: gf2d_pickup_spawn("images/aguman_extra_life.png", 19, 13, 1,gfc_vector2d(self->position.x,self->position.y+50),gfc_vector2d(3,3),gfc_vector2d(0,0),gfc_vector2d(0,0),gfc_vector2d(27,18),27,18,3,30);
 break;
 
-case 8: gf2d_pickup_spawn("images/gabumon_extra_life.png", 20, 16, 1, vector2d(self->position.x,self->position.y+50), vector2d(3,3),vector2d(0,0),vector2d(0,0),vector2d(30,24),30,24,4,30);
+case 8: gf2d_pickup_spawn("images/gabumon_extra_life.png", 20, 16, 1,gfc_vector2d(self->position.x,self->position.y+50),gfc_vector2d(3,3),gfc_vector2d(0,0),gfc_vector2d(0,0),gfc_vector2d(30,24),30,24,4,30);
 break;
 
-case 9: gf2d_pickup_spawn("images/guilmon_extra_life.png", 20, 16, 1, vector2d(self->position.x,self->position.y+50), vector2d(3,3),vector2d(0,0),vector2d(0,0),vector2d(30,24),30,24,5,30);
+case 9: gf2d_pickup_spawn("images/guilmon_extra_life.png", 20, 16, 1,gfc_vector2d(self->position.x,self->position.y+50),gfc_vector2d(3,3),gfc_vector2d(0,0),gfc_vector2d(0,0),gfc_vector2d(30,24),30,24,5,30);
 break;
 }
 }
@@ -162,5 +162,5 @@ if (self->owner == 4){
 }
 
 void hp_drop(Entity *self){
-	gf2d_pickup_spawn("images/hp.png", 16, 16, 1, vector2d(self->position.x,self->position.y+50), vector2d(2,2),vector2d(0,0),vector2d(0,0),vector2d(16,16),16,16,9,30); 
+	gf2d_pickup_spawn("images/hp.png", 16, 16, 1,gfc_vector2d(self->position.x,self->position.y+50),gfc_vector2d(2,2),gfc_vector2d(0,0),gfc_vector2d(0,0),gfc_vector2d(16,16),16,16,9,30); 
 }

@@ -5,11 +5,12 @@
 #include "gfc_types.h"
 #include "gfc_vector.h"
 #include "gfc_text.h"
+#include "gfc_shape.h"
 
 typedef struct Sprite_S
 {
     int ref_count;
-    TextLine filepath;
+    GFC_TextLine filepath;
     SDL_Texture *texture;
     Uint32 frames_per_line;
     Uint32 frame_w,frame_h;
@@ -34,7 +35,7 @@ Sprite *gf2d_sprite_load_image(char *filename);
  * @param position the x and y position to draw the image at (top left corner)
  * @param scale the scale for the image
  */
-void gf2d_sprite_draw_image(Sprite *image,Vector2D position, Vector2D scale);
+void gf2d_sprite_draw_image(Sprite *image, GFC_Vector2D position, GFC_Vector2D scale);
 
 /**
  * @brief loads a sprite from file using the sprite system
@@ -63,12 +64,12 @@ Sprite *gf2d_sprite_load_all(
  */
 void gf2d_sprite_draw(
     Sprite * sprite,
-    Vector2D position,
-    Vector2D * scale,
-    Vector2D * scaleCenter,
-    Vector3D * rotation,
-    Vector2D * flip,
-    Vector4D * colorShift,
+    GFC_Vector2D position,
+    GFC_Vector2D * scale,
+    GFC_Vector2D * scaleCenter,
+    GFC_Vector3D * rotation,
+    GFC_Vector2D * flip,
+    GFC_Vector4D * colorShift,
     Uint32 frame);
 
 /**
