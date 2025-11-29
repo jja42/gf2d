@@ -20,7 +20,7 @@ typedef struct
     float 		last_save;
     Player		*player;
 	int 		menu_timer;
-	char*		password[10];
+	char		password[10];
 	int			entity_selected;
 	int			flip;
 	Entity 		*enemy_list;
@@ -685,7 +685,7 @@ void xp_text_think(Menu *self){
 	snprintf(xp,16, "%i", menu_manager.player->ent->experience);
 	SDL_Color White = {255, 255, 255};  
 
-    SDL_Surface* surfaceMessage = TTF_RenderText_Solid(self->Sans, &xp, White); 
+    SDL_Surface* surfaceMessage = TTF_RenderText_Solid(self->Sans, xp, White); 
 
     SDL_Texture* Message = SDL_CreateTextureFromSurface(gf2d_graphics_get_renderer(), surfaceMessage); 
 
@@ -696,7 +696,7 @@ else{
 	snprintf(life,16, " ");
 	SDL_Color White = {255, 255, 255};  
 
-    SDL_Surface* surfaceMessage = TTF_RenderText_Solid(self->Sans, &life, White); 
+    SDL_Surface* surfaceMessage = TTF_RenderText_Solid(self->Sans, life, White); 
 
     SDL_Texture* Message = SDL_CreateTextureFromSurface(gf2d_graphics_get_renderer(), surfaceMessage); 
 
@@ -710,7 +710,7 @@ if(get_menu_state() == MS_Pause){
 	snprintf(lives,16, "x %i", menu_manager.player->agumon_lives);
 	SDL_Color White = {255, 255, 255};  
 
-    SDL_Surface* surfaceMessage = TTF_RenderText_Solid(self->Sans, &lives, White); 
+    SDL_Surface* surfaceMessage = TTF_RenderText_Solid(self->Sans, lives, White); 
 
     SDL_Texture* Message = SDL_CreateTextureFromSurface(gf2d_graphics_get_renderer(), surfaceMessage); 
 
@@ -721,7 +721,7 @@ else{
 	snprintf(life,16, " ");
 	SDL_Color White = {255, 255, 255};  
 
-    SDL_Surface* surfaceMessage = TTF_RenderText_Solid(self->Sans, &life, White); 
+    SDL_Surface* surfaceMessage = TTF_RenderText_Solid(self->Sans, life, White); 
 
     SDL_Texture* Message = SDL_CreateTextureFromSurface(gf2d_graphics_get_renderer(), surfaceMessage); 
 
@@ -735,7 +735,7 @@ if(get_menu_state() == MS_Pause){
 	snprintf(lives,16, "x %i", menu_manager.player->gabumon_lives);
 	SDL_Color White = {255, 255, 255};  
 
-    SDL_Surface* surfaceMessage = TTF_RenderText_Solid(self->Sans, &lives, White); 
+    SDL_Surface* surfaceMessage = TTF_RenderText_Solid(self->Sans, lives, White); 
 
     SDL_Texture* Message = SDL_CreateTextureFromSurface(gf2d_graphics_get_renderer(), surfaceMessage); 
 
@@ -746,7 +746,7 @@ else{
 	snprintf(life,16, " ");
 	SDL_Color White = {255, 255, 255};  
 
-    SDL_Surface* surfaceMessage = TTF_RenderText_Solid(self->Sans, &life, White); 
+    SDL_Surface* surfaceMessage = TTF_RenderText_Solid(self->Sans, life, White); 
 
     SDL_Texture* Message = SDL_CreateTextureFromSurface(gf2d_graphics_get_renderer(), surfaceMessage); 
 
@@ -760,7 +760,7 @@ if(get_menu_state() == MS_Pause){
 	snprintf(lives,16, "x %i", menu_manager.player->guilmon_lives);
 	SDL_Color White = {255, 255, 255};  
 
-    SDL_Surface* surfaceMessage = TTF_RenderText_Solid(self->Sans, &lives, White); 
+    SDL_Surface* surfaceMessage = TTF_RenderText_Solid(self->Sans, lives, White); 
 
     SDL_Texture* Message = SDL_CreateTextureFromSurface(gf2d_graphics_get_renderer(), surfaceMessage); 
 
@@ -771,7 +771,7 @@ else{
 	snprintf(life,16, " ");
 	SDL_Color White = {255, 255, 255};  
 
-    SDL_Surface* surfaceMessage = TTF_RenderText_Solid(self->Sans, &life, White); 
+    SDL_Surface* surfaceMessage = TTF_RenderText_Solid(self->Sans, life, White); 
 
     SDL_Texture* Message = SDL_CreateTextureFromSurface(gf2d_graphics_get_renderer(), surfaceMessage); 
 
@@ -785,7 +785,7 @@ if(get_menu_state() == MS_Pause){
 	snprintf(lives,16, "x %i", menu_manager.player->hp_pickups);
 	SDL_Color White = {255, 255, 255};  
 
-    SDL_Surface* surfaceMessage = TTF_RenderText_Solid(self->Sans, &lives, White); 
+    SDL_Surface* surfaceMessage = TTF_RenderText_Solid(self->Sans, lives, White); 
 
     SDL_Texture* Message = SDL_CreateTextureFromSurface(gf2d_graphics_get_renderer(), surfaceMessage); 
 
@@ -796,7 +796,7 @@ else{
 	snprintf(life,16, " ");
 	SDL_Color White = {255, 255, 255};  
 
-    SDL_Surface* surfaceMessage = TTF_RenderText_Solid(self->Sans, &life, White); 
+    SDL_Surface* surfaceMessage = TTF_RenderText_Solid(self->Sans, life, White); 
 
     SDL_Texture* Message = SDL_CreateTextureFromSurface(gf2d_graphics_get_renderer(), surfaceMessage); 
 
@@ -810,7 +810,7 @@ if(get_menu_state() == MS_Pause){
 	snprintf(life,16, "%i", menu_manager.player->ent->health);
 	SDL_Color White = {255, 255, 255};  
 
-    SDL_Surface* surfaceMessage = TTF_RenderText_Solid(self->Sans, &life, White); 
+    SDL_Surface* surfaceMessage = TTF_RenderText_Solid(self->Sans, life, White); 
 
     SDL_Texture* Message = SDL_CreateTextureFromSurface(gf2d_graphics_get_renderer(), surfaceMessage); 
 
@@ -821,7 +821,7 @@ else{
 	snprintf(life,16, " ");
 	SDL_Color White = {255, 255, 255};  
 
-    SDL_Surface* surfaceMessage = TTF_RenderText_Solid(self->Sans, &life, White); 
+    SDL_Surface* surfaceMessage = TTF_RenderText_Solid(self->Sans, life, White); 
 
     SDL_Texture* Message = SDL_CreateTextureFromSurface(gf2d_graphics_get_renderer(), surfaceMessage); 
 
@@ -835,7 +835,7 @@ if(get_menu_state() == MS_Pause){
 	snprintf(life,16, "%i", menu_manager.player->lives);
 	SDL_Color White = {255, 255, 255};  
 
-    SDL_Surface* surfaceMessage = TTF_RenderText_Solid(self->Sans, &life, White); 
+    SDL_Surface* surfaceMessage = TTF_RenderText_Solid(self->Sans, life, White); 
 
     SDL_Texture* Message = SDL_CreateTextureFromSurface(gf2d_graphics_get_renderer(), surfaceMessage); 
 
@@ -846,7 +846,7 @@ else{
 	snprintf(life,16, " ");
 	SDL_Color White = {255, 255, 255};  
 
-    SDL_Surface* surfaceMessage = TTF_RenderText_Solid(self->Sans, &life, White); 
+    SDL_Surface* surfaceMessage = TTF_RenderText_Solid(self->Sans, life, White); 
 
     SDL_Texture* Message = SDL_CreateTextureFromSurface(gf2d_graphics_get_renderer(), surfaceMessage); 
 
@@ -860,7 +860,7 @@ if(get_menu_state() == MS_Pause && menu_manager.player->pikachu_weapon){
 	snprintf(life,16, "Thunder");
 	SDL_Color White = {255, 255, 255};  
 
-    SDL_Surface* surfaceMessage = TTF_RenderText_Solid(self->Sans, &life, White); 
+    SDL_Surface* surfaceMessage = TTF_RenderText_Solid(self->Sans, life, White); 
 
     SDL_Texture* Message = SDL_CreateTextureFromSurface(gf2d_graphics_get_renderer(), surfaceMessage); 
 
@@ -871,7 +871,7 @@ else{
 	snprintf(life,16, " ");
 	SDL_Color White = {255, 255, 255};  
 
-    SDL_Surface* surfaceMessage = TTF_RenderText_Solid(self->Sans, &life, White); 
+    SDL_Surface* surfaceMessage = TTF_RenderText_Solid(self->Sans, life, White); 
 
     SDL_Texture* Message = SDL_CreateTextureFromSurface(gf2d_graphics_get_renderer(), surfaceMessage); 
 
@@ -885,7 +885,7 @@ if(get_menu_state() == MS_Pause && menu_manager.player->zubat_weapon){
 	snprintf(life,16, "Leech Life");
 	SDL_Color White = {255, 255, 255};  
 
-    SDL_Surface* surfaceMessage = TTF_RenderText_Solid(self->Sans, &life, White); 
+    SDL_Surface* surfaceMessage = TTF_RenderText_Solid(self->Sans, life, White); 
 
     SDL_Texture* Message = SDL_CreateTextureFromSurface(gf2d_graphics_get_renderer(), surfaceMessage); 
 
@@ -896,7 +896,7 @@ else{
 	snprintf(life,16, " ");
 	SDL_Color White = {255, 255, 255};  
 
-    SDL_Surface* surfaceMessage = TTF_RenderText_Solid(self->Sans, &life, White); 
+    SDL_Surface* surfaceMessage = TTF_RenderText_Solid(self->Sans, life, White); 
 
     SDL_Texture* Message = SDL_CreateTextureFromSurface(gf2d_graphics_get_renderer(), surfaceMessage); 
 
@@ -910,7 +910,7 @@ if(get_menu_state() == MS_Pause && menu_manager.player->articuno_weapon){
 	snprintf(life,16, "Ice Beam");
 	SDL_Color White = {255, 255, 255};  
 
-    SDL_Surface* surfaceMessage = TTF_RenderText_Solid(self->Sans, &life, White); 
+    SDL_Surface* surfaceMessage = TTF_RenderText_Solid(self->Sans, life, White); 
 
     SDL_Texture* Message = SDL_CreateTextureFromSurface(gf2d_graphics_get_renderer(), surfaceMessage); 
 
@@ -921,7 +921,7 @@ else{
 	snprintf(life,16, " ");
 	SDL_Color White = {255, 255, 255};  
 
-    SDL_Surface* surfaceMessage = TTF_RenderText_Solid(self->Sans, &life, White); 
+    SDL_Surface* surfaceMessage = TTF_RenderText_Solid(self->Sans, life, White); 
 
     SDL_Texture* Message = SDL_CreateTextureFromSurface(gf2d_graphics_get_renderer(), surfaceMessage); 
 
@@ -932,7 +932,7 @@ else{
 void password_text_think(Menu *self){
 if(get_menu_state() == MS_PasswordScreen){
 	SDL_Color White = {255, 255, 255};  
-    SDL_Surface* surfaceMessage = TTF_RenderText_Solid(self->Sans, &menu_manager.password, White); 
+    SDL_Surface* surfaceMessage = TTF_RenderText_Solid(self->Sans, menu_manager.password, White); 
 
     SDL_Texture* Message = SDL_CreateTextureFromSurface(gf2d_graphics_get_renderer(), surfaceMessage); 
 
@@ -943,7 +943,7 @@ else{
 	snprintf(life,16, " ");
 	SDL_Color White = {255, 255, 255};  
 
-    SDL_Surface* surfaceMessage = TTF_RenderText_Solid(self->Sans, &life, White); 
+    SDL_Surface* surfaceMessage = TTF_RenderText_Solid(self->Sans, life, White); 
 
     SDL_Texture* Message = SDL_CreateTextureFromSurface(gf2d_graphics_get_renderer(), surfaceMessage); 
 

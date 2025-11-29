@@ -1,73 +1,59 @@
 ##############################################################################
-#
-# The Linux-GCC Makefile
-#
+# Unified Emscripten Makefile for gf2d (corrected paths)
 ##############################################################################
 
-
-#
-# Compiler stuff -- adjust to your system.
-#
-
-# Linux
 PROJECT = gf2d
-CC      = gcc
+CC = emcc
 
-LIB_LIST = ../gfc/libs/libgfc.a ../gfc/simple_json/libs/libsj.a ../gfc/simple_logger/libs/libsl.a 
-OBJECTS = $(patsubst %.c,%.o,$(wildcard *.c))
-
+# Include paths
 INC_PATHS = ../include ../gfc/include ../gfc/simple_logger/include ../gfc/simple_json/include
-INC_PARAMS =$(foreach d, $(INC_PATHS), -I$d)
+INC_PARAMS = $(foreach d,$(INC_PATHS),-I$d)
 
-OBJECTS = $(patsubst %.c,%.o,$(wildcard *.c))
+# Project sources
+SRC = audio.c camera.c enemy.c game.c gf2d_draw.c gf2d_entity.c gf2d_graphics.c \
+      gf2d_shape.c gf2d_sprite.c level.c menu.c player.c touch.c
 
-SDL_CFLAGS = `sdl2-config --cflags` $(INC_PARAMS)
-SDL_LDFLAGS = `sdl2-config --libs` -lSDL2_image -lSDL2_ttf -lSDL2_mixer -lpng -ljpeg -lz -lm
-LFLAGS = -g  -o ../$(PROJECT)
-CFLAGS = -g  -fPIC -Wall -pedantic -std=gnu99 -fgnu89-inline -Wno-unknown-pragmas -Wno-variadic-macros
+# Libraries
+LIB_PATH = ../gfc
+LIBS = $(LIB_PATH)/libs/libgfc.a $(LIB_PATH)/simple_json/libs/libsj.a $(LIB_PATH)/simple_logger/libs/libsl.a
 
-DOXYGEN = doxygen
+# SDL / Emscripten flags
+SDL_FLAGS = -s USE_SDL=2 \
+            -s USE_SDL_IMAGE=2 \
+            -s USE_SDL_TTF=2 \
+            -s USE_SDL_MIXER=2 \
+            --preload-file ../themes \
+            --preload-file ../sfx \
+            -lm
 
-#
-# Targets
-#
+# Compiler flags
+CFLAGS = -g -Wall -pedantic -std=gnu99 -Wno-unknown-pragmas -Wno-variadic-macros
 
-$(PROJECT): $(OBJECTS)
-	$(CC) $(OBJECTS) $(LFLAGS) $(LIB_LIST) $(SDL_LDFLAGS) 
+# Phony targets
+.PHONY: all libs gfc sj sl clean
 
-docs:
-	$(DOXYGEN) doxygen.cfg
+# Default target
+all: $(PROJECT).html
 
-sources:
-	echo (patsubst %.c,%.o,$(wildcard *.c)) > makefile.sources
+# Build main project
+$(PROJECT).html: libs $(SRC)
+	$(CC) $(CFLAGS) $(INC_PARAMS) $(SRC) $(LIBS) $(SDL_FLAGS) -o $(PROJECT).html
 
+# Build all libraries first
+libs: gfc sj sl
 
-makefile.dep: depend
+gfc:
+	$(MAKE) -C ../gfc/src libgfc.a
 
-depend:
-	@touch makefile.dep
-	@-rm makefile.dep
-	@echo Creating dependencies.
-	@for i in *.c; do $(CC) $(INC) -MM $(INC_PARAMS) $$i; done > makefile.dep
-	@echo Done.
+sj:
+	$(MAKE) -C ../gfc/simple_json/src libsj.a
 
+sl:
+	$(MAKE) -C ../gfc/simple_logger/src libsl.a
+
+# Clean everything
 clean:
-	rm *.o
-
-count:
-	wc -l *.c $(foreach d, $(INC_PATHS), $d/*.h) makefile
-
-#
-# Dependencies.
-#
-
-include makefile.dep
-
-#
-# The default rule.
-#
-
-.c.o:
-	$(CC) $(CFLAGS) $(SDL_CFLAGS) -c $<
-
-
+	rm -f *.o *.html *.js *.wasm
+	$(MAKE) -C ../gfc/src clean
+	$(MAKE) -C ../gfc/simple_json/src clean
+	$(MAKE) -C ../gfc/simple_logger/src clean

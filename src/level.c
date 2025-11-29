@@ -2,6 +2,7 @@
 #include "simple_logger.h"
 #include "simple_json.h"
 #include "player.h"
+#include "camera.h"
 
 void load_level_zubat(){
 	load_level("levels/zubat.level");

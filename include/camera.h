@@ -2,6 +2,7 @@
 #define __CAMERA_H__
 #include "gf2d_entity.h"
 #include "player.h"
+#include "gfc_vector.h"
 
 typedef struct Camera_S{
 int level_bounds_top;
