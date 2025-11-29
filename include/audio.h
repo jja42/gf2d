@@ -1,33 +1,35 @@
 #ifndef __AUDIO_H__
 #define __AUDIO_H__
 #include "gfc_audio.h"
-	GFC_Sound* TitleScreen;
-    GFC_Sound* ArticunoLevel;
-    GFC_Sound* GameOver;
-    GFC_Sound* PasswordScreen;
-    GFC_Sound* PikachuLevel;
-    GFC_Sound* ZubatLevel;
-    GFC_Sound* StageSelect;
-    GFC_Sound* ArticunoAttack;
-    GFC_Sound* BetamonJump;
-    GFC_Sound* BossHit;
-    GFC_Sound* EnemyHit;
-    GFC_Sound* EnemyShoot;
-    GFC_Sound* EtemonProjectile;
-    GFC_Sound* FireballAttack;
-    GFC_Sound* GabumonPunch;
-    GFC_Sound* GabumonSpin;
-    GFC_Sound* GallantmonProjectile;
-    GFC_Sound* GuilmonClaw;
-    GFC_Sound* LevelComplete;
-    GFC_Sound* PauseMenu;
-    GFC_Sound* PikachuAttack;
-    GFC_Sound* PlayerHit;
-    GFC_Sound* PlayerDefeat;
-    GFC_Sound* PlayerRestore;
-    GFC_Sound* ProjectileHit;
-    GFC_Sound* WarGreymonProjectile;
-    GFC_Sound* ZubatAttack;
-    GFC_Sound* No;
-    GFC_Sound* Editor;
+
+extern GFC_Sound* TitleScreen;
+extern GFC_Sound* ArticunoLevel;
+extern GFC_Sound* GameOver;
+extern GFC_Sound* PasswordScreen;
+extern GFC_Sound* PikachuLevel;
+extern GFC_Sound* ZubatLevel;
+extern GFC_Sound* StageSelect;
+extern GFC_Sound* ArticunoAttack;
+extern GFC_Sound* BetamonJump;
+extern GFC_Sound* BossHit;
+extern GFC_Sound* EnemyHit;
+extern GFC_Sound* EnemyShoot;
+extern GFC_Sound* EtemonProjectile;
+extern GFC_Sound* FireballAttack;
+extern GFC_Sound* GabumonPunch;
+extern GFC_Sound* GabumonSpin;
+extern GFC_Sound* GallantmonProjectile;
+extern GFC_Sound* GuilmonClaw;
+extern GFC_Sound* LevelComplete;
+extern GFC_Sound* PauseMenu;
+extern GFC_Sound* PikachuAttack;
+extern GFC_Sound* PlayerHit;
+extern GFC_Sound* PlayerDefeat;
+extern GFC_Sound* PlayerRestore;
+extern GFC_Sound* ProjectileHit;
+extern GFC_Sound* WarGreymonProjectile;
+extern GFC_Sound* ZubatAttack;
+extern GFC_Sound* No;
+extern GFC_Sound* Editor;
+
 #endif
