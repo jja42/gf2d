@@ -426,35 +426,35 @@ int main(int argc, char * argv[])
     
     //sound init
     //gfc_sound_load(char *filename,float volume,int defaultChannel)
-    TitleScreen = gfc_sound_load("themes/TitleScreen.mp3",.25,1);
-    ArticunoLevel = gfc_sound_load("themes/ArticunoLevel.mp3",.25,1);
-    GameOver = gfc_sound_load("themes/GameOver.mp3",.25,1);
-    PasswordScreen = gfc_sound_load("themes/PasswordScreen.mp3",.25,1);
-    PikachuLevel = gfc_sound_load("themes/PikachuLevel.mp3",.25,1);
-    ZubatLevel = gfc_sound_load("themes/ZubatLevel.mp3",.25,1);
-    StageSelect = gfc_sound_load("themes/StageSelect.mp3",.25,1);
-    ArticunoAttack =  gfc_sound_load("sfx/ArticunoAttack.mp3",.25,2);
-    BetamonJump =  gfc_sound_load("sfx/BetamonJump.mp3",.25,3);
-    BossHit =  gfc_sound_load("sfx/BossHit.mp3",.25,2);
-    EnemyHit =  gfc_sound_load("sfx/EnemyHit.mp3",.25,3);
-	EnemyShoot =  gfc_sound_load("sfx/EnemyShoot.mp3",.25,3);
-    EtemonProjectile =  gfc_sound_load("sfx/EtemonProjectile.mp3",.25,4);
-    FireballAttack =  gfc_sound_load("sfx/FireballAttack.mp3",.25,4);
-    GabumonPunch =  gfc_sound_load("sfx/GabumonPunch.mp3",.25,4);
-    GabumonSpin =  gfc_sound_load("sfx/GabumonSpin.mp3",.25,4);
-    GallantmonProjectile =  gfc_sound_load("sfx/GallantmonProjectile.mp3",.25,4);
-    GuilmonClaw =  gfc_sound_load("sfx/GuilmonClaw.mp3",.25,4);
-    LevelComplete =  gfc_sound_load("sfx/LevelComplete.mp3",.25,5);
-    PauseMenu =  gfc_sound_load("sfx/PauseMenu.mp3",.25,5);
-    PikachuAttack =  gfc_sound_load("sfx/PikachuAttack.mp3",.25,2);
-    PlayerHit = gfc_sound_load("sfx/PlayerHit.mp3",.25,4);
-    PlayerDefeat = gfc_sound_load("sfx/PlayerDefeat.mp3",.25,4);
-    PlayerRestore =  gfc_sound_load("sfx/PlayerRestore.mp3",.25,4);
-    ProjectileHit =  gfc_sound_load("sfx/ProjectileHit.mp3",.25,5);
-    WarGreymonProjectile =  gfc_sound_load("sfx/WarGreymonProjectile.mp3",.25,4);
-    ZubatAttack =  gfc_sound_load("sfx/ZubatAttack.mp3",.25,2);
-    No = gfc_sound_load("sfx/No.mp3",.25,5);
-    Editor = gfc_sound_load("themes/Editor.mp3",.25,1);
+    TitleScreen = gfc_sound_load("themes/TitleScreen.ogg",.25,1);
+    ArticunoLevel = gfc_sound_load("themes/ArticunoLevel.ogg",.25,1);
+    GameOver = gfc_sound_load("themes/GameOver.ogg",.25,1);
+    PasswordScreen = gfc_sound_load("themes/PasswordScreen.ogg",.25,1);
+    PikachuLevel = gfc_sound_load("themes/PikachuLevel.ogg",.25,1);
+    ZubatLevel = gfc_sound_load("themes/ZubatLevel.ogg",.25,1);
+    StageSelect = gfc_sound_load("themes/StageSelect.ogg",.25,1);
+    ArticunoAttack =  gfc_sound_load("sfx/ArticunoAttack.ogg",.25,2);
+    BetamonJump =  gfc_sound_load("sfx/BetamonJump.ogg",.25,3);
+    BossHit =  gfc_sound_load("sfx/BossHit.ogg",.25,2);
+    EnemyHit =  gfc_sound_load("sfx/EnemyHit.ogg",.25,3);
+	EnemyShoot =  gfc_sound_load("sfx/EnemyShoot.ogg",.25,3);
+    EtemonProjectile =  gfc_sound_load("sfx/EtemonProjectile.ogg",.25,4);
+    FireballAttack =  gfc_sound_load("sfx/FireballAttack.ogg",.25,4);
+    GabumonPunch =  gfc_sound_load("sfx/GabumonPunch.ogg",.25,4);
+    GabumonSpin =  gfc_sound_load("sfx/GabumonSpin.ogg",.25,4);
+    GallantmonProjectile =  gfc_sound_load("sfx/GallantmonProjectile.ogg",.25,4);
+    GuilmonClaw =  gfc_sound_load("sfx/GuilmonClaw.ogg",.25,4);
+    LevelComplete =  gfc_sound_load("sfx/LevelComplete.ogg",.25,5);
+    PauseMenu =  gfc_sound_load("sfx/PauseMenu.ogg",.25,5);
+    PikachuAttack =  gfc_sound_load("sfx/PikachuAttack.ogg",.25,2);
+    PlayerHit = gfc_sound_load("sfx/PlayerHit.ogg",.25,4);
+    PlayerDefeat = gfc_sound_load("sfx/PlayerDefeat.ogg",.25,4);
+    PlayerRestore =  gfc_sound_load("sfx/PlayerRestore.ogg",.25,4);
+    ProjectileHit =  gfc_sound_load("sfx/ProjectileHit.ogg",.25,5);
+    WarGreymonProjectile =  gfc_sound_load("sfx/WarGreymonProjectile.ogg",.25,4);
+    ZubatAttack =  gfc_sound_load("sfx/ZubatAttack.ogg",.25,2);
+    No = gfc_sound_load("sfx/No.ogg",.25,5);
+    Editor = gfc_sound_load("themes/Editor.ogg",.25,1);
      
     //button init
     button_generate(button_start_think,gf2d_box(gfc_vector2d(800,495),128,38,gfc_vector2d(0,0)));

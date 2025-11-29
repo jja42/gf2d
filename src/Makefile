@@ -23,6 +23,7 @@ SDL_FLAGS = -sUSE_SDL=2 \
 			-sSDL2_IMAGE_FORMATS='["png"]' \
             -sUSE_SDL_TTF=2 \
             -sUSE_SDL_MIXER=2 \
+			-sUSE_OGG=1	\
 			-sALLOW_MEMORY_GROWTH=1	\
             --preload-file ../themes \
             --preload-file ../sfx \
